@@ -1,0 +1,31 @@
+// STMP378x ROM command script to load and run U-Boot
+
+sources {
+	power_prep="./power_prep/power_prep";
+	sdram_prep="./boot_prep/boot_prep";
+	u_boot=".//u-boot";
+}
+
+section (0) {
+
+	//----------------------------------------------------------
+	// Power Supply initialization
+	//----------------------------------------------------------
+
+	load power_prep;
+	call power_prep;
+
+	//----------------------------------------------------------
+	// SDRAM initialization
+	//----------------------------------------------------------
+
+	load sdram_prep;
+	call sdram_prep;
+
+	//----------------------------------------------------------
+	//  Load and call u_boot - ELF ARM image
+	//----------------------------------------------------------
+
+        load u_boot;
+        call u_boot;
+}

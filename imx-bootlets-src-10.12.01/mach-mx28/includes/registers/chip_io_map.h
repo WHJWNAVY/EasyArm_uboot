@@ -1,0 +1,73 @@
+/*
+ * Copyright 2008-2009 Freescale Semiconductor, Inc. All Rights Reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ *
+ * DO NOT MANUAL EDIT THIS FILE!
+ *
+ */
+
+#define REGS_USBCTRL0_BASE	(REGS_BASE + 0x00080000)
+#define REGS_USBCTRL1_BASE	(REGS_BASE + 0x00090000)
+#define REGS_DFLPT_BASE	(REGS_BASE + 0x000C0000)
+#define REGS_DRAM_BASE	(REGS_BASE + 0x000E0000)
+#define REGS_ENET_BASE	(REGS_BASE + 0x000F0000)
+#define REGS_ICOLL_BASE	(REGS_BASE + 0x00000000)
+#define REGS_HSADC_BASE	(REGS_BASE + 0x00002000)
+#define REGS_APBH_BASE	(REGS_BASE + 0x00004000)
+#define REGS_PERFMON_BASE	(REGS_BASE + 0x00006000)
+#define REGS_BCH_BASE	(REGS_BASE + 0x0000A000)
+#define REGS_GPMI_BASE	(REGS_BASE + 0x0000C000)
+#define REGS_SSP0_BASE	(REGS_BASE + 0x00010000)
+#define REGS_SSP1_BASE	(REGS_BASE + 0x00012000)
+#define REGS_SSP2_BASE	(REGS_BASE + 0x00014000)
+#define REGS_SSP3_BASE	(REGS_BASE + 0x00016000)
+#define REGS_PINCTRL_BASE	(REGS_BASE + 0x00018000)
+#define REGS_DIGCTL_BASE	(REGS_BASE + 0x0001C000)
+#define REGS_ETM_BASE	(REGS_BASE + 0x00022000)
+#define REGS_APBX_BASE	(REGS_BASE + 0x00024000)
+#define REGS_DCP_BASE	(REGS_BASE + 0x00028000)
+#define REGS_PXP_BASE	(REGS_BASE + 0x0002A000)
+#define REGS_OCOTP_BASE	(REGS_BASE + 0x0002C000)
+#define REGS_AXI_AHB0_BASE	(REGS_BASE + 0x0002E000)
+#define REGS_LCDIF_BASE	(REGS_BASE + 0x00030000)
+#define REGS_CAN0_BASE	(REGS_BASE + 0x00032000)
+#define REGS_CAN1_BASE	(REGS_BASE + 0x00034000)
+#define REGS_SIMDBG_BASE	(REGS_BASE + 0x0003C000)
+#define REGS_SIMGPMISEL_BASE	(REGS_BASE + 0x0003C200)
+#define REGS_SIMSSPSEL_BASE	(REGS_BASE + 0x0003C300)
+#define REGS_SIMMEMSEL_BASE	(REGS_BASE + 0x0003C400)
+#define REGS_GPIOMON_BASE	(REGS_BASE + 0x0003C500)
+#define REGS_SIMENET_BASE	(REGS_BASE + 0x0003C700)
+#define REGS_ARMJTAG_BASE	(REGS_BASE + 0x0003C800)
+#define REGS_CLKCTRL_BASE	(REGS_BASE + 0x00040000)
+#define REGS_SAIF0_BASE	(REGS_BASE + 0x00042000)
+#define REGS_POWER_BASE	(REGS_BASE + 0x00044000)
+#define REGS_SAIF1_BASE	(REGS_BASE + 0x00046000)
+#define REGS_LRADC_BASE	(REGS_BASE + 0x00050000)
+#define REGS_SPDIF_BASE	(REGS_BASE + 0x00054000)
+#define REGS_RTC_BASE	(REGS_BASE + 0x00056000)
+#define REGS_I2C0_BASE	(REGS_BASE + 0x00058000)
+#define REGS_I2C1_BASE	(REGS_BASE + 0x0005A000)
+#define REGS_PWM_BASE	(REGS_BASE + 0x00064000)
+#define REGS_TIMROT_BASE	(REGS_BASE + 0x00068000)
+#define REGS_UARTAPP0_BASE	(REGS_BASE + 0x0006A000)
+#define REGS_UARTAPP1_BASE	(REGS_BASE + 0x0006C000)
+#define REGS_UARTAPP2_BASE	(REGS_BASE + 0x0006E000)
+#define REGS_UARTAPP3_BASE	(REGS_BASE + 0x00070000)
+#define REGS_UARTAPP4_BASE	(REGS_BASE + 0x00072000)
+#define REGS_UARTDBG_BASE	(REGS_BASE + 0x00074000)
+#define REGS_USBPHY0_BASE	(REGS_BASE + 0x0007C000)
+#define REGS_USBPHY1_BASE	(REGS_BASE + 0x0007E000)

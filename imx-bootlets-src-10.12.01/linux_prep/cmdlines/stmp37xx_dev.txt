@@ -1,0 +1,10 @@
+# Default command line used if no magic keys detected
+console=ttyAM0,115200 root=/dev/mmcblk0p2 rw rootwait lcd_panel=hx8238a
+
+# Alternative comman dline, assigned to SW4 key:
+# Root File System on flash
+console=ttyAM0,115200 root=/dev/mtdblock2 rootfstype=jffs2 lcd_panel=hx8238a
+
+# Alternative comman dline, assigned to SW5 key:
+# Root File System on NFS mounetd over USB CDC network interface 
+console=ttyAM0,115200 root=/dev/nfs nfsroot=192.168.10.1:/tftpboot/rootfs_37xx ip=192.168.10.2:192.168.10.1::::usb0:off lcd_panel=hx8238a

@@ -1,0 +1,37 @@
+---- ## No init Ramdisk Matches (1 in 1 files) ----
+Image.c (common):		debug("## No init Ramdisk\n");
+---- Loading Matches (20 in 8 files) ----
+ACEX1K.c (drivers\fpga):		printf ("Loading FPGA Device %d...", cookie);
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading kernel from FIT Image at 7fc6ee469000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading fdt from FIT Image at 7fc6ee469000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):   Loading Flat Device Tree ... OK
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading ramdisk from FIT Image at 7fc6ee469000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading kernel from FIT Image at 7f5a39571000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading fdt from FIT Image at 7f5a39571000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):   Loading Flat Device Tree ... OK
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading ramdisk from FIT Image at 7f5a39571000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading kernel from FIT Image at 82000000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):## Loading fdt from FIT Image at 82000000 ...
+Beaglebone_vboot.txt (doc\uimage.fit):   Loading Device Tree to 8fff5000, end 8ffffb3a ... OK
+Board_r.c (common): * NOTE: Loading the environment early can be a bad idea if security is
+Bootm.c (common):		printf("   %s %s ... ", is_xip ? "XIP" : "Loading", name);
+Cyclon2.c (drivers\fpga):		printf ("Loading FPGA Device %d...", cookie);
+Ddr3_hw_training.c (drivers\ddr\marvell\axp):			DEBUG_MAIN_S("DDR3 Training Sequence - FAILED (Loading Patterns)\n");
+Ddr3_hw_training.c (drivers\ddr\marvell\axp):		DEBUG_MAIN_S("DDR3 Training Sequence - FAILED (Loading Patterns)\n");
+Disk.c (cmd):	printf("\nLoading from %s device %d, partition %d: "
+Disk.c (cmd):	/* Loading ok, update default load address */
+Elf.c (cmd):		debug("Loading phdr %i to 0x%p (%i bytes)\n",
+---- legacy_hdr_os_copy Matches (8 in 5 files) ----
+Bootm.c (common):		images.ep = image_get_ep(&images.legacy_hdr_os_copy);
+Bootm.c (common):			if (image_get_type(&images->legacy_hdr_os_copy)
+Bootm.c (common):		memmove(&images->legacy_hdr_os_copy, hdr,
+Bootm_os.c (common):	if (image_check_type(&images->legacy_hdr_os_copy, IH_TYPE_MULTI)) {
+Bootm_os.c (common):	image_header_t *hdr = &images->legacy_hdr_os_copy;
+Image-fdt.c (common):			image_check_type(&images->legacy_hdr_os_copy,
+Image.c (common):			image_check_type(&images->legacy_hdr_os_copy,
+Image.h (include):	image_header_t	legacy_hdr_os_copy;	/* header copy */
+---- BOOTSTAGE Matches (4 in 1 files) ----
+Autoconf.h (include\generated):#define CONFIG_BOOTSTAGE_RECORD_COUNT 30
+Autoconf.h (include\generated):#define CONFIG_BOOTSTAGE_STASH_ADDR 0x0
+Autoconf.h (include\generated):#define CONFIG_SPL_BOOTSTAGE_RECORD_COUNT 5
+Autoconf.h (include\generated):#define CONFIG_BOOTSTAGE_STASH_SIZE 0x1000

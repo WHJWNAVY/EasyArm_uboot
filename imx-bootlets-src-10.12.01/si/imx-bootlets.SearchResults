@@ -1,0 +1,3 @@
+---- find_command_lines Matches (2 in 1 files) ----
+Setup.c (linux_prep\core):static void find_command_lines (void)
+Setup.c (linux_prep\core):	find_command_lines();

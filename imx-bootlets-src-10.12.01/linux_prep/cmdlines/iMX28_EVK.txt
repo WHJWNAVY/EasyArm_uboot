@@ -1,0 +1,2 @@
+gpmi=g console=ttyAM0,115200n8  ubi.mtd=1 root=ubi0:rootfs rootfstype=ubifs  fec_mac= ethact
+

@@ -1,0 +1,44 @@
+#!/bin/sh
+
+echo "U-Boot build menu, please select your choice:"
+echo "  1   make distclean"
+echo "  2   config for mx28"
+echo "  3   build U-Boot"
+echo "  q   exit"
+
+CC=/opt/arm-fsl-linux-gnueabi/bin/arm-fsl-linux-gnueabi-
+#CC=arm-fsl-linux-gnueabi-
+TFTPBOOT=/home/tftpboot/
+
+make_distclean() {
+    echo "make distclean"
+    make ARCH=arm CROSS_COMPILE=$CC distclean
+}
+
+config_mx28() {
+    make ARCH=arm CROSS_COMPILE=$CC mx28evk_config
+}
+
+
+build_uboot() {
+    make ARCH=arm CROSS_COMPILE=$CC
+    cp -av u-boot ../imx-bootlets-src-10.12.01/
+    sleep 3
+    cd ../imx-bootlets-src-10.12.01/
+    ./build
+    ls
+    cd -
+    cp -av  u-boot.bin $TFTPBOOT -fr
+}
+
+read sel
+echo "select $sel"
+
+case $sel in
+    [1]) make_distclean;;
+    [2]) config_mx28;;
+    [3]) build_uboot;;
+    [q]) exit 0;;
+    *)   echo "ONLY accept 1/2/3/q/Q"
+esac    
+

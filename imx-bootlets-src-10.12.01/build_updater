@@ -1,0 +1,2 @@
+
+make CROSS_COMPILE=arm-fsl-linux-gnueabi- BOARD=iMX28_EVK updater

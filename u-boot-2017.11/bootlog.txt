@@ -1,0 +1,275 @@
+U-Boot 2017.11 (Sep 28 2018 - 18:20:31 +0800)WNAVY
+
+CPU:   Freescale i.MX28 rev1.2 at 454 MHz
+CPU:   454 MHz
+BUS:   151 MHz
+EMI:   205 MHz
+GPMI:   24 MHz
+BOOT:  SSP SD/MMC #0, 3V3
+SPI:   ready
+DRAM:  64 MiB
+NAND:  nand_base: device found, Manufacturer ID: 0xc2, Chip ID: 0xf1
+nand_base: Macronix NAND 128MiB 3,3V 8-bit
+nand_base: Macronix NAND 128MiB 3,3V 8-bit
+nand_base: 128 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
+128 MiB
+MMC:   MXS MMC: 0
+*** Warning - bad CRC, using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Net:   FEC0 [PRIME]
+Hit any key to stop autoboot:  0 
+reading uImage
+2366008 bytes read in 740 ms (3 MiB/s)
+## Booting kernel from Legacy Image at 41600000 ...
+   Image Name:   Linux-2.6.35.3-571-gcca29a0
+   Created:      2015-09-14   3:23:09 UTC
+   Image Type:   ARM Linux Kernel Image (uncompressed)
+   Data Size:    2365944 Bytes = 2.3 MiB
+   Load Address: 40008000
+   Entry Point:  40008000
+   Verifying Checksum ... OK
+   Loading Kernel Image ... OK
+
+Starting kernel ...
+
+Uncompressing Linux... done, booting the kernel.
+Linux version 2.6.35.3-571-gcca29a0 (wujianfeng@linux-compiler) (gcc version 4.4.4 (4.4.4_09.06.2010) ) #5 PREEMPT Mon Sep 14 11:23:06 CST 2015
+CPU: ARM926EJ-S [41069265] revision 5 (ARMv5TEJ), cr=00053177
+CPU: VIVT data cache, VIVT instruction cache
+Machine: Freescale MX28EVK board
+Memory policy: ECC disabled, Data cache writeback
+Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 16256
+Kernel command line: gpmi=g console=ttyAM0,115200n8 root=/dev/mmcblk0p3 rw rootwait rootfstype=ext2 init=/sbin/init fec_mac= ethact mem=64M
+PID hash table entries: 256 (order: -2, 1024 bytes)
+Dentry cache hash table entries: 8192 (order: 3, 32768 bytes)
+Inode-cache hash table entries: 4096 (order: 2, 16384 bytes)
+Memory: 64MB = 64MB total
+Memory: 59808k/59808k available, 5728k reserved, 0K highmem
+Virtual kernel memory layout:
+    vector  : 0xffff0000 - 0xffff1000   (   4 kB)
+    fixmap  : 0xfff00000 - 0xfffe0000   ( 896 kB)
+    DMA     : 0xfde00000 - 0xffe00000   (  32 MB)
+    vmalloc : 0xc4800000 - 0xf0000000   ( 696 MB)
+    lowmem  : 0xc0000000 - 0xc4000000   (  64 MB)
+    modules : 0xbf000000 - 0xc0000000   (  16 MB)
+      .init : 0xc0008000 - 0xc002c000   ( 144 kB)
+      .text : 0xc002c000 - 0xc0491000   (4500 kB)
+      .data : 0xc0492000 - 0xc04c4340   ( 201 kB)
+SLUB: Genslabs=11, HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+Hierarchical RCU implementation.
+        RCU-based detection of stalled CPUs is disabled.
+        Verbose stalled-CPUs detection is disabled.
+NR_IRQS:288
+Console: colour dummy device 80x30
+console [ttyAM0] enabled
+Calibrating delay loop... 226.09 BogoMIPS (lpj=1130496)
+pid_max: default: 32768 minimum: 301
+Security Framework initialized
+Mount-cache hash table entries: 512
+CPU: Testing write buffer coherency: ok
+regulator: core version 0.5
+NET: Registered protocol family 16
+regulator: vddd: 800 <--> 1575 mV at 1500 mV fast normal 
+regulator: vdddbo: 800 <--> 1575 mV fast normal 
+regulator: vdda: 1500 <--> 2275 mV at 1800 mV fast normal 
+vddio = 3380000, val=10
+regulator: vddio: 2880 <--> 3680 mV at 3380 mV fast normal 
+regulator: overall_current: fast normal 
+regulator: vbus5v: 
+regulator: mxs-duart-1: fast normal 
+regulator: mxs-bl-1: fast normal 
+regulator: mxs-i2c-1: fast normal 
+regulator: mmc_ssp-1: fast normal 
+regulator: mmc_ssp-2: fast normal 
+regulator: charger-1: fast normal 
+regulator: power-test-1: fast normal 
+regulator: cpufreq-1: fast normal 
+** kernel for EasyARM-i.MX280 
+i.MX IRAM pool: 120 KB@0xc4820000
+Initializing GPMI pins
+usb DR wakeup device is registered
+IMX usb wakeup probe
+audit: cannot initialize inotify handle
+bio: create slab <bio-0> at 0
+SCSI subsystem initialized
+Freescale USB OTG Driver loaded, $Revision: 1.55 $
+usbcore: registered new interface driver usbfs
+usbcore: registered new interface driver hub
+usbcore: registered new device driver usb
+Advanced Linux Sound Architecture Driver Version 1.0.23.
+Switching to clocksource mxs clock source
+NET: Registered protocol family 2
+IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+TCP established hash table entries: 2048 (order: 2, 16384 bytes)
+TCP bind hash table entries: 2048 (order: 1, 8192 bytes)
+TCP: Hash tables configured (established 2048 bind 2048)
+TCP reno registered
+UDP hash table entries: 256 (order: 0, 4096 bytes)
+UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+NET: Registered protocol family 1
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+Bus freq driver module loaded
+IMX usb wakeup probe
+usb h1 wakeup device is registered
+mxs_cpu_init: cpufreq init finished
+audit: initializing netlink socket (disabled)
+type=2000 audit(0.570:1): initialized
+VFS: Disk quotas dquot_6.5.2
+Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+JFFS2 version 2.2. (NAND) Â© 2001-2006 Red Hat, Inc.
+msgmni has been set to 116
+alg: No test for stdrng (krng)
+cryptodev: driver loaded.
+Block layer SCSI generic (bsg) driver version 0.4 loaded (major 253)
+io scheduler noop registered
+io scheduler deadline registered
+io scheduler cfq registered (default)
+mxs-duart.0: ttyAM0 at MMIO 0x80074000 (irq = 47) is a DebugUART
+mxs-auart.0: ttySP0 at MMIO 0x8006a000 (irq = 112) is a mxs-auart.0
+Found APPUART 3.1.0
+mxs-auart.1: ttySP1 at MMIO 0x8006c000 (irq = 113) is a mxs-auart.1
+Found APPUART 3.1.0
+mxs-auart.2: ttySP2 at MMIO 0x8006e000 (irq = 114) is a mxs-auart.2
+Found APPUART 3.1.0
+mxs-auart.3: ttySP3 at MMIO 0x80070000 (irq = 115) is a mxs-auart.3
+Found APPUART 3.1.0
+brd: module loaded
+loop: module loaded
+i.MX GPMI NFC
+NFC: Version 1, 8-chip GPMI and BCH
+Boot ROM: Version 1, Single-chip boot area, block mark swapping supported
+Scanning for NAND Flash chips...
+NAND device: Manufacturer ID: 0xc2, Chip ID: 0xf1 (Macronix NAND 128MiB 3,3V 8-bit)
+-----------------------------
+NAND Flash Device Information
+-----------------------------
+Manufacturer      : Macronix (0xc2)
+Device Code       : 0xf1
+Cell Technology   : SLC
+Chip Size         : 128 MiB
+Pages per Block   : 64
+Page Geometry     : 2048+64
+ECC Strength      : 4 bits
+ECC Size          : 512 B
+Data Setup Time   : 5 ns
+Data Hold Time    : 5 ns
+Address Setup Time: 20 ns
+GPMI Sample Delay : 6 ns
+tREA              : Unknown
+tRLOH             : Unknown
+tRHOH             : Unknown
+Description       : ZLGFlash
+-----------------
+Physical Geometry
+-----------------
+Chip Count             : 1
+Page Data Size in Bytes: 2048 (0x800)
+Page OOB Size in Bytes : 64
+Block Size in Bytes    : 131072 (0x20000)
+Block Size in Pages    : 64 (0x40)
+Chip Size in Bytes     : 134217728 (0x8000000)
+Chip Size in Pages     : 65536 (0x10000)
+Chip Size in Blocks    : 1024 (0x400)
+Medium Size in Bytes   : 134217728 (0x8000000)
+------------
+NFC Geometry
+------------
+ECC Algorithm          : BCH
+ECC Strength           : 8
+Page Size in Bytes     : 2112
+Metadata Size in Bytes : 10
+ECC Chunk Size in Bytes: 512
+ECC Chunk Count        : 4
+Payload Size in Bytes  : 2048
+Auxiliary Size in Bytes: 16
+Auxiliary Status Offset: 12
+Block Mark Byte Offset : 1999
+Block Mark Bit Offset  : 0
+-----------------
+Boot ROM Geometry
+-----------------
+Boot Area Count            : 1
+Boot Area Size in Bytes    : 20971520 (0x1400000)
+Stride Size in Pages       : 64
+Search Area Stride Exponent: 2
+Scanning device for bad blocks
+Bad eraseblock 850 at 0x000006a40000
+Boot area protection is enabled.
+Creating 2 MTD partitions on "gpmi-nfc-main":
+0x000000000000-0x000001400000 : "gpmi-nfc-0-boot"
+0x000001400000-0x000008000000 : "gpmi-nfc-general-use"
+mxs-spi mxs-spi.0: Max possible speed 24000 = 24000000/2 kHz
+mxs-spi mxs-spi.0: at 0x80016000 mapped to 0xF0016000, irq=85, bus 1, PIO ver_major 4
+Freescale FlexCAN Driver 
+FEC Ethernet Driver
+fec_enet_mii_bus: probed
+ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+fsl-ehci fsl-ehci: Freescale On-Chip EHCI Host Controller
+fsl-ehci fsl-ehci: new USB bus registered, assigned bus number 1
+fsl-ehci fsl-ehci: irq 93, io base 0x80080000
+fsl-ehci fsl-ehci: USB 2.0 started, EHCI 1.00
+hub 1-0:1.0: USB hub found
+hub 1-0:1.0: 1 port detected
+fsl-ehci fsl-ehci.0: Freescale On-Chip EHCI Host Controller
+fsl-ehci fsl-ehci.0: new USB bus registered, assigned bus number 2
+fsl-ehci fsl-ehci.0: irq 92, io base 0x80090000
+fsl-ehci fsl-ehci.0: USB 2.0 started, EHCI 1.00
+hub 2-0:1.0: USB hub found
+hub 2-0:1.0: 1 port detected
+Initializing USB Mass Storage driver...
+usbcore: registered new interface driver usb-storage
+USB Mass Storage support registered.
+ARC USBOTG Device Controller driver (1 August 2005)
+input: MXS touchscreen as /devices/virtual/input/input0
+MXS RTC driver v1.0 hardware v2.3.0
+mxs-rtc mxs-rtc.0: rtc core: registered mxs-rtc as rtc0
+i2c /dev entries driver
+mxs watchdog: initialized, heartbeat 19 sec
+cpuidle: using governor ladder
+cpuidle: using governor menu
+mxs-mmc: MXS SSP Controller MMC Interface driver
+mxs-mmc mxs-mmc.0: mmc0: MXS SSP MMC DMAIRQ 82 ERRIRQ 96 
+dcp dcp.0: DCP crypto enabled.!
+No device for DAI mxs-saif
+asoc: UDA1380 <-> mxs-saif mapping ok
+Failed to add route Left PGA->Input Mux
+ALSA device list:
+  #0: zlg@uda1380 (UDA1380)
+TCP cubic registered
+NET: Registered protocol family 17
+can: controller area network core (rev 20090105 abi 8)
+NET: Registered protocol family 29
+can: raw protocol (rev 20090105)
+lib80211: common routines for IEEE802.11 drivers
+mxs-rtc mxs-rtc.0: setting system clock to 1970-01-01 03:13:36 UTC (11616)
+Waiting for root device /dev/mmcblk0p3...
+mmc0: new high speed SDHC card at address 59b4
+mmcblk0: mmc0:59b4 NCard 7.51 GiB 
+ mmcblk0: p1 p2 p3
+EXT2-fs (mmcblk0p3): warning: mounting unchecked fs, running e2fsck is recommended
+VFS: Mounted root (ext2 filesystem) on device 179:3.
+Freeing init memory: 144K
+starting pid 1057, tty '': '/etc/rc.d/rcS'
+Mounting /proc and /sys 
+/
+Starting the hotplug events dispatcher udevd
+Synthesizing initial hotplug events
+Setting the hostname to EasyARM-iMX28x
+Mounting filesystems
+eth0: Freescale FEC PHY driver [Generic PHY] (mii_bus:phy_addr=0:05, irq=-1)
+EXT2-fs (mmcblk0p3): error: ext2_free_blocks: bit already cleared for block 215041
+EXT2-fs (mmcblk0p3): error: ext2_lookup: deleted inode referenced: 49207
+Generating keys for the ssh server... 
+starting pid 1106, tty '': '/etc/rc.d/rc_gpu.S'
+starting pid 1112, tty '': '/sbin/getty -L ttyAM0 115200 vt100'
+
+arm-none-linux-gnueabi-gcc (Freescale MAD -- Linaro 2011.07 -- Built at 2011/08/10 09:20) 4.6.2 20110630 (prerelease)
+root filesystem built on Tue, 05 Feb 2013 11:11:58 +0800
+Freescale Semiconductor, Inc.
+
+EasyARM-iMX28x login: PHY: 0:05 - Link is Up - 100/Full

@@ -1,0 +1,11 @@
+*.o
+*.a
+initramfs.cpio.gz
+/boot_prep/boot_prep
+/linux_prep/include/arch
+/linux_prep/output-target
+/power_prep/power_prep
+*.sb
+*.map
+zImage
+u-boot
