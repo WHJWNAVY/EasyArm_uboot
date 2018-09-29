@@ -311,12 +311,12 @@
         "mmc read 0 ${loadaddr} 100 3000; bootm\0"                                              \
     "bootargs_nand=gpmi=g console=ttyAM0,115200n8 console=tty0 ubi.mtd=1 "                      \
         "root=ubi0:rootfs rootfstype=ubifs "                                                    \
-        "ip=192.168.1.101:192.168.1.100:192.68.1.1:255.255.255.0::eht0: "                     \
+        "ip=${ipaddr}:${serverip}:${gatewayip}:${netmask}::eht0: "                              \
         "fec_mac= ethact \0          "                                                          \
     "bootargs_mmc=gpmi=g console=ttyAM0,115200n8 console=tty0 root=/dev/mmcblk0p3 "             \
-        "rw ip=192.168.1.101:192.168.1.100:192.68.1.1:255.255.255.0::eht0: "                  \
+        "rw ip=${ipaddr}:${serverip}:${gatewayip}:${netmask}::eht0: "                           \
         "fec_mac= ethact console=tty0 root=/dev/mmcblk0p3 rw "                                  \
-        "ip=192.168.1.101:192.168.1.100:192.168.1.1:255.255.255.0::eht0: "                    \
+        "ip=${ipaddr}:${serverip}:${gatewayip}:${netmask}::eht0: "                              \
         "fec_mac= console=tty0  \0"                                                             \
     "bootargs_sdcard=gpmi=g console=ttyAM0,115200n8 root=/dev/mmcblk0p3 "                       \
         "rw rootwait rootfstype=ext2 init=/sbin/init fec_mac= ethact mem=64M\0"                 \
