@@ -1,0 +1,8 @@
+BOOT FROM NAND FLASH
+bootargs=gpmi=g console=ttyAM0,115200n8 ubi.mtd=1 root=ubi0:rootfs rootfstype=ubifs fec_mac= ethact mem=64M
+
+BOOT FROM SD CARD
+setenv bootargs 'gpmi=g console=ttyAM0,115200n8 root=/dev/mmcblk0p3 rw rootwait rootfstype=ext2 init=/sbin/init fec_mac= ethact mem=64M'
+#setenv sdcard_boot 'mmc read 0 $(loadaddr) 0x800 0x3000;bootm'
+setenv sdcard_boot 'fatload mmc 0:1 $(loadaddr) uImage;bootm'
+setenv bootcmd 'run sdcard_boot'
