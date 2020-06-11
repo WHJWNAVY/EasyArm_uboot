@@ -5,8 +5,10 @@
 
 ## README
 
+* [EasyArm_IMX280A_从SD卡启动系统](easyarm_sdboot/EasyArm_IMX280A_从SD卡启动系统.pdf)
 * [EasyArm_IMX280A_SD分区详解](easyarm_sdboot/EasyArm_IMX280A_SD分区详解.pdf)
 * [EasyArm_IMX280A_SD卡启动引导](easyarm_sdboot/EasyArm_IMX280A_SD卡启动引导.pdf)
+* [EasyArm_IMX280A_u-boot的FAT32支持](easyarm_sdboot/EasyArm_IMX280A_u-boot的FAT32支持.pdf)
 * [SD_TF卡启动系统Easy-28xx](easyarm_sdboot/SD_TF卡启动系统Easy-28xx.pdf)
 
 
@@ -61,4 +63,51 @@ setenv bootargs 'gpmi=g console=ttyAM0,115200n8 root=/dev/mmcblk0p3 rw rootwait 
 # uImage放在SD卡的fat32分区中,uboot支持fat32分区,可以用fatload直接从fat32分区中加载uImage
 setenv sdcard_boot 'fatload mmc 0:1 $(loadaddr) uImage;bootm'
 setenv bootcmd 'run sdcard_boot'
+```
+
+## cfimager.exe
+```bash
+cfimager.exe -h
+Usage: cfimager.exe [options]
+Options:
+  -h, -?, -help                 Show this help
+  -v, -version                  Display the version
+  -f, -file <path>              Input firmware file
+  -d, -drive <char>             Drive letter (no colon, case does not matter)
+  -a, -always-format            Always reformat entire drive
+  -x, -extra <int>              Extra kilobytes in firmware region
+  -e, -extra-image <path>       Extra (3rd) partition image file
+  -n, -no-format                Do not format the FAT32 partition
+  -i, -info                     Show info about the drive, do not format
+  -TA3                          Format drive for TA3 ROM only
+  -TA4                          Format drive for TA4+ ROM only
+  -imx51                        Format driver for i.MX51 ROM only
+  -imx53                        Format driver for i.MX53 ROM only
+  -img, -bin                    Preformatted image is provided, dump it on the device starting at block 0
+  -redundant_boot, -dual_boot,
+  -secondary_boot               Format the drive for secondary boot with primary and secondary image and config block
+  -bcb, -BCB                    Format the drive for BCB boot
+  -raw                          Write Image to physical location
+  -offset                                               physical location offset, must be used with -raw
+  -skip                         skip how many byte of firmware image, must be used with -raw
+                                typical usage for linux uboot.bin is
+                                   cfimager -raw -offset 0x400 -skip 0x400 -f uboot.bin -d G
+
+The -f and -d options are required. All other options are optional. By default,
+the tool will not reformat the entire drive. If it cannot place the firmware
+without reformatting, it will display a message. You can then run the tool
+again using the -always-format option.
+
+
+The -e option used created 3rd partition with extra image file such ext3 for linuxboot image create
+By default, the drive will be formatted so that it can work on both TA3 and
+TA4 (and above) devices. Using the -TA3 or -TA4 switch will cause the drive
+to be formatted so that it works with only that ROM version.
+
+Based on the -imx51 option and the name of the nb0 file, the address to flash
+the i.MX51 file on the card is determined automatically by cfimager
+
+The -no-format option causes the tool to skip writing the FAT partition, but
+still writes the corresponding partition entry in the MBR. This lets you use
+the operating system's native formatter.
 ```
