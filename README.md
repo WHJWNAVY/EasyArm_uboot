@@ -3,7 +3,9 @@
 
 ## imx-bootlets-src-10.12.01.tar.gz
 [imx-bootlets-src-10.12.01.tar.gz](http://repository.timesys.com/buildsources/i/imx-bootlets/imx-bootlets-10.12.01/imx-bootlets-src-10.12.01.tar.gz)
-[imx-bootlets-src-10.12.01.tar.gz](download.ossystems.com.br/bsp/freescale/source/imx-bootlets-src-10.12.01.tar.gz)
+[imx-bootlets-src-10.12.01.tar.gz](http://download.ossystems.com.br/bsp/freescale/source/imx-bootlets-src-10.12.01.tar.gz)
+
+[ref-git.yoctoproject.org](http://git.yoctoproject.org/cgit/cgit.cgi/meta-freescale/tree/recipes-bsp/imx-bootlets/imx-bootlets_10.12.01.bb?h=pyro)
 
 ## README
 
