@@ -1,7 +1,9 @@
 # EasyArm SDboot
 > EasyArm-u-boot-2017.11-Linux2.6.35-SDboot
 
-
+## imx-bootlets-src-10.12.01.tar.gz
+[imx-bootlets-src-10.12.01.tar.gz](http://repository.timesys.com/buildsources/i/imx-bootlets/imx-bootlets-10.12.01/imx-bootlets-src-10.12.01.tar.gz)
+[imx-bootlets-src-10.12.01.tar.gz](download.ossystems.com.br/bsp/freescale/source/imx-bootlets-src-10.12.01.tar.gz)
 
 ## README
 
