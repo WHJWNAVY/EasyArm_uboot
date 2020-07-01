@@ -1,0 +1,858 @@
+From 8d01a0d975aab04695e5f098f0ea675b6781f0e1 Mon Sep 17 00:00:00 2001
+From: WHJWNAVY <navy@mercku.com>
+Date: Sat, 20 Jun 2020 17:11:34 +0800
+Subject: [PATCH] port for easyarm-imx280a
+
+---
+ arch/arm/cpu/arm926ejs/mxs/mxs.c       |  20 ++
+ board/freescale/mx28evk/Makefile       |   2 +-
+ board/freescale/mx28evk/mx28evk.c      |  45 ++-
+ board/freescale/mx28evk/mx28evk_init.c | 425 +++++++++++++++++++++++++
+ board/freescale/mx28evk/mx28evk_init.h |   8 +
+ configs/mx28evk_defconfig              |  22 +-
+ env/mmc.c                              |   2 +-
+ include/configs/mx28evk.h              |  79 ++++-
+ include/configs/mxs.h                  |   6 +
+ 9 files changed, 589 insertions(+), 20 deletions(-)
+ create mode 100644 board/freescale/mx28evk/mx28evk_init.c
+ create mode 100644 board/freescale/mx28evk/mx28evk_init.h
+
+diff --git a/arch/arm/cpu/arm926ejs/mxs/mxs.c b/arch/arm/cpu/arm926ejs/mxs/mxs.c
+index 7a68a8f3ca..1770a91b6e 100644
+--- a/arch/arm/cpu/arm926ejs/mxs/mxs.c
++++ b/arch/arm/cpu/arm926ejs/mxs/mxs.c
+@@ -175,6 +175,17 @@ const char *get_imx_type(u32 imxtype)
+ 	}
+ }
+ 
++/* BEGIN: Added by wnavy, 2018/9/28 */
++int print_cpuclock(void)
++{
++    printf("CPU:   %3d MHz\n", mxc_get_clock(MXC_ARM_CLK) / 1000000);
++	printf("BUS:   %3d MHz\n", mxc_get_clock(MXC_AHB_CLK) / 1000000);
++	printf("EMI:   %3d MHz\n", mxc_get_clock(MXC_EMI_CLK));
++	printf("GPMI:  %3d MHz\n", mxc_get_clock(MXC_GPMI_CLK) / 1000000);
++	return 0;
++}
++/* END:   Added by wnavy, 2018/9/28 */
++
+ int print_cpuinfo(void)
+ {
+ 	u32 cpurev;
+@@ -187,6 +198,9 @@ int print_cpuinfo(void)
+ 		(cpurev & 0x000F0) >> 4,
+ 		(cpurev & 0x0000F) >> 0,
+ 		mxc_get_clock(MXC_ARM_CLK) / 1000000);
++    /* BEGIN: Added by wnavy, 2018/9/28 */
++    print_cpuclock();
++    /* END:   Added by wnavy, 2018/9/28 */
+ 	printf("BOOT:  %s\n", mxs_boot_modes[data->boot_mode_idx].mode);
+ 	return 0;
+ }
+@@ -194,10 +208,16 @@ int print_cpuinfo(void)
+ 
+ int do_mx28_showclocks(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
+ {
++    /* BEGIN: Modified by wnavy, 2018/9/28 */
++    #if 0
+ 	printf("CPU:   %3d MHz\n", mxc_get_clock(MXC_ARM_CLK) / 1000000);
+ 	printf("BUS:   %3d MHz\n", mxc_get_clock(MXC_AHB_CLK) / 1000000);
+ 	printf("EMI:   %3d MHz\n", mxc_get_clock(MXC_EMI_CLK));
+ 	printf("GPMI:  %3d MHz\n", mxc_get_clock(MXC_GPMI_CLK) / 1000000);
++    #else
++    print_cpuclock();
++    #endif
++    /* END:   Modified by wnavy, 2018/9/28 */
+ 	return 0;
+ }
+ 
+diff --git a/board/freescale/mx28evk/Makefile b/board/freescale/mx28evk/Makefile
+index 5956d34a4f..d241c01732 100644
+--- a/board/freescale/mx28evk/Makefile
++++ b/board/freescale/mx28evk/Makefile
+@@ -6,7 +6,7 @@
+ #
+ 
+ ifndef	CONFIG_SPL_BUILD
+-obj-y	:= mx28evk.o
++obj-y	:= mx28evk.o mx28evk_init.o
+ else
+ obj-y	:= iomux.o
+ endif
+diff --git a/board/freescale/mx28evk/mx28evk.c b/board/freescale/mx28evk/mx28evk.c
+index 5005fe23dd..7fb8562bc6 100644
+--- a/board/freescale/mx28evk/mx28evk.c
++++ b/board/freescale/mx28evk/mx28evk.c
+@@ -24,6 +24,13 @@
+ #include <netdev.h>
+ #include <errno.h>
+ 
++/* BEGIN: Added by wnavy, 2018/9/27 */
++#ifdef CONFIG_MACH_TYPE
++#include <asm/mach-types.h>
++#endif
++#include "mx28evk_init.h"
++/* END:   Added by wnavy, 2018/9/27 */
++
+ DECLARE_GLOBAL_DATA_PTR;
+ 
+ /*
+@@ -41,6 +48,10 @@ int board_early_init_f(void)
+ 	/* SSP2 clock at 160MHz */
+ 	mxs_set_sspclk(MXC_SSPCLK2, 160000, 0);
+ 
++    /* BEGIN: Added by wnavy, 2018/9/28 */
++    mx28evk_board_init();
++    /* END:   Added by wnavy, 2018/9/28 */
++
+ #ifdef	CONFIG_CMD_USB
+ 	mxs_iomux_setup_pad(MX28_PAD_SSP2_SS1__USB1_OVERCURRENT);
+ 	mxs_iomux_setup_pad(MX28_PAD_AUART2_RX__GPIO_3_8 |
+@@ -52,18 +63,28 @@ int board_early_init_f(void)
+ 	gpio_direction_output(MX28_PAD_LCD_RESET__GPIO_3_30, 1);
+ 
+ 	/* Set contrast to maximum */
+-	gpio_direction_output(MX28_PAD_PWM2__GPIO_3_18, 1);
++    /* BEGIN: Modified by wnavy, 2018/9/28 */
++	//gpio_direction_output(MX28_PAD_PWM2__GPIO_3_18, 1);
++	gpio_direction_output(MX28_PAD_PWM3__GPIO_3_28, 1);
++    /* END:   Modified by wnavy, 2018/9/28 */
+ 
+ 	return 0;
+ }
+ 
+ int dram_init(void)
+ {
++    /* BEGIN: Added by wnavy, 2018/9/28 */
++    mx28evk_memsize_set();
++    /* END:   Added by wnavy, 2018/9/28 */
+ 	return mxs_dram_init();
+ }
+ 
+ int board_init(void)
+ {
++    /* BEGIN: Added by wnavy, 2018/9/28 */
++    gd->bd->bi_arch_number = /*MACH_TYPE_MX28EVK*/CONFIG_MACH_TYPE;
++    /* END:   Added by wnavy, 2018/9/28 */
++
+ 	/* Adress of boot parameters */
+ 	gd->bd->bi_boot_params = PHYS_SDRAM_1 + 0x100;
+ 
+@@ -78,13 +99,19 @@ static int mx28evk_mmc_wp(int id)
+ 		return 1;
+ 	}
+ 
+-	return gpio_get_value(MX28_PAD_SSP1_SCK__GPIO_2_12);
++    /* BEGIN: Modified by wnavy, 2018/9/28 */
++	//return gpio_get_value(MX28_PAD_SSP1_SCK__GPIO_2_12);
++	return gpio_get_value(MX28_PAD_GPMI_CE1N__GPIO_0_17);
++    /* END:   Modified by wnavy, 2018/9/28 */
+ }
+ 
+ int board_mmc_init(bd_t *bis)
+ {
+ 	/* Configure WP as input */
+-	gpio_direction_input(MX28_PAD_SSP1_SCK__GPIO_2_12);
++    /* BEGIN: Modified by wnavy, 2018/9/28 */
++	//gpio_direction_input(MX28_PAD_SSP1_SCK__GPIO_2_12);
++	gpio_direction_input(MX28_PAD_GPMI_CE1N__GPIO_0_17);
++    /* END:   Modified by wnavy, 2018/9/28 */
+ 
+ 	/* Configure MMC0 Power Enable */
+ 	gpio_direction_output(MX28_PAD_PWM3__GPIO_3_28, 0);
+@@ -123,25 +150,29 @@ int board_eth_init(bd_t *bis)
+ 		puts("FEC MXS: Unable to init FEC0\n");
+ 		return ret;
+ 	}
+-
++/* BEGIN: Modified by wnavy, 2018/9/28 */
++#ifndef CONFIG_MX28
+ 	ret = fecmxc_initialize_multi(bis, 1, 3, MXS_ENET1_BASE);
+ 	if (ret) {
+ 		puts("FEC MXS: Unable to init FEC1\n");
+ 		return ret;
+ 	}
+-
++#endif
++/* END:   Modified by wnavy, 2018/9/28 */
+ 	dev = eth_get_dev_by_name("FEC0");
+ 	if (!dev) {
+ 		puts("FEC MXS: Unable to get FEC0 device entry\n");
+ 		return -EINVAL;
+ 	}
+-
++/* BEGIN: Modified by wnavy, 2018/9/28 */
++#ifndef CONFIG_MX28
+ 	dev = eth_get_dev_by_name("FEC1");
+ 	if (!dev) {
+ 		puts("FEC MXS: Unable to get FEC1 device entry\n");
+ 		return -EINVAL;
+ 	}
+-
++#endif
++/* END:   Modified by wnavy, 2018/9/28 */
+ 	return ret;
+ }
+ 
+diff --git a/board/freescale/mx28evk/mx28evk_init.c b/board/freescale/mx28evk/mx28evk_init.c
+new file mode 100644
+index 0000000000..73b9f4002b
+--- /dev/null
++++ b/board/freescale/mx28evk/mx28evk_init.c
+@@ -0,0 +1,425 @@
++#include <common.h>
++#include <config.h>
++#include <asm/io.h>
++#include <asm/gpio.h>
++#include <asm/arch/iomux-mx28.h>
++#include <asm/arch/imx-regs.h>
++#include <asm/arch/sys_proto.h>
++
++//#include "mxs_init.h"
++
++#include "mx28evk_init.h"
++
++#define _IOMUX_SETUP_
++
++#ifdef _IOMUX_SETUP_
++
++#define	MUX_CONFIG_SSP0	(MXS_PAD_3V3 | MXS_PAD_8MA | MXS_PAD_PULLUP)
++#define	MUX_CONFIG_GPMI	(MXS_PAD_3V3 | MXS_PAD_4MA | MXS_PAD_NOPULL)
++#define	MUX_CONFIG_ENET	(MXS_PAD_3V3 | MXS_PAD_8MA | MXS_PAD_PULLUP)
++#define	MUX_CONFIG_EMI	(MXS_PAD_3V3 | MXS_PAD_12MA | MXS_PAD_NOPULL)
++#define	MUX_CONFIG_SSP2	(MXS_PAD_3V3 | MXS_PAD_4MA | MXS_PAD_PULLUP)
++#define	MUX_CONFIG_LCD	(MXS_PAD_3V3 | MXS_PAD_4MA | MXS_PAD_NOPULL)
++
++const iomux_cfg_t mx28evk_iomux_setup[] = {
++	/* DUART */
++	MX28_PAD_PWM0__DUART_RX,
++	MX28_PAD_PWM1__DUART_TX,
++
++	/* MMC0 */
++	MX28_PAD_SSP0_DATA0__SSP0_D0 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DATA1__SSP0_D1 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DATA2__SSP0_D2 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DATA3__SSP0_D3 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DATA4__SSP0_D4 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DATA5__SSP0_D5 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DATA6__SSP0_D6 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DATA7__SSP0_D7 | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_CMD__SSP0_CMD | MUX_CONFIG_SSP0,
++	MX28_PAD_SSP0_DETECT__SSP0_CARD_DETECT |
++		(MXS_PAD_8MA | MXS_PAD_3V3 | MXS_PAD_NOPULL),
++	MX28_PAD_SSP0_SCK__SSP0_SCK |
++		(MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_NOPULL),
++	#if 0
++	/* write protect */
++	MX28_PAD_SSP1_SCK__GPIO_2_12,
++	/* MMC0 slot power enable */
++	MX28_PAD_PWM3__GPIO_3_28 |
++		(MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_PULLUP),
++	#else
++	MX28_PAD_GPMI_CE1N__GPIO_0_17 | MUX_CONFIG_SSP0,
++	#endif
++
++#ifdef CONFIG_NAND_MXS
++	/* GPMI NAND */
++	MX28_PAD_GPMI_D00__GPMI_D0 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_D01__GPMI_D1 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_D02__GPMI_D2 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_D03__GPMI_D3 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_D04__GPMI_D4 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_D05__GPMI_D5 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_D06__GPMI_D6 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_D07__GPMI_D7 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_CE0N__GPMI_CE0N | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_RDY0__GPMI_READY0 | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_RDN__GPMI_RDN |
++		(MXS_PAD_3V3 | MXS_PAD_8MA | MXS_PAD_PULLUP),
++	MX28_PAD_GPMI_WRN__GPMI_WRN | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_ALE__GPMI_ALE | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_CLE__GPMI_CLE | MUX_CONFIG_GPMI,
++	MX28_PAD_GPMI_RESETN__GPMI_RESETN | MUX_CONFIG_GPMI,
++#endif
++
++	/* FEC0 */
++	MX28_PAD_ENET0_MDC__ENET0_MDC | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_MDIO__ENET0_MDIO | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_RX_EN__ENET0_RX_EN | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_TX_EN__ENET0_TX_EN | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_RXD0__ENET0_RXD0 | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_RXD1__ENET0_RXD1 | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_TXD0__ENET0_TXD0 | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_TXD1__ENET0_TXD1 | MUX_CONFIG_ENET,
++	MX28_PAD_ENET_CLK__CLKCTRL_ENET | MUX_CONFIG_ENET,
++	#if 0
++	/* FEC0 Enable */
++	MX28_PAD_SSP1_DATA3__GPIO_2_15 |
++		(MXS_PAD_12MA | MXS_PAD_3V3),
++	/* FEC0 Reset */
++	MX28_PAD_ENET0_RX_CLK__GPIO_4_13 |
++		(MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_PULLUP),
++	#else
++	MX28_PAD_LCD_D16__GPIO_1_16 | (MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_PULLUP),
++	#endif
++
++	/* FEC1 */
++	#if 0
++	MX28_PAD_ENET0_COL__ENET1_TX_EN | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_CRS__ENET1_RX_EN | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_RXD2__ENET1_RXD0 | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_RXD3__ENET1_RXD1 | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_TXD2__ENET1_TXD0 | MUX_CONFIG_ENET,
++	MX28_PAD_ENET0_TXD3__ENET1_TXD1 | MUX_CONFIG_ENET,
++	#endif
++
++	/* EMI */
++	MX28_PAD_EMI_D00__EMI_DATA0 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D01__EMI_DATA1 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D02__EMI_DATA2 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D03__EMI_DATA3 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D04__EMI_DATA4 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D05__EMI_DATA5 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D06__EMI_DATA6 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D07__EMI_DATA7 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D08__EMI_DATA8 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D09__EMI_DATA9 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D10__EMI_DATA10 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D11__EMI_DATA11 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D12__EMI_DATA12 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D13__EMI_DATA13 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D14__EMI_DATA14 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_D15__EMI_DATA15 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_ODT0__EMI_ODT0 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_DQM0__EMI_DQM0 | MUX_CONFIG_EMI,
++	#if 0
++	MX28_PAD_EMI_ODT1__EMI_ODT1 | MUX_CONFIG_EMI,
++	#endif
++	MX28_PAD_EMI_DQM1__EMI_DQM1 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_DDR_OPEN_FB__EMI_DDR_OPEN_FEEDBACK | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_CLK__EMI_CLK | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_DQS0__EMI_DQS0 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_DQS1__EMI_DQS1 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_DDR_OPEN__EMI_DDR_OPEN | MUX_CONFIG_EMI,
++
++	MX28_PAD_EMI_A00__EMI_ADDR0 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A01__EMI_ADDR1 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A02__EMI_ADDR2 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A03__EMI_ADDR3 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A04__EMI_ADDR4 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A05__EMI_ADDR5 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A06__EMI_ADDR6 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A07__EMI_ADDR7 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A08__EMI_ADDR8 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A09__EMI_ADDR9 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A10__EMI_ADDR10 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A11__EMI_ADDR11 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A12__EMI_ADDR12 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A13__EMI_ADDR13 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_A14__EMI_ADDR14 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_BA0__EMI_BA0 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_BA1__EMI_BA1 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_BA2__EMI_BA2 | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_CASN__EMI_CASN | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_RASN__EMI_RASN | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_WEN__EMI_WEN | MUX_CONFIG_EMI,
++	MX28_PAD_EMI_CE0N__EMI_CE0N | MUX_CONFIG_EMI,
++	#if 0
++	MX28_PAD_EMI_CE1N__EMI_CE1N | MUX_CONFIG_EMI,
++	#endif
++	MX28_PAD_EMI_CKE__EMI_CKE | MUX_CONFIG_EMI,
++
++	/* SPI2 (for SPI flash) */
++	#if 0
++	MX28_PAD_SSP2_SCK__SSP2_SCK | MUX_CONFIG_SSP2,
++	MX28_PAD_SSP2_MOSI__SSP2_CMD | MUX_CONFIG_SSP2,
++	MX28_PAD_SSP2_MISO__SSP2_D0 | MUX_CONFIG_SSP2,
++	MX28_PAD_SSP2_SS0__SSP2_D3 |
++		(MXS_PAD_3V3 | MXS_PAD_8MA | MXS_PAD_PULLUP),
++	#endif
++	/* I2C */
++	MX28_PAD_I2C0_SCL__I2C0_SCL,
++	MX28_PAD_I2C0_SDA__I2C0_SDA,
++	#if 1
++	MX28_PAD_PWM0__I2C1_SCL,
++	MX28_PAD_PWM1__I2C1_SDA,
++	#endif
++
++	/* LCD */
++	MX28_PAD_LCD_D00__LCD_D0 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D01__LCD_D1 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D02__LCD_D2 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D03__LCD_D3 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D04__LCD_D4 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D05__LCD_D5 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D06__LCD_D6 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D07__LCD_D7 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D08__LCD_D8 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D09__LCD_D9 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D10__LCD_D10 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D11__LCD_D11 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D12__LCD_D12 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D13__LCD_D13 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D14__LCD_D14 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D15__LCD_D15 | MUX_CONFIG_LCD,
++	#if 0
++	MX28_PAD_LCD_D16__LCD_D16 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D17__LCD_D17 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D18__LCD_D18 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D19__LCD_D19 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D20__LCD_D20 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D21__LCD_D21 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D22__LCD_D22 | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_D23__LCD_D23 | MUX_CONFIG_LCD,
++	#endif
++	MX28_PAD_LCD_RD_E__LCD_VSYNC | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_WR_RWN__LCD_HSYNC | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_RS__LCD_DOTCLK | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_CS__LCD_ENABLE | MUX_CONFIG_LCD,
++	MX28_PAD_LCD_RESET__GPIO_3_30 | MUX_CONFIG_LCD, /* LCD power */
++	#if 0
++	MX28_PAD_PWM2__GPIO_3_18 | MUX_CONFIG_LCD, /* LCD contrast */
++	#else
++	MX28_PAD_PWM3__GPIO_3_28 | MUX_CONFIG_LCD,
++	#endif
++};
++
++#endif
++
++#define	MUX_CONFIG_BOOTMODE_PAD	(MXS_PAD_3V3 | MXS_PAD_4MA | MXS_PAD_NOPULL)
++const iomux_cfg_t mx28evk_iomux_boot[] = {
++	MX28_PAD_LCD_D00__GPIO_1_0 | MUX_CONFIG_BOOTMODE_PAD,
++	MX28_PAD_LCD_D01__GPIO_1_1 | MUX_CONFIG_BOOTMODE_PAD,
++	MX28_PAD_LCD_D02__GPIO_1_2 | MUX_CONFIG_BOOTMODE_PAD,
++	MX28_PAD_LCD_D03__GPIO_1_3 | MUX_CONFIG_BOOTMODE_PAD,
++	MX28_PAD_LCD_D04__GPIO_1_4 | MUX_CONFIG_BOOTMODE_PAD,
++	MX28_PAD_LCD_D05__GPIO_1_5 | MUX_CONFIG_BOOTMODE_PAD,
++};
++
++//copy from mxs_get_bootmode_index
++static uint8_t mx28evk_get_bootmode_index(void)
++{
++	uint8_t bootmode = 0;
++	int i;
++	uint8_t masked;
++
++#if defined(CONFIG_MX23)
++	/* Setup IOMUX of bootmode pads to GPIO */
++	mxs_iomux_setup_multiple_pads(mx28evk_iomux_boot, ARRAY_SIZE(mx28evk_iomux_boot));
++
++	/* Setup bootmode pins as GPIO input */
++	gpio_direction_input(MX23_PAD_LCD_D00__GPIO_1_0);
++	gpio_direction_input(MX23_PAD_LCD_D01__GPIO_1_1);
++	gpio_direction_input(MX23_PAD_LCD_D02__GPIO_1_2);
++	gpio_direction_input(MX23_PAD_LCD_D03__GPIO_1_3);
++	gpio_direction_input(MX23_PAD_LCD_D05__GPIO_1_5);
++
++	/* Read bootmode pads */
++	bootmode |= (gpio_get_value(MX23_PAD_LCD_D00__GPIO_1_0) ? 1 : 0) << 0;
++	bootmode |= (gpio_get_value(MX23_PAD_LCD_D01__GPIO_1_1) ? 1 : 0) << 1;
++	bootmode |= (gpio_get_value(MX23_PAD_LCD_D02__GPIO_1_2) ? 1 : 0) << 2;
++	bootmode |= (gpio_get_value(MX23_PAD_LCD_D03__GPIO_1_3) ? 1 : 0) << 3;
++	bootmode |= (gpio_get_value(MX23_PAD_LCD_D05__GPIO_1_5) ? 1 : 0) << 5;
++#elif defined(CONFIG_MX28)
++	/* The global boot mode will be detected by ROM code and its value
++	 * is stored at the fixed address 0x00019BF0 in OCRAM.
++	 */
++#define GLOBAL_BOOT_MODE_ADDR 0x00019BF0
++	bootmode = __raw_readl(GLOBAL_BOOT_MODE_ADDR);
++#endif
++
++	for (i = 0; i < ARRAY_SIZE(mxs_boot_modes); i++) {
++		masked = bootmode & mxs_boot_modes[i].boot_mask;
++		if (masked == mxs_boot_modes[i].boot_pads)
++			break;
++	}
++
++	return i;
++}
++
++//#define _DDR_SIZE_GET_
++#ifdef _DDR_SIZE_GET_
++
++#define EMI_DDR2_SIZE_BASE              0x0000F100
++#define EMI_DDR2_SIZE_BASE_ANOTHER      0x0000F400
++
++static uint16_t UpdateCRC16(uint16_t crcIn, uint8_t byte)
++{
++    uint32_t crc = crcIn;
++    uint32_t in = byte | 0x100;
++    do
++    {
++        crc <<= 1;
++        in <<= 1;
++        if (in & 0x100)
++            ++crc;
++        if (crc & 0x10000)
++            crc ^= 0x1021;
++    }
++    while (!(in & 0x10000));
++    return crc & 0xffffu;
++}
++
++static uint16_t Cal_CRC16(const char *data, int size)
++{
++    int crc = 0;
++    const char *dataEnd = data + size;
++    while (data < dataEnd)
++        crc = UpdateCRC16(crc, *data++);
++
++    crc = UpdateCRC16(crc, 0);
++    crc = UpdateCRC16(crc, 0);
++    return crc & 0xffffu;
++}
++
++static int ddr2SizeDetect(void)
++{
++    char *pDDR2Size1 = (char *)EMI_DDR2_SIZE_BASE;
++    char *pDDR2Size2 = (char *)EMI_DDR2_SIZE_BASE_ANOTHER;
++    uint16_t crc, length;
++
++    if (0xFE == *pDDR2Size1)
++    {
++        length = *(pDDR2Size1 + 1);
++        if (length > 255)
++        {
++            length = 10;
++        }
++        crc = *(pDDR2Size1 + 2 + length);
++        crc <<= 8;
++        crc += *(pDDR2Size1 + 2 + length + 1);
++        if (crc  == Cal_CRC16(pDDR2Size1, length + 2))
++        {
++            pDDR2Size1 += 2;
++            if (strcmp(pDDR2Size1, "64M") == 0)
++            {
++                return 64;
++            }
++            else if (strcmp(pDDR2Size1, "128M") == 0)
++            {
++                return 128;
++            }
++        }
++    }
++
++    if (0xFE == *pDDR2Size2)
++    {
++        length = *(pDDR2Size2 + 1);
++        if (length > 255)
++        {
++            length = 10;
++        }
++        crc = *(pDDR2Size2 + 2 + length);
++        crc <<= 8;
++        crc += *(pDDR2Size2 + 2 + length + 1);
++        pDDR2Size2 += 2;
++        if (strcmp(pDDR2Size2, "64M") == 0)
++        {
++            return 64;
++        }
++        else if (strcmp(pDDR2Size2, "128M") == 0)
++        {
++            return 128;
++        }
++    }
++
++    return -1;
++}
++#endif
++
++static uint32_t mx28evk_mem_get_size(void)
++{
++    uint32_t size = 0;
++    #ifdef _DDR_SIZE_GET_
++    int iSizeMb = ddr2SizeDetect();
++
++	if (iSizeMb == 128)
++    {
++		size = PHYS_SDRAM_1_SIZE;
++	} 
++    else
++    {
++		size = PHYS_SDRAM_1_SIZE >> 1;
++	}
++    #else
++    size = (PHYS_SDRAM_1_SIZE >> 1);//64M
++    #endif
++	return size;
++}
++
++uint8_t mx28evk_bootmode_set(void)
++{
++    uint8_t bootmode = 0;
++    struct mxs_spl_data *data = (struct mxs_spl_data *)
++		((CONFIG_SYS_TEXT_BASE - sizeof(struct mxs_spl_data)) & ~0xf);
++
++    bootmode = mx28evk_get_bootmode_index();
++
++    data->boot_mode_idx = bootmode;
++
++    return bootmode;
++}
++
++uint32_t mx28evk_memsize_set(void)
++{
++    uint32_t memsize = 0;
++    struct mxs_spl_data *data = (struct mxs_spl_data *)
++		((CONFIG_SYS_TEXT_BASE - sizeof(struct mxs_spl_data)) & ~0xf);
++
++    memsize = mx28evk_mem_get_size();
++
++    data->mem_dram_size = memsize;
++
++    return memsize;
++}
++
++//copy from mxs_common_spl_init
++static void mx28evk_common_init(const iomux_cfg_t *iomux_setup,
++			const unsigned int iomux_size)
++{
++    #ifdef _IOMUX_SETUP_
++	mxs_iomux_setup_multiple_pads(iomux_setup, iomux_size);
++    #endif
++
++	mx28evk_bootmode_set();
++	mx28evk_memsize_set();
++}
++
++int mx28evk_board_init(void)
++{
++    #ifdef _IOMUX_SETUP_
++	mx28evk_common_init(mx28evk_iomux_setup, ARRAY_SIZE(mx28evk_iomux_setup));
++    #else
++    mx28evk_common_init(NULL, 0);
++    #endif
++
++    return 0;
++}
+diff --git a/board/freescale/mx28evk/mx28evk_init.h b/board/freescale/mx28evk/mx28evk_init.h
+new file mode 100644
+index 0000000000..3e5176f948
+--- /dev/null
++++ b/board/freescale/mx28evk/mx28evk_init.h
+@@ -0,0 +1,8 @@
++#ifndef _MX28EVK_INIT_H_
++#define _MX28EVK_INIT_H_
++
++extern uint8_t  mx28evk_bootmode_set(void);
++extern uint32_t mx28evk_memsize_set(void);
++extern int      mx28evk_board_init(void);
++
++#endif
+\ No newline at end of file
+diff --git a/configs/mx28evk_defconfig b/configs/mx28evk_defconfig
+index 0baa313b89..6305de5c84 100644
+--- a/configs/mx28evk_defconfig
++++ b/configs/mx28evk_defconfig
+@@ -4,14 +4,14 @@ CONFIG_SPL_GPIO_SUPPORT=y
+ CONFIG_SPL_LIBCOMMON_SUPPORT=y
+ CONFIG_SPL_LIBGENERIC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+-CONFIG_FIT=y
+-CONFIG_BOOTDELAY=1
++# CONFIG_FIT is not set
++CONFIG_BOOTDELAY=3
+ # CONFIG_CONSOLE_MUX is not set
+ CONFIG_SYS_CONSOLE_IS_IN_ENV=y
+ CONFIG_VERSION_VARIABLE=y
+ # CONFIG_DISPLAY_BOARDINFO is not set
+ CONFIG_ARCH_MISC_INIT=y
+-CONFIG_SPL=y
++# CONFIG_SPL is not set
+ CONFIG_HUSH_PARSER=y
+ CONFIG_CMD_BOOTZ=y
+ # CONFIG_CMD_FLASH is not set
+@@ -19,7 +19,7 @@ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_MMC=y
+ CONFIG_CMD_NAND=y
+ CONFIG_CMD_NAND_TRIMFFS=y
+-CONFIG_CMD_SF=y
++# CONFIG_CMD_SF is not set
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_USB=y
+ CONFIG_CMD_DHCP=y
+@@ -32,8 +32,8 @@ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_FS_GENERIC=y
+-CONFIG_MTDIDS_DEFAULT="nand0=gpmi-nand"
+-CONFIG_MTDPARTS_DEFAULT="mtdparts=gpmi-nand:3m(bootloader)ro,512k(environment),512k(redundant-environment),4m(kernel),512k(fdt),8m(ramdisk),-(filesystem)"
++CONFIG_MTDIDS_DEFAULT="nand0=nandflash0"
++CONFIG_MTDPARTS_DEFAULT="mtdparts=nandflash0:1536k(bootloder),512k(params),18m(kernel),-(rootfs)"
+ CONFIG_CMD_UBI=y
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_MMC_MXS=y
+@@ -44,6 +44,10 @@ CONFIG_USB_EHCI_HCD=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_USB_HOST_ETHER=y
+ CONFIG_USB_ETHER_ASIX=y
+-CONFIG_USB_ETHER_SMSC95XX=y
+-CONFIG_VIDEO=y
+-CONFIG_OF_LIBFDT=y
++# CONFIG_USB_ETHER_SMSC95XX is not set
++# CONFIG_VIDEO is not set
++# CONFIG_OF_LIBFDT is not set
++CONFIG_SYS_PROMPT="MX28EVK U-Boot > "
++CONFIG_IDENT_STRING="WNAVY"
++CONFIG_LOGLEVEL=7
++# CONFIG_CMD_FPGA is not set
+\ No newline at end of file
+diff --git a/env/mmc.c b/env/mmc.c
+index 3f3092d975..dbaf875a44 100644
+--- a/env/mmc.c
++++ b/env/mmc.c
+@@ -172,7 +172,7 @@ static int env_mmc_save(void)
+ 		goto fini;
+ 	}
+ 
+-	printf("Writing to %sMMC(%d)... ", copy ? "redundant " : "", dev);
++	printf("Writing to %sMMC(%d) at[0x%08X]... ", copy ? "redundant " : "", dev, offset);
+ 	if (write_env(mmc, CONFIG_ENV_SIZE, offset, (u_char *)env_new)) {
+ 		puts("failed\n");
+ 		ret = 1;
+diff --git a/include/configs/mx28evk.h b/include/configs/mx28evk.h
+index 4ada384547..4e4b67b399 100644
+--- a/include/configs/mx28evk.h
++++ b/include/configs/mx28evk.h
+@@ -15,10 +15,17 @@
+ #define CONFIG_MX28				/* i.MX28 SoC */
+ #define CONFIG_MACH_TYPE	MACH_TYPE_MX28EVK
+ 
++/* BEGIN: Added by wnavy, 2018/9/28 */
++/*#define DEBUG*/
++#define CONFIG_SYS_ICACHE_OFF  /*Do not enable instruction cache in U-Boot*/
++#define CONFIG_SYS_DCACHE_OFF  /*Do not enable data cache in U-Boot*/
++/*#define CONFIG_SYS_L2CACHE_OFF*/ /*Do not enable L2 cache in U-Boot*/
++/* END:   Added by wnavy, 2018/9/28 */
++
+ /* Memory configuration */
+ #define CONFIG_NR_DRAM_BANKS		1		/* 1 bank of DRAM */
+ #define PHYS_SDRAM_1			0x40000000	/* Base address */
+-#define PHYS_SDRAM_1_SIZE		0x40000000	/* Max 1 GB RAM */
++#define PHYS_SDRAM_1_SIZE		0x08000000	/* Max 1 GB RAM */
+ #define CONFIG_SYS_SDRAM_BASE		PHYS_SDRAM_1
+ 
+ /* Environment */
+@@ -31,7 +38,14 @@
+ 
+ /* Environment is in MMC */
+ #if defined(CONFIG_CMD_MMC) && defined(CONFIG_ENV_IS_IN_MMC)
+-#define CONFIG_ENV_OFFSET		(256 * 1024)
++/* BEGIN: Modified by wnavy, 2018/9/28 */
++/*#define CONFIG_ENV_OFFSET		(256 * 1024)*/
++#define CONFIG_ENV_OFFSET		(1 * 1024) /*1KB*/
++#ifdef CONFIG_ENV_SIZE
++#undef CONFIG_ENV_SIZE
++#define CONFIG_ENV_SIZE         (127 * 1024) /*127KB*/
++#endif
++/* END:   Modified by wnavy, 2018/9/28 */
+ #define CONFIG_SYS_MMC_ENV_DEV		0
+ #endif
+ 
+@@ -67,6 +81,12 @@
+ #ifdef	CONFIG_CMD_NET
+ #define CONFIG_FEC_MXC
+ #define CONFIG_MX28_FEC_MAC_IN_OCOTP
++/* BEGIN: Added by wnavy, 2018/9/28 */
++#define CONFIG_IPADDR           192.168.1.101
++#define CONFIG_SERVERIP         192.168.1.100
++#define CONFIG_GATEWAYIP        192.168.1.1
++#define CONFIG_NETMASK          255.255.255.0
++/* END:   Added by wnavy, 2018/9/28 */
+ #endif
+ 
+ /* RTC */
+@@ -108,10 +128,16 @@
+ 
+ /* Boot Linux */
+ #define CONFIG_BOOTFILE		"uImage"
++#if 0
+ #define CONFIG_LOADADDR		0x42000000
++#else
++#define CONFIG_LOADADDR		0x41600000
++#endif
+ #define CONFIG_SYS_LOAD_ADDR	CONFIG_LOADADDR
+ 
+ /* Extra Environment */
++/* BEGIN: Modified by wnavy, 2018/9/28 */
++#if 0
+ #define CONFIG_EXTRA_ENV_SETTINGS \
+ 	"ubifs_file=filesystem.ubifs\0" \
+ 	"update_nand_full_filename=u-boot.nand\0" \
+@@ -270,6 +296,55 @@
+ 			"fi; " \
+ 		"fi; " \
+ 	"else run netboot; fi"
++#else
++#define CONFIG_EXTRA_ENV_SETTINGS \
++    "kernel=uImage\0"                                                                           \
++    "kernelsize=0x300000\0"                                                                     \
++    "rootfs=rootfs.ubifs\0"                                                                     \
++    "kerneladdr=0x00200000\0"                                                                   \
++    "nfsroot=/home/notroot/nfs/rootfs\0"                                                        \
++    "bootargs_nfs=setenv bootargs ${bootargs} root=/dev/nfs "                                   \
++        "ip=dhcp nfsroot=${serverip}:${nfsroot},v3,tcp "                                        \
++        "fec_mac=${ethaddr}\0"                                                                  \
++    "bootcmd_net=run bootargs_nfs; dhcp; bootm\0"                                               \
++    "bootcmd_mmc=run bootargs_mmc; "                                                            \
++        "mmc read 0 ${loadaddr} 100 3000; bootm\0"                                              \
++    "bootargs_nand=gpmi=g console=ttyAM0,115200n8 console=tty0 ubi.mtd=1 "                      \
++        "root=ubi0:rootfs rootfstype=ubifs "                                                    \
++        "ip=192.168.1.101:192.168.1.100:192.68.1.1:255.255.255.0::eht0: "                     \
++        "fec_mac= ethact \0          "                                                          \
++    "bootargs_mmc=gpmi=g console=ttyAM0,115200n8 console=tty0 root=/dev/mmcblk0p3 "             \
++        "rw ip=192.168.1.101:192.168.1.100:192.68.1.1:255.255.255.0::eht0: "                  \
++        "fec_mac= ethact console=tty0 root=/dev/mmcblk0p3 rw "                                  \
++        "ip=192.168.1.101:192.168.1.100:192.168.1.1:255.255.255.0::eht0: "                    \
++        "fec_mac= console=tty0  \0"                                                             \
++    "bootargs_sdcard=gpmi=g console=ttyAM0,115200n8 root=/dev/mmcblk0p3 "                       \
++        "rw rootwait rootfstype=ext2 init=/sbin/init fec_mac= ethact mem=64M\0"                 \
++    "bootargs=gpmi=g console=ttyAM0,115200n8 root=/dev/mmcblk0p3 "                              \
++        "rw rootwait rootfstype=ext2 init=/sbin/init fec_mac= ethact mem=64M\0"                 \
++    "upuboot=tftp ${loadaddr} ${serverip}:imx28_ivt_uboot.sb;nand erase 0x0 0x100000; "         \
++        "nand write ${loadaddr} 0x0 0x100000\0"                                                 \
++    "upkernel="     "tftp ${loadaddr} ${serverip}:${kernel};"                                   \
++                    "nand erase  ${kerneladdr} ${kernelsize};"                                  \
++                    "nand write ${loadaddr} ${kerneladdr} ${kernelsize};\0"                     \
++                    "setenv kernelsize ${filesize}; saveenv\0"                                  \
++    "uprootfs="     "mtdparts default;"                                                         \
++                    "nand erase rootfs;"                                                        \
++                    "ubi part rootfs;"                                                          \
++                    "ubi create  rootfs;"                                                       \
++                    "tftp $(loadaddr) ${rootfs};"                                               \
++                    "ubi write ${loadaddr} rootfs ${filesize}\0"                                \
++    "tftp_boot=tftp ${loadaddr} ${serverip}:uImage; bootm;\0"                                   \
++    "nand_boot=nand read.jffs2 ${loadaddr} ${kerneladdr} ${kernelsize};"                        \
++        "bootm ${loadaddr}\0"                                                                   \
++    "sdcard_boot=fatload mmc 0:1 ${loadaddr} uImage;bootm\0"                                    \
++    "setnandboot=setenv bootcmd 'run  nand_boot';saveenv \0"                                    \
++    "settftpboot=setenv bootcmd 'run  tftp_boot';saveenv \0"                                    \
++    "upsystem=run upkernel;run uprootfs;reset \0"
++
++#define CONFIG_BOOTCOMMAND "run sdcard_boot"
++#endif
++/* END:   Modified by wnavy, 2018/9/28 */
+ 
+ /* The rest of the configuration is shared */
+ #include <configs/mxs.h>
+diff --git a/include/configs/mxs.h b/include/configs/mxs.h
+index 804b9e199c..7a1e17841f 100644
+--- a/include/configs/mxs.h
++++ b/include/configs/mxs.h
+@@ -78,7 +78,13 @@
+  * As for the SPL, we must avoid the first 4 KiB as well, but we load the
+  * IVT and CST to 0x8000, so we don't need to waste the subsequent 4 KiB.
+  */
++/* BEGIN: Modified by wnavy, 2018/9/28 */
++#if 0
+ #define CONFIG_SYS_TEXT_BASE		0x40002000
++#else
++#define CONFIG_SYS_TEXT_BASE		0x41008000
++#endif
++/* END:   Modified by wnavy, 2018/9/28 */
+ #define CONFIG_SPL_TEXT_BASE		0x00001000
+ 
+ /* U-Boot general configuration */
+-- 
+2.17.1
+
