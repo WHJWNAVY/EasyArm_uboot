@@ -1,0 +1,469 @@
+From 2f9791cb2a8ff763c850a82f1e51f8c575ed8abc Mon Sep 17 00:00:00 2001
+From: WHJWNAVY <navy@mercku.com>
+Date: Sat, 4 Jul 2020 00:24:27 +0800
+Subject: [PATCH] u-boot-2020.07-rc4_port_for_easyarm_imx280a
+
+---
+ arch/arm/cpu/arm926ejs/mxs/spl_mem_init.c   | 16 ++++++++
+ arch/arm/cpu/arm926ejs/mxs/spl_power_init.c |  5 ++-
+ arch/arm/cpu/arm926ejs/mxs/u-boot-imx28.bd  | 12 +++---
+ board/freescale/mx28evk/iomux.c             | 28 ++++++++++++-
+ board/freescale/mx28evk/mx28evk.c           | 18 ++++++---
+ build.sh                                    | 44 +++++++++++++++++++++
+ configs/mx28evk_defconfig                   |  6 ++-
+ configs/mx28evk_nand_defconfig              |  6 ++-
+ include/common.h                            |  2 +
+ include/configs/mx28evk.h                   |  4 ++
+ include/configs/mxs.h                       |  5 +++
+ setenv.sh                                   | 11 ++++++
+ 12 files changed, 139 insertions(+), 18 deletions(-)
+ create mode 100644 build.sh
+ create mode 100644 setenv.sh
+
+diff --git a/arch/arm/cpu/arm926ejs/mxs/spl_mem_init.c b/arch/arm/cpu/arm926ejs/mxs/spl_mem_init.c
+index a94803ee93..01441d50d3 100644
+--- a/arch/arm/cpu/arm926ejs/mxs/spl_mem_init.c
++++ b/arch/arm/cpu/arm926ejs/mxs/spl_mem_init.c
+@@ -29,11 +29,19 @@ __weak uint32_t mxs_dram_vals[] = {
+ 	0x00000000, 0x00000100, 0x00000000, 0x00000000,
+ 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+ 	0x00000000, 0x00000000, 0x00010101, 0x01010101,
++#if 0 /*CONFIG_IMX280A*/
+ 	0x000f0f01, 0x0f02020a, 0x00000000, 0x00010101,
+ 	0x00000100, 0x00000100, 0x00000000, 0x00000002,
+ 	0x01010000, 0x07080403, 0x06005003, 0x0a0000c8,
+ 	0x02009c40, 0x0002030c, 0x0036a609, 0x031a0612,
+ 	0x02030202, 0x00c8001c, 0x00000000, 0x00000000,
++#else
++	0x000f0f01, 0x0102020a, 0x00000000, 0x00000101,
++	0x00000100, 0x00000100, 0x00000000, 0x00000002,
++	0x01010000, 0x07080403, 0x0a008603, 0x0e0000c8,
++	0x0201046b, 0x00020514, 0x005b260f, 0x05230a22,
++	0x03050304, 0x00c80027, 0x00000000, 0x00000000,
++#endif
+ 	0x00012100, 0xffff0303, 0x00012100, 0xffff0303,
+ 	0x00012100, 0xffff0303, 0x00012100, 0xffff0303,
+ 	0x00000003, 0x00000000, 0x00000000, 0x00000000,
+@@ -63,10 +71,18 @@ __weak uint32_t mxs_dram_vals[] = {
+ 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+ 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+ 	0x00000000, 0x00000000, 0x00010000, 0x00030404,
++#if 0 /*CONFIG_IMX280A*/
+ 	0x00000003, 0x00000000, 0x00000000, 0x00000000,
++#else
++	0x00000002, 0x00000000, 0x00000000, 0x00000000,
++#endif
+ 	0x00000000, 0x00000000, 0x00000000, 0x01010000,
+ 	0x01000000, 0x03030000, 0x00010303, 0x01020202,
++#if 0 /*CONFIG_IMX280A*/
+ 	0x00000000, 0x02040303, 0x21002103, 0x00061200,
++#else
++	0x00000000, 0x02050303, 0x21002103, 0x00061200,
++#endif
+ 	0x06120612, 0x04420442, 0x04420442, 0x00040004,
+ 	0x00040004, 0x00000000, 0x00000000, 0x00000000,
+ 	0x00000000, 0xffffffff
+diff --git a/arch/arm/cpu/arm926ejs/mxs/spl_power_init.c b/arch/arm/cpu/arm926ejs/mxs/spl_power_init.c
+index 35ea71a5ba..833596a0f2 100644
+--- a/arch/arm/cpu/arm926ejs/mxs/spl_power_init.c
++++ b/arch/arm/cpu/arm926ejs/mxs/spl_power_init.c
+@@ -751,8 +751,9 @@ static void mxs_batt_boot(void)
+ 	clrsetbits_le32(&power_regs->hw_power_5vctrl,
+ 		POWER_5VCTRL_CHARGE_4P2_ILIMIT_MASK,
+ 		0x8 << POWER_5VCTRL_CHARGE_4P2_ILIMIT_OFFSET);
+-
++#if 0 /*CONFIG_IMX280A*/
+ 	mxs_power_enable_4p2();
++#endif
+ }
+ 
+ /**
+@@ -1244,7 +1245,9 @@ void mxs_power_init(void)
+ 	mxs_ungate_power();
+ 
+ 	mxs_power_clock2xtal();
++#if 0 /*CONFIG_IMX280A*/
+ 	mxs_power_set_auto_restart();
++#endif
+ 	mxs_power_set_linreg();
+ 	mxs_power_setup_5v_detect();
+ 
+diff --git a/arch/arm/cpu/arm926ejs/mxs/u-boot-imx28.bd b/arch/arm/cpu/arm926ejs/mxs/u-boot-imx28.bd
+index c60615a456..891b5756a8 100644
+--- a/arch/arm/cpu/arm926ejs/mxs/u-boot-imx28.bd
++++ b/arch/arm/cpu/arm926ejs/mxs/u-boot-imx28.bd
+@@ -1,14 +1,14 @@
+ sources {
+-	u_boot_spl="spl/u-boot-spl.bin";
+-	u_boot="u-boot.bin";
++	u_boot_spl="spl/u-boot-spl";
++	u_boot="u-boot";
+ }
+ 
+ section (0) {
+-	load u_boot_spl > 0x0000;
+-	load ivt (entry = 0x0014) > 0x8000;
++	load u_boot_spl;
++	load ivt (entry = u_boot_spl:_start) > 0x8000;
+ 	hab call 0x8000;
+ 
+-	load u_boot > 0x40000100;
+-	load ivt (entry = 0x40000100) > 0x8000;
++	load u_boot;
++	load ivt (entry = u_boot:_start) > 0x8000;
+ 	hab call 0x8000;
+ }
+diff --git a/board/freescale/mx28evk/iomux.c b/board/freescale/mx28evk/iomux.c
+index cc0c858854..970a99bebb 100644
+--- a/board/freescale/mx28evk/iomux.c
++++ b/board/freescale/mx28evk/iomux.c
+@@ -22,28 +22,40 @@
+ 
+ const iomux_cfg_t iomux_setup[] = {
+ 	/* DUART */
++#if 0 /*CONFIG_IMX280A*/
+ 	MX28_PAD_PWM0__DUART_RX,
+ 	MX28_PAD_PWM1__DUART_TX,
++#else
++    /* solve the conflict with DUART */
++    MX28_PAD_PWM0__GPIO_3_16,
++    MX28_PAD_PWM1__GPIO_3_17,
++	MX28_PAD_AUART0_CTS__DUART_RX,
++	MX28_PAD_AUART0_RTS__DUART_TX,
++#endif
+ 
+ 	/* MMC0 */
+ 	MX28_PAD_SSP0_DATA0__SSP0_D0 | MUX_CONFIG_SSP0,
+ 	MX28_PAD_SSP0_DATA1__SSP0_D1 | MUX_CONFIG_SSP0,
+ 	MX28_PAD_SSP0_DATA2__SSP0_D2 | MUX_CONFIG_SSP0,
+ 	MX28_PAD_SSP0_DATA3__SSP0_D3 | MUX_CONFIG_SSP0,
++#if 0 /*CONFIG_IMX280A*/
+ 	MX28_PAD_SSP0_DATA4__SSP0_D4 | MUX_CONFIG_SSP0,
+ 	MX28_PAD_SSP0_DATA5__SSP0_D5 | MUX_CONFIG_SSP0,
+ 	MX28_PAD_SSP0_DATA6__SSP0_D6 | MUX_CONFIG_SSP0,
+ 	MX28_PAD_SSP0_DATA7__SSP0_D7 | MUX_CONFIG_SSP0,
++#endif
+ 	MX28_PAD_SSP0_CMD__SSP0_CMD | MUX_CONFIG_SSP0,
+ 	MX28_PAD_SSP0_DETECT__SSP0_CARD_DETECT |
+ 		(MXS_PAD_8MA | MXS_PAD_3V3 | MXS_PAD_NOPULL),
+ 	MX28_PAD_SSP0_SCK__SSP0_SCK |
+ 		(MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_NOPULL),
++#if 0 /*CONFIG_IMX280A*/
+ 	/* write protect */
+ 	MX28_PAD_SSP1_SCK__GPIO_2_12,
+ 	/* MMC0 slot power enable */
+ 	MX28_PAD_PWM3__GPIO_3_28 |
+ 		(MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_PULLUP),
++#endif
+ 
+ #ifdef CONFIG_NAND_MXS
+ 	/* GPMI NAND */
+@@ -75,13 +87,19 @@ const iomux_cfg_t iomux_setup[] = {
+ 	MX28_PAD_ENET0_TXD0__ENET0_TXD0 | MUX_CONFIG_ENET,
+ 	MX28_PAD_ENET0_TXD1__ENET0_TXD1 | MUX_CONFIG_ENET,
+ 	MX28_PAD_ENET_CLK__CLKCTRL_ENET | MUX_CONFIG_ENET,
++#if 0 /*CONFIG_IMX280A*/
+ 	/* FEC0 Enable */
+ 	MX28_PAD_SSP1_DATA3__GPIO_2_15 |
+ 		(MXS_PAD_12MA | MXS_PAD_3V3),
+ 	/* FEC0 Reset */
+ 	MX28_PAD_ENET0_RX_CLK__GPIO_4_13 |
+ 		(MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_PULLUP),
+-
++#else
++	/* FEC0 Reset */
++	MX28_PAD_LCD_RS__GPIO_1_26 |
++		(MXS_PAD_12MA | MXS_PAD_3V3 | MXS_PAD_PULLUP),
++#endif
++#if 0 /*CONFIG_IMX280A*/
+ 	/* FEC1 */
+ 	MX28_PAD_ENET0_COL__ENET1_TX_EN | MUX_CONFIG_ENET,
+ 	MX28_PAD_ENET0_CRS__ENET1_RX_EN | MUX_CONFIG_ENET,
+@@ -89,7 +107,7 @@ const iomux_cfg_t iomux_setup[] = {
+ 	MX28_PAD_ENET0_RXD3__ENET1_RXD1 | MUX_CONFIG_ENET,
+ 	MX28_PAD_ENET0_TXD2__ENET1_TXD0 | MUX_CONFIG_ENET,
+ 	MX28_PAD_ENET0_TXD3__ENET1_TXD1 | MUX_CONFIG_ENET,
+-
++#endif
+ 	/* EMI */
+ 	MX28_PAD_EMI_D00__EMI_DATA0 | MUX_CONFIG_EMI,
+ 	MX28_PAD_EMI_D01__EMI_DATA1 | MUX_CONFIG_EMI,
+@@ -109,7 +127,9 @@ const iomux_cfg_t iomux_setup[] = {
+ 	MX28_PAD_EMI_D15__EMI_DATA15 | MUX_CONFIG_EMI,
+ 	MX28_PAD_EMI_ODT0__EMI_ODT0 | MUX_CONFIG_EMI,
+ 	MX28_PAD_EMI_DQM0__EMI_DQM0 | MUX_CONFIG_EMI,
++#if 0 /*CONFIG_IMX280A*/
+ 	MX28_PAD_EMI_ODT1__EMI_ODT1 | MUX_CONFIG_EMI,
++#endif
+ 	MX28_PAD_EMI_DQM1__EMI_DQM1 | MUX_CONFIG_EMI,
+ 	MX28_PAD_EMI_DDR_OPEN_FB__EMI_DDR_OPEN_FEEDBACK | MUX_CONFIG_EMI,
+ 	MX28_PAD_EMI_CLK__EMI_CLK | MUX_CONFIG_EMI,
+@@ -139,7 +159,9 @@ const iomux_cfg_t iomux_setup[] = {
+ 	MX28_PAD_EMI_RASN__EMI_RASN | MUX_CONFIG_EMI,
+ 	MX28_PAD_EMI_WEN__EMI_WEN | MUX_CONFIG_EMI,
+ 	MX28_PAD_EMI_CE0N__EMI_CE0N | MUX_CONFIG_EMI,
++#if 0 /*CONFIG_IMX280A*/
+ 	MX28_PAD_EMI_CE1N__EMI_CE1N | MUX_CONFIG_EMI,
++#endif
+ 	MX28_PAD_EMI_CKE__EMI_CKE | MUX_CONFIG_EMI,
+ 
+ 	/* SPI2 (for SPI flash) */
+@@ -152,6 +174,7 @@ const iomux_cfg_t iomux_setup[] = {
+ 	MX28_PAD_I2C0_SCL__I2C0_SCL,
+ 	MX28_PAD_I2C0_SDA__I2C0_SDA,
+ 
++#if 0 /*CONFIG_IMX280A*/
+ 	/* LCD */
+ 	MX28_PAD_LCD_D00__LCD_D0 | MUX_CONFIG_LCD,
+ 	MX28_PAD_LCD_D01__LCD_D1 | MUX_CONFIG_LCD,
+@@ -183,6 +206,7 @@ const iomux_cfg_t iomux_setup[] = {
+ 	MX28_PAD_LCD_CS__LCD_ENABLE | MUX_CONFIG_LCD,
+ 	MX28_PAD_LCD_RESET__GPIO_3_30 | MUX_CONFIG_LCD, /* LCD power */
+ 	MX28_PAD_PWM2__GPIO_3_18 | MUX_CONFIG_LCD, /* LCD contrast */
++#endif
+ };
+ 
+ #define HW_DRAM_CTL29	(0x74 >> 2)
+diff --git a/board/freescale/mx28evk/mx28evk.c b/board/freescale/mx28evk/mx28evk.c
+index e50b7db210..87e31b5ad5 100644
+--- a/board/freescale/mx28evk/mx28evk.c
++++ b/board/freescale/mx28evk/mx28evk.c
+@@ -50,12 +50,13 @@ int board_early_init_f(void)
+ 	gpio_direction_output(MX28_PAD_AUART2_RX__GPIO_3_8, 1);
+ #endif
+ 
++#if 0 /*CONFIG_IMX280A*/
+ 	/* Power on LCD */
+ 	gpio_direction_output(MX28_PAD_LCD_RESET__GPIO_3_30, 1);
+ 
+ 	/* Set contrast to maximum */
+ 	gpio_direction_output(MX28_PAD_PWM2__GPIO_3_18, 1);
+-
++#endif
+ 	return 0;
+ }
+ 
+@@ -111,7 +112,7 @@ int board_eth_init(bd_t *bis)
+ 	/* MX28EVK uses ENET_CLK PAD to drive FEC clock */
+ 	writel(CLKCTRL_ENET_TIME_SEL_RMII_CLK | CLKCTRL_ENET_CLK_OUT_EN,
+ 	       &clkctrl_regs->hw_clkctrl_enet);
+-
++#if 0 // TODO: CONFIG_IMX280A
+ 	/* Power-on FECs */
+ 	gpio_direction_output(MX28_PAD_SSP1_DATA3__GPIO_2_15, 0);
+ 
+@@ -119,31 +120,38 @@ int board_eth_init(bd_t *bis)
+ 	gpio_direction_output(MX28_PAD_ENET0_RX_CLK__GPIO_4_13, 0);
+ 	udelay(200);
+ 	gpio_set_value(MX28_PAD_ENET0_RX_CLK__GPIO_4_13, 1);
+-
++#else
++	/* Reset FEC PHYs */
++	gpio_direction_output(MX28_PAD_LCD_RS__GPIO_1_26, 0);
++	udelay(200);
++	gpio_set_value(MX28_PAD_LCD_RS__GPIO_1_26, 1);
++#endif
+ 	ret = fecmxc_initialize_multi(bis, 0, 0, MXS_ENET0_BASE);
+ 	if (ret) {
+ 		puts("FEC MXS: Unable to init FEC0\n");
+ 		return ret;
+ 	}
+ 
++#if 0 /*CONFIG_IMX280A*/
+ 	ret = fecmxc_initialize_multi(bis, 1, 3, MXS_ENET1_BASE);
+ 	if (ret) {
+ 		puts("FEC MXS: Unable to init FEC1\n");
+ 		return ret;
+ 	}
++#endif
+ 
+ 	dev = eth_get_dev_by_name("FEC0");
+ 	if (!dev) {
+ 		puts("FEC MXS: Unable to get FEC0 device entry\n");
+ 		return -EINVAL;
+ 	}
+-
++#if 0 /*CONFIG_IMX280A*/
+ 	dev = eth_get_dev_by_name("FEC1");
+ 	if (!dev) {
+ 		puts("FEC MXS: Unable to get FEC1 device entry\n");
+ 		return -EINVAL;
+ 	}
+-
++#endif
+ 	return ret;
+ }
+ 
+diff --git a/build.sh b/build.sh
+new file mode 100644
+index 0000000000..c9462cc9d6
+--- /dev/null
++++ b/build.sh
+@@ -0,0 +1,44 @@
++#!/bin/sh
++
++echo "U-Boot build menu, please select your choice:"
++echo "  1   make distclean"
++echo "  2   config for mx28"
++echo "  3   build u-boot"
++echo "  4   make u-boot.sb"
++echo "  q   exit"
++
++source ./setenv.sh
++NUM_CPUS=$(cat /proc/cpuinfo | grep -c processor)
++TFTPBOOT=/home/work/tftpboot
++
++make_distclean() {
++    echo "make distclean"
++    make distclean
++}
++
++config_mx28() {
++    make mx28evk_defconfig
++}
++
++build_uboot() {
++    #make -j${NUM_CPUS} u-boot.sb
++    make -j${NUM_CPUS} spl/u-boot-spl
++    make -j${NUM_CPUS} u-boot
++}
++
++make_uboot_sb() {
++    elftosb -f imx28 -c arch/arm/cpu/arm926ejs/mxs/u-boot-imx28.bd -o u-boot.sb
++}
++
++read sel
++echo "select $sel"
++
++case $sel in
++    [1]) make_distclean;;
++    [2]) config_mx28;;
++    [3]) build_uboot;;
++    [4]) make_uboot_sb;;
++    [q]) exit 0;;
++    *)   echo "ONLY accept 1/2/3/4/q/Q"
++esac    
++
+diff --git a/configs/mx28evk_defconfig b/configs/mx28evk_defconfig
+index d660a7e92d..9a4336650f 100644
+--- a/configs/mx28evk_defconfig
++++ b/configs/mx28evk_defconfig
+@@ -12,13 +12,15 @@ CONFIG_NR_DRAM_BANKS=1
+ CONFIG_SPL=y
+ CONFIG_SPL_TEXT_BASE=0x00001000
+ CONFIG_FIT=y
++CONFIG_BOOTDELAY=3
+ # CONFIG_CONSOLE_MUX is not set
+ CONFIG_SYS_CONSOLE_IS_IN_ENV=y
+ CONFIG_VERSION_VARIABLE=y
+-# CONFIG_DISPLAY_BOARDINFO is not set
++CONFIG_DISPLAY_BOARDINFO=y
+ CONFIG_ARCH_MISC_INIT=y
+ # CONFIG_SPL_FRAMEWORK is not set
+ CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="zlg@imx280a# "
+ CONFIG_CMD_BOOTZ=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_GPIO=y
+@@ -55,5 +57,5 @@ CONFIG_USB_STORAGE=y
+ CONFIG_USB_HOST_ETHER=y
+ CONFIG_USB_ETHER_ASIX=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+-CONFIG_VIDEO=y
++# CONFIG_VIDEO is not set
+ CONFIG_OF_LIBFDT=y
+diff --git a/configs/mx28evk_nand_defconfig b/configs/mx28evk_nand_defconfig
+index 7522bd0626..e048c8dc05 100644
+--- a/configs/mx28evk_nand_defconfig
++++ b/configs/mx28evk_nand_defconfig
+@@ -10,15 +10,17 @@ CONFIG_TARGET_MX28EVK=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+ CONFIG_NR_DRAM_BANKS=1
+ CONFIG_SPL=y
++CONFIG_BOOTDELAY=3
+ CONFIG_ENV_OFFSET_REDUND=0x380000
+ CONFIG_SPL_TEXT_BASE=0x00001000
+ # CONFIG_CONSOLE_MUX is not set
+ CONFIG_SYS_CONSOLE_IS_IN_ENV=y
+ CONFIG_VERSION_VARIABLE=y
+-# CONFIG_DISPLAY_BOARDINFO is not set
++CONFIG_DISPLAY_BOARDINFO=y
+ CONFIG_ARCH_MISC_INIT=y
+ # CONFIG_SPL_FRAMEWORK is not set
+ CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="zlg@imx280a# "
+ CONFIG_CMD_BOOTZ=y
+ # CONFIG_CMD_FLASH is not set
+ CONFIG_CMD_GPIO=y
+@@ -56,5 +58,5 @@ CONFIG_USB_STORAGE=y
+ CONFIG_USB_HOST_ETHER=y
+ CONFIG_USB_ETHER_ASIX=y
+ CONFIG_USB_ETHER_SMSC95XX=y
+-CONFIG_VIDEO=y
++# CONFIG_VIDEO is not set
+ CONFIG_OF_LIBFDT=y
+diff --git a/include/common.h b/include/common.h
+index f0679ac705..12e36e9679 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -33,4 +33,6 @@
+ # include <env_internal.h>
+ #endif
+ 
++//#define DEBUG 1
++
+ #endif	/* __COMMON_H_ */
+diff --git a/include/configs/mx28evk.h b/include/configs/mx28evk.h
+index 15b64ee03e..732e132c0d 100644
+--- a/include/configs/mx28evk.h
++++ b/include/configs/mx28evk.h
+@@ -15,7 +15,11 @@
+ 
+ /* Memory configuration */
+ #define PHYS_SDRAM_1			0x40000000	/* Base address */
++#if 0 /*CONFIG_IMX280A*/
+ #define PHYS_SDRAM_1_SIZE		0x40000000	/* Max 1 GB RAM */
++#else
++#define PHYS_SDRAM_1_SIZE		0x04000000	/* Max 64 MB RAM */
++#endif
+ #define CONFIG_SYS_SDRAM_BASE		PHYS_SDRAM_1
+ 
+ /* Environment */
+diff --git a/include/configs/mxs.h b/include/configs/mxs.h
+index 325c3ee00c..1675d3f852 100644
+--- a/include/configs/mxs.h
++++ b/include/configs/mxs.h
+@@ -118,8 +118,13 @@
+ /* NAND */
+ #ifdef CONFIG_CMD_NAND
+ #define CONFIG_SYS_MAX_NAND_DEVICE	1
++#if 0 /*CONFIG_IMX280A*/
+ #define CONFIG_SYS_NAND_BASE		0x60000000
+ #define CONFIG_SYS_NAND_5_ADDR_CYCLE
++#else
++#define CONFIG_SYS_NAND_BASE		0x8000C000
++#define CONFIG_SYS_NAND_4_ADDR_CYCLE
++#endif
+ #endif
+ 
+ /* OCOTP */
+diff --git a/setenv.sh b/setenv.sh
+new file mode 100644
+index 0000000000..6bb8d921a8
+--- /dev/null
++++ b/setenv.sh
+@@ -0,0 +1,11 @@
++#!/bin/bash
++
++
++export WORK_BASE=/home/work/easyarm280
++export ARCH=arm
++export CROSS_COMPILE=arm-926ejs-linux-gnueabi-
++#export CROSS_COMPILE=arm-fsl-linux-gnueabi-
++export CROSS_COMPILE_DIR=${WORK_BASE}/toolchain/arm-926ejs-linux-gnueabi/bin
++#export CROSS_COMPILE_DIR=${WORK_BASE}/toolchain/arm-fsl-linux-gnueabi/bin
++export PATH=${CROSS_COMPILE_DIR}:$PATH
++
+-- 
+2.17.1
+

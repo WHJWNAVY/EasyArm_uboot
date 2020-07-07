@@ -1,7 +1,12 @@
 # EasyArm SDboot
 > EasyArm-u-boot-2017.11-Linux2.6.35-SDboot
 
+## u-boot-v2020.07-rc4
+* [README - v2020.07-rc4-port-easyarm280](u-boot-2020.07-rc4/README.md)
+* [Source - v2020.07-rc4-port-easyarm280](https://github.com/WHJWNAVY/u-boot/tree/v2020.07-rc4-port-easyarm280)
+
 ## imx-bootlets-src-10.12.01.tar.gz
+
 [imx-bootlets-src-10.12.01.tar.gz](http://repository.timesys.com/buildsources/i/imx-bootlets/imx-bootlets-10.12.01/imx-bootlets-src-10.12.01.tar.gz)
 [imx-bootlets-src-10.12.01.tar.gz](http://download.ossystems.com.br/bsp/freescale/source/imx-bootlets-src-10.12.01.tar.gz)
 
