@@ -26,6 +26,8 @@
 
 ## documents
 
+* [再谈SD卡分区与引导(推荐) * new](mk_sdboot/linux/README.md)
+
 * [EasyArm_IMX280A_从SD卡启动系统](mk_sdboot/EasyArm_IMX280A_从SD卡启动系统.pdf)
 * [EasyArm_IMX280A_SD分区详解](mk_sdboot/EasyArm_IMX280A_SD分区详解.pdf)
 * [EasyArm_IMX280A_SD卡启动引导](mk_sdboot/EasyArm_IMX280A_SD卡启动引导.pdf)
