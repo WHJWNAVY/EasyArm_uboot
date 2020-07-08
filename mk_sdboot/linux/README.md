@@ -248,7 +248,7 @@ CONFIG_ENV_OFFSET=0x40000
 ## 给SD卡分区
 
 ```bash
-$ sudo fdisk /dev/sdc
+$ sudo fdisk /dev/${sdcard}
     * o ..................... create a clear partition table
     * n ..................... create new partition
         * p ............. primary partition
@@ -282,6 +282,7 @@ $ sudo fdisk /dev/sdc
 ## 烧写并启动
 
 ```bash
+$ mkfs.fat /dev/${sdcard}2
 $ mkdir /tmp/fat32
 $ mount /dev/${sdcard}2 /tmp/fat32
 $ cp uImage /tmp/fat32/
