@@ -14,7 +14,6 @@
 #ifndef __HW_ICOLL_H
 #define __HW_ICOLL_H
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //   Includes
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +22,6 @@
 #include "registers/hw_irq.h"
 #include "registers/regsicoll.h"
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,8 +29,7 @@
 // These priorities match the IRQ priorities.  Highest priority is
 // Level 3 while Level 0 is the lowest priority.
 //! \brief TBD
-typedef enum
-{
+typedef enum {
     //! \brief lowest priority irq
     ICOLL_PRIORITY_LEVEL_0 = 0,
     //! \brief 2nd to the lowest priority irq
@@ -41,12 +38,10 @@ typedef enum
     ICOLL_PRIORITY_LEVEL_2,
     //! \brief highest priority irq
     ICOLL_PRIORITY_LEVEL_3
-}
-IcollPriority_t;
+} IcollPriority_t;
 
 //! \brief TBD
-typedef enum
-{
+typedef enum {
     //! \brief TBD
     ICOLL_CTRL_IRQ_FINAL_ENABLE = BP_ICOLL_CTRL_IRQ_FINAL_ENABLE,
     //! \brief TBD
@@ -57,9 +52,7 @@ typedef enum
     ICOLL_CTRL_NO_NESTING = BP_ICOLL_CTRL_NO_NESTING,
     //! \brief TBD
     ICOLL_CTRL_BYPASS_FSM = BP_ICOLL_CTRL_BYPASS_FSM
-}
-IcollCtrlRegisterEnums_t;
-
+} IcollCtrlRegisterEnums_t;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Prototypes
@@ -69,8 +62,7 @@ IcollCtrlRegisterEnums_t;
 extern "C" {
 #endif
 
-
-//enable the ICOLL vector.  Return previous enable state.
+// enable the ICOLL vector.  Return previous enable state.
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief  Enable ICOLL Interrupt Vector.
 //! \fntype Function
@@ -85,7 +77,7 @@ extern "C" {
 ////////////////////////////////////////////////////////////////////////////////
 bool hw_icoll_EnableVector(ICOLL_IRQ_enums_t eIrqVectorNumber, bool bEnable);
 
-//use this function to set vectors 32-35 as FIQ enabled
+// use this function to set vectors 32-35 as FIQ enabled
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief  Set FIQ mode for ICOLL interrupt source.
 //! \fntype Function
@@ -99,7 +91,7 @@ bool hw_icoll_EnableVector(ICOLL_IRQ_enums_t eIrqVectorNumber, bool bEnable);
 ////////////////////////////////////////////////////////////////////////////////
 void hw_icoll_SetFiqMode(ICOLL_FIQ_enums_t eIrqVectorNumber, bool bEnable);
 
-//use this function to update the bits in the HW_ICOLL_CTRL register.
+// use this function to update the bits in the HW_ICOLL_CTRL register.
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief  Update the HW_ICOLL_CTRL register.
 //! \fntype Function
@@ -114,8 +106,7 @@ void hw_icoll_SetFiqMode(ICOLL_FIQ_enums_t eIrqVectorNumber, bool bEnable);
 //! \note Only 1 parameter can be set at a time.
 ////////////////////////////////////////////////////////////////////////////////
 bool hw_icoll_CtrlRegisterUpdate(IcollCtrlRegisterEnums_t ControlRegisterField,
-	 bool bSet);
-
+                                 bool bSet);
 
 #ifdef __cplusplus
 } // extern "C"
@@ -127,4 +118,3 @@ bool hw_icoll_CtrlRegisterUpdate(IcollCtrlRegisterEnums_t ControlRegisterField,
 // End of file
 ////////////////////////////////////////////////////////////////////////////////
 //! @}
-

@@ -34,10 +34,8 @@ bool bHwLradcInitialized = false;
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_Init(bool bEnableOnChipGroundRef,  hw_lradc_ClockFreq_t eFreq)
-{
-    if( bHwLradcInitialized == true )
-    {
+void hw_lradc_Init(bool bEnableOnChipGroundRef, hw_lradc_ClockFreq_t eFreq) {
+    if (bHwLradcInitialized == true) {
         return;
     }
 
@@ -45,18 +43,15 @@ void hw_lradc_Init(bool bEnableOnChipGroundRef,  hw_lradc_ClockFreq_t eFreq)
     BF_CLR(LRADC_CTRL0, SFTRST);
 
     // Clear the Clock Gate for normal operation
-    BF_CLR(LRADC_CTRL0, CLKGATE);      // use bitfield clear macro
+    BF_CLR(LRADC_CTRL0, CLKGATE); // use bitfield clear macro
 
     // Set on-chip ground ref
-    if(bEnableOnChipGroundRef)
-    {
+    if (bEnableOnChipGroundRef) {
         // Enable the onchip ground ref of LRADC conversions
-        BF_SET( LRADC_CTRL0, ONCHIP_GROUNDREF);
-    }
-    else
-    {
+        BF_SET(LRADC_CTRL0, ONCHIP_GROUNDREF);
+    } else {
         // Disable the onchip ground ref of LRADC conversions
-        BF_CLR( LRADC_CTRL0, ONCHIP_GROUNDREF);
+        BF_CLR(LRADC_CTRL0, ONCHIP_GROUNDREF);
     }
 
     // Set LRADC conversion clock frequency

@@ -23,33 +23,33 @@
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief TBD
-#define PRIORITY_DAC_ISR		(IcollPriority_t)ICOLL_PRIORITY_LEVEL_2
+#define PRIORITY_DAC_ISR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_2
 //! \brief TBD
-#define PRIORITY_DAC_ERROR		(IcollPriority_t)ICOLL_PRIORITY_LEVEL_1
+#define PRIORITY_DAC_ERROR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_1
 //! \brief TBD
-#define PRIORITY_ADC_DMA_ISR        (IcollPriority_t)ICOLL_PRIORITY_LEVEL_2
+#define PRIORITY_ADC_DMA_ISR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_2
 //! \brief TBD
-#define PRIORITY_ADC_ERROR_ISR      (IcollPriority_t)ICOLL_PRIORITY_LEVEL_2
+#define PRIORITY_ADC_ERROR_ISR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_2
 //! \brief TBD
-#define PRIORITY_HP_SHORT_ISR       (IcollPriority_t)ICOLL_PRIORITY_LEVEL_2
+#define PRIORITY_HP_SHORT_ISR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_2
 //! \brief Video synchronization interrupt for the display driver
-#define PRIORITY_VIDEO_ISR          (IcollPriority_t)ICOLL_PRIORITY_LEVEL_3
+#define PRIORITY_VIDEO_ISR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_3
 
 //! \brief Priority of the DCP ISR.  This does not change the priority of the
 //! individual channels or the color space converter
-#define PRIORITY_DCP_ISR		(IcollPriority_t)ICOLL_PRIORITY_LEVEL_2
+#define PRIORITY_DCP_ISR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_2
 
 //! \brief TBD
-#define PRIORITY_LCDIF_ISR		(IcollPriority_t)ICOLL_PRIORITY_LEVEL_3
+#define PRIORITY_LCDIF_ISR (IcollPriority_t) ICOLL_PRIORITY_LEVEL_3
 
 //! \brief TBD
-#define DAC_ICOLL_FUNCTION_TYPE     (IcollFunctionType_t)IRQ_HANDLER_DEFERRED
+#define DAC_ICOLL_FUNCTION_TYPE (IcollFunctionType_t) IRQ_HANDLER_DEFERRED
 //! \brief TBD
-#define ADC_ICOLL_FUNCTION_TYPE     (IcollFunctionType_t)IRQ_HANDLER_DEFERRED
+#define ADC_ICOLL_FUNCTION_TYPE (IcollFunctionType_t) IRQ_HANDLER_DEFERRED
 //! \brief TBD
-#define LCDIF_ICOLL_FUNCTION_TYPE   (IcollFunctionType_t)IRQ_HANDLER_DEFERRED
+#define LCDIF_ICOLL_FUNCTION_TYPE (IcollFunctionType_t) IRQ_HANDLER_DEFERRED
 //! \brief TBD
-#define VIDEO_ICOLL_FUNCTION_TYPE   (IcollFunctionType_t)IRQ_HANDLER_DEFERRED
+#define VIDEO_ICOLL_FUNCTION_TYPE (IcollFunctionType_t) IRQ_HANDLER_DEFERRED
 
 #endif // _INTERRUPTS_H
 

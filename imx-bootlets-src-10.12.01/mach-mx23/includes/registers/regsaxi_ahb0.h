@@ -40,7 +40,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef _REGSAXI_AHB0_H
-#define _REGSAXI_AHB0_H  1
+#define _REGSAXI_AHB0_H 1
 
 #include "regs.h"
 
@@ -53,33 +53,29 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg8_t   GROUP;
-        unsigned RSVD   : 24;
+typedef union {
+    reg32_t U;
+    struct {
+        reg8_t GROUP;
+        unsigned RSVD : 24;
     } B;
 } hw_axi_dcp_t;
 #endif
-
 
 //
 // constants & macros for entire HW_AXI_DCP register
 //
 
-#define HW_AXI_DCP_ADDR      (REGS_AXI_AHB0_BASE + 0x00000000)
+#define HW_AXI_DCP_ADDR (REGS_AXI_AHB0_BASE + 0x00000000)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_AXI_DCP           (*(volatile hw_axi_dcp_t *) HW_AXI_DCP_ADDR)
-#define HW_AXI_DCP_RD()      (HW_AXI_DCP.U)
-#define HW_AXI_DCP_WR(v)     (HW_AXI_DCP.U = (v))
-#define HW_AXI_DCP_SET(v)    (HW_AXI_DCP_WR(HW_AXI_DCP_RD() |  (v)))
-#define HW_AXI_DCP_CLR(v)    (HW_AXI_DCP_WR(HW_AXI_DCP_RD() & ~(v)))
-#define HW_AXI_DCP_TOG(v)    (HW_AXI_DCP_WR(HW_AXI_DCP_RD() ^  (v)))
+#define HW_AXI_DCP (*(volatile hw_axi_dcp_t *)HW_AXI_DCP_ADDR)
+#define HW_AXI_DCP_RD() (HW_AXI_DCP.U)
+#define HW_AXI_DCP_WR(v) (HW_AXI_DCP.U = (v))
+#define HW_AXI_DCP_SET(v) (HW_AXI_DCP_WR(HW_AXI_DCP_RD() | (v)))
+#define HW_AXI_DCP_CLR(v) (HW_AXI_DCP_WR(HW_AXI_DCP_RD() & ~(v)))
+#define HW_AXI_DCP_TOG(v) (HW_AXI_DCP_WR(HW_AXI_DCP_RD() ^ (v)))
 #endif
-
 
 //
 // constants & macros for individual HW_AXI_DCP bitfields
@@ -87,48 +83,43 @@ typedef union
 
 //--- Register HW_AXI_DCP, field GROUP
 
-#define BP_AXI_DCP_GROUP      0
-#define BM_AXI_DCP_GROUP      0x000000FF
+#define BP_AXI_DCP_GROUP 0
+#define BM_AXI_DCP_GROUP 0x000000FF
 
-#define BF_AXI_DCP_GROUP(v)   (((v) << 0) & BM_AXI_DCP_GROUP)
+#define BF_AXI_DCP_GROUP(v) (((v) << 0) & BM_AXI_DCP_GROUP)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_AXI_DCP_GROUP(v)   (HW_AXI_DCP.B.GROUP = (v))
+#define BW_AXI_DCP_GROUP(v) (HW_AXI_DCP.B.GROUP = (v))
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_AXI_BCH - BCH Data Port Priority Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg8_t   GROUP;
-        unsigned RSVD   : 24;
+typedef union {
+    reg32_t U;
+    struct {
+        reg8_t GROUP;
+        unsigned RSVD : 24;
     } B;
 } hw_axi_bch_t;
 #endif
-
 
 //
 // constants & macros for entire HW_AXI_BCH register
 //
 
-#define HW_AXI_BCH_ADDR      (REGS_AXI_AHB0_BASE + 0x00000020)
+#define HW_AXI_BCH_ADDR (REGS_AXI_AHB0_BASE + 0x00000020)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_AXI_BCH           (*(volatile hw_axi_bch_t *) HW_AXI_BCH_ADDR)
-#define HW_AXI_BCH_RD()      (HW_AXI_BCH.U)
-#define HW_AXI_BCH_WR(v)     (HW_AXI_BCH.U = (v))
-#define HW_AXI_BCH_SET(v)    (HW_AXI_BCH_WR(HW_AXI_BCH_RD() |  (v)))
-#define HW_AXI_BCH_CLR(v)    (HW_AXI_BCH_WR(HW_AXI_BCH_RD() & ~(v)))
-#define HW_AXI_BCH_TOG(v)    (HW_AXI_BCH_WR(HW_AXI_BCH_RD() ^  (v)))
+#define HW_AXI_BCH (*(volatile hw_axi_bch_t *)HW_AXI_BCH_ADDR)
+#define HW_AXI_BCH_RD() (HW_AXI_BCH.U)
+#define HW_AXI_BCH_WR(v) (HW_AXI_BCH.U = (v))
+#define HW_AXI_BCH_SET(v) (HW_AXI_BCH_WR(HW_AXI_BCH_RD() | (v)))
+#define HW_AXI_BCH_CLR(v) (HW_AXI_BCH_WR(HW_AXI_BCH_RD() & ~(v)))
+#define HW_AXI_BCH_TOG(v) (HW_AXI_BCH_WR(HW_AXI_BCH_RD() ^ (v)))
 #endif
-
 
 //
 // constants & macros for individual HW_AXI_BCH bitfields
@@ -136,48 +127,43 @@ typedef union
 
 //--- Register HW_AXI_BCH, field GROUP
 
-#define BP_AXI_BCH_GROUP      0
-#define BM_AXI_BCH_GROUP      0x000000FF
+#define BP_AXI_BCH_GROUP 0
+#define BM_AXI_BCH_GROUP 0x000000FF
 
-#define BF_AXI_BCH_GROUP(v)   (((v) << 0) & BM_AXI_BCH_GROUP)
+#define BF_AXI_BCH_GROUP(v) (((v) << 0) & BM_AXI_BCH_GROUP)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_AXI_BCH_GROUP(v)   (HW_AXI_BCH.B.GROUP = (v))
+#define BW_AXI_BCH_GROUP(v) (HW_AXI_BCH.B.GROUP = (v))
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_AXI_PXP - PXP Port Priority Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg8_t   GROUP;
-        unsigned RSVD   : 24;
+typedef union {
+    reg32_t U;
+    struct {
+        reg8_t GROUP;
+        unsigned RSVD : 24;
     } B;
 } hw_axi_pxp_t;
 #endif
-
 
 //
 // constants & macros for entire HW_AXI_PXP register
 //
 
-#define HW_AXI_PXP_ADDR      (REGS_AXI_AHB0_BASE + 0x00000040)
+#define HW_AXI_PXP_ADDR (REGS_AXI_AHB0_BASE + 0x00000040)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_AXI_PXP           (*(volatile hw_axi_pxp_t *) HW_AXI_PXP_ADDR)
-#define HW_AXI_PXP_RD()      (HW_AXI_PXP.U)
-#define HW_AXI_PXP_WR(v)     (HW_AXI_PXP.U = (v))
-#define HW_AXI_PXP_SET(v)    (HW_AXI_PXP_WR(HW_AXI_PXP_RD() |  (v)))
-#define HW_AXI_PXP_CLR(v)    (HW_AXI_PXP_WR(HW_AXI_PXP_RD() & ~(v)))
-#define HW_AXI_PXP_TOG(v)    (HW_AXI_PXP_WR(HW_AXI_PXP_RD() ^  (v)))
+#define HW_AXI_PXP (*(volatile hw_axi_pxp_t *)HW_AXI_PXP_ADDR)
+#define HW_AXI_PXP_RD() (HW_AXI_PXP.U)
+#define HW_AXI_PXP_WR(v) (HW_AXI_PXP.U = (v))
+#define HW_AXI_PXP_SET(v) (HW_AXI_PXP_WR(HW_AXI_PXP_RD() | (v)))
+#define HW_AXI_PXP_CLR(v) (HW_AXI_PXP_WR(HW_AXI_PXP_RD() & ~(v)))
+#define HW_AXI_PXP_TOG(v) (HW_AXI_PXP_WR(HW_AXI_PXP_RD() ^ (v)))
 #endif
-
 
 //
 // constants & macros for individual HW_AXI_PXP bitfields
@@ -185,48 +171,43 @@ typedef union
 
 //--- Register HW_AXI_PXP, field GROUP
 
-#define BP_AXI_PXP_GROUP      0
-#define BM_AXI_PXP_GROUP      0x000000FF
+#define BP_AXI_PXP_GROUP 0
+#define BM_AXI_PXP_GROUP 0x000000FF
 
-#define BF_AXI_PXP_GROUP(v)   (((v) << 0) & BM_AXI_PXP_GROUP)
+#define BF_AXI_PXP_GROUP(v) (((v) << 0) & BM_AXI_PXP_GROUP)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_AXI_PXP_GROUP(v)   (HW_AXI_PXP.B.GROUP = (v))
+#define BW_AXI_PXP_GROUP(v) (HW_AXI_PXP.B.GROUP = (v))
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_AXI_LCDIF - LCDIF Port Priority Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg8_t   GROUP;
-        unsigned RSVD   : 24;
+typedef union {
+    reg32_t U;
+    struct {
+        reg8_t GROUP;
+        unsigned RSVD : 24;
     } B;
 } hw_axi_lcdif_t;
 #endif
-
 
 //
 // constants & macros for entire HW_AXI_LCDIF register
 //
 
-#define HW_AXI_LCDIF_ADDR      (REGS_AXI_AHB0_BASE + 0x00000060)
+#define HW_AXI_LCDIF_ADDR (REGS_AXI_AHB0_BASE + 0x00000060)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_AXI_LCDIF           (*(volatile hw_axi_lcdif_t *) HW_AXI_LCDIF_ADDR)
-#define HW_AXI_LCDIF_RD()      (HW_AXI_LCDIF.U)
-#define HW_AXI_LCDIF_WR(v)     (HW_AXI_LCDIF.U = (v))
-#define HW_AXI_LCDIF_SET(v)    (HW_AXI_LCDIF_WR(HW_AXI_LCDIF_RD() |  (v)))
-#define HW_AXI_LCDIF_CLR(v)    (HW_AXI_LCDIF_WR(HW_AXI_LCDIF_RD() & ~(v)))
-#define HW_AXI_LCDIF_TOG(v)    (HW_AXI_LCDIF_WR(HW_AXI_LCDIF_RD() ^  (v)))
+#define HW_AXI_LCDIF (*(volatile hw_axi_lcdif_t *)HW_AXI_LCDIF_ADDR)
+#define HW_AXI_LCDIF_RD() (HW_AXI_LCDIF.U)
+#define HW_AXI_LCDIF_WR(v) (HW_AXI_LCDIF.U = (v))
+#define HW_AXI_LCDIF_SET(v) (HW_AXI_LCDIF_WR(HW_AXI_LCDIF_RD() | (v)))
+#define HW_AXI_LCDIF_CLR(v) (HW_AXI_LCDIF_WR(HW_AXI_LCDIF_RD() & ~(v)))
+#define HW_AXI_LCDIF_TOG(v) (HW_AXI_LCDIF_WR(HW_AXI_LCDIF_RD() ^ (v)))
 #endif
-
 
 //
 // constants & macros for individual HW_AXI_LCDIF bitfields
@@ -234,44 +215,40 @@ typedef union
 
 //--- Register HW_AXI_LCDIF, field GROUP
 
-#define BP_AXI_LCDIF_GROUP      0
-#define BM_AXI_LCDIF_GROUP      0x000000FF
+#define BP_AXI_LCDIF_GROUP 0
+#define BM_AXI_LCDIF_GROUP 0x000000FF
 
-#define BF_AXI_LCDIF_GROUP(v)   (((v) << 0) & BM_AXI_LCDIF_GROUP)
+#define BF_AXI_LCDIF_GROUP(v) (((v) << 0) & BM_AXI_LCDIF_GROUP)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_AXI_LCDIF_GROUP(v)   (HW_AXI_LCDIF.B.GROUP = (v))
+#define BW_AXI_LCDIF_GROUP(v) (HW_AXI_LCDIF.B.GROUP = (v))
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_AXI_PRIMECELL_CFG0 - Prime Cell Configuration 0 Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg8_t   NUM_SLAVES;
-        unsigned RSVD        : 24;
+typedef union {
+    reg32_t U;
+    struct {
+        reg8_t NUM_SLAVES;
+        unsigned RSVD : 24;
     } B;
 } hw_axi_primecell_cfg0_t;
 #endif
-
 
 //
 // constants & macros for entire HW_AXI_PRIMECELL_CFG0 register
 //
 
-#define HW_AXI_PRIMECELL_CFG0_ADDR      (REGS_AXI_AHB0_BASE + 0x00000FC0)
+#define HW_AXI_PRIMECELL_CFG0_ADDR (REGS_AXI_AHB0_BASE + 0x00000FC0)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_AXI_PRIMECELL_CFG0           (*(volatile hw_axi_primecell_cfg0_t *) HW_AXI_PRIMECELL_CFG0_ADDR)
-#define HW_AXI_PRIMECELL_CFG0_RD()      (HW_AXI_PRIMECELL_CFG0.U)
+#define HW_AXI_PRIMECELL_CFG0                                                  \
+    (*(volatile hw_axi_primecell_cfg0_t *)HW_AXI_PRIMECELL_CFG0_ADDR)
+#define HW_AXI_PRIMECELL_CFG0_RD() (HW_AXI_PRIMECELL_CFG0.U)
 #endif
-
 
 //
 // constants & macros for individual HW_AXI_PRIMECELL_CFG0 bitfields
@@ -279,40 +256,37 @@ typedef union
 
 //--- Register HW_AXI_PRIMECELL_CFG0, field NUM_SLAVES
 
-#define BP_AXI_PRIMECELL_CFG0_NUM_SLAVES      0
-#define BM_AXI_PRIMECELL_CFG0_NUM_SLAVES      0x000000FF
+#define BP_AXI_PRIMECELL_CFG0_NUM_SLAVES 0
+#define BM_AXI_PRIMECELL_CFG0_NUM_SLAVES 0x000000FF
 
-#define BF_AXI_PRIMECELL_CFG0_NUM_SLAVES(v)   (((v) << 0) & BM_AXI_PRIMECELL_CFG0_NUM_SLAVES)
-
+#define BF_AXI_PRIMECELL_CFG0_NUM_SLAVES(v)                                    \
+    (((v) << 0) & BM_AXI_PRIMECELL_CFG0_NUM_SLAVES)
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_AXI_PRIMECELL_CFG1 - Prime Cell Configuration 1 Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg8_t   NUM_MASTERS;
-        unsigned RSVD         : 24;
+typedef union {
+    reg32_t U;
+    struct {
+        reg8_t NUM_MASTERS;
+        unsigned RSVD : 24;
     } B;
 } hw_axi_primecell_cfg1_t;
 #endif
-
 
 //
 // constants & macros for entire HW_AXI_PRIMECELL_CFG1 register
 //
 
-#define HW_AXI_PRIMECELL_CFG1_ADDR      (REGS_AXI_AHB0_BASE + 0x00000FC4)
+#define HW_AXI_PRIMECELL_CFG1_ADDR (REGS_AXI_AHB0_BASE + 0x00000FC4)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_AXI_PRIMECELL_CFG1           (*(volatile hw_axi_primecell_cfg1_t *) HW_AXI_PRIMECELL_CFG1_ADDR)
-#define HW_AXI_PRIMECELL_CFG1_RD()      (HW_AXI_PRIMECELL_CFG1.U)
+#define HW_AXI_PRIMECELL_CFG1                                                  \
+    (*(volatile hw_axi_primecell_cfg1_t *)HW_AXI_PRIMECELL_CFG1_ADDR)
+#define HW_AXI_PRIMECELL_CFG1_RD() (HW_AXI_PRIMECELL_CFG1.U)
 #endif
-
 
 //
 // constants & macros for individual HW_AXI_PRIMECELL_CFG1 bitfields
@@ -320,11 +294,11 @@ typedef union
 
 //--- Register HW_AXI_PRIMECELL_CFG1, field NUM_MASTERS
 
-#define BP_AXI_PRIMECELL_CFG1_NUM_MASTERS      0
-#define BM_AXI_PRIMECELL_CFG1_NUM_MASTERS      0x000000FF
+#define BP_AXI_PRIMECELL_CFG1_NUM_MASTERS 0
+#define BM_AXI_PRIMECELL_CFG1_NUM_MASTERS 0x000000FF
 
-#define BF_AXI_PRIMECELL_CFG1_NUM_MASTERS(v)   (((v) << 0) & BM_AXI_PRIMECELL_CFG1_NUM_MASTERS)
-
+#define BF_AXI_PRIMECELL_CFG1_NUM_MASTERS(v)                                   \
+    (((v) << 0) & BM_AXI_PRIMECELL_CFG1_NUM_MASTERS)
 
 #endif // _REGSAXI_AHB0_H
 

@@ -11,7 +11,6 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
-
 #ifndef __DDI_POWER_INTERNAL_H
 #define __DDI_POWER_INTERNAL_H
 
@@ -30,28 +29,28 @@
 //! \brief Maximum time in milliseconds to wait for a particular status.
 #define MAX_STABLE_WAIT_TIME_LINREG 5000
 //! \brief Time in milliseconds to wait between each status check.
-#define RECHECK_WAIT_TIME_LINREG    500
+#define RECHECK_WAIT_TIME_LINREG 500
 
 //! \brief Minimum time in milliseconds to wait before checking status.
-#define MIN_STABLE_WAIT_TIME_DCDC   15
+#define MIN_STABLE_WAIT_TIME_DCDC 15
 //! \brief Maximum time in milliseconds to wait for a particular status.
-#define MAX_STABLE_WAIT_TIME_DCDC   20000
+#define MAX_STABLE_WAIT_TIME_DCDC 20000
 //! \brief Time in milliseconds to wait between each status check.
-#define RECHECK_WAIT_TIME_DCDC      10
+#define RECHECK_WAIT_TIME_DCDC 10
 
 //! \brief Minimum time in milliseconds to wait before checking status.
-#define MIN_STABLE_WAIT_TIME_4P2    10
+#define MIN_STABLE_WAIT_TIME_4P2 10
 //! \brief Maximum time in milliseconds to wait for a particular status.
-#define MAX_STABLE_WAIT_TIME_4P2    100000
+#define MAX_STABLE_WAIT_TIME_4P2 100000
 //! \brief Time in milliseconds to wait between each status check.
-#define RECHECK_WAIT_TIME_4P2       10
+#define RECHECK_WAIT_TIME_4P2 10
 
 //! \brief Minimum time in milliseconds to wait before checking status.
-#define MIN_RAIL_STABLE_WAIT_TIME_4P2    1000
+#define MIN_RAIL_STABLE_WAIT_TIME_4P2 1000
 //! \brief Maximum time in milliseconds to wait for a particular status.
-#define MAX_RAIL_STABLE_WAIT_TIME_4P2    100000
+#define MAX_RAIL_STABLE_WAIT_TIME_4P2 100000
 //! \brief Time in milliseconds to wait between each status check.
-#define RAIL_RECHECK_WAIT_TIME_4P2       500
+#define RAIL_RECHECK_WAIT_TIME_4P2 500
 
 //! \brief Maximum time in milliseconds to charge the 4p2 cap.  If the brownout
 //! has not cleared by this time, then something else is loading down the line.
@@ -59,16 +58,16 @@
 
 //! \brief Maximum charge current, in milliamps, to use when charging the
 //! 4p2 capacitor.
-#define CHARGE_CURRENT_LIMIT_4P2_CAP        50
+#define CHARGE_CURRENT_LIMIT_4P2_CAP 50
 //! \brief Current step size, in milliamps, when incrementing the charge current
 //! to target value.
-#define CHARGE_CURRENT_STEP_SIZE_4P2_CAP    10
+#define CHARGE_CURRENT_STEP_SIZE_4P2_CAP 10
 //! \brief Maximum combined current from 5V that the battery charger and
 //! DCDC 4p2 circuit can consume.  In milliamps.
-#define CHARGE_CURRENT_LIMIT_4P2_RAIL       780
+#define CHARGE_CURRENT_LIMIT_4P2_RAIL 780
 //! \brief Current step size, in milliamps, when incrementing the charge current
 //! to the target value.
-#define CHARGE_CURRENT_STEP_SIZE_4P2_RAIL   100
+#define CHARGE_CURRENT_STEP_SIZE_4P2_RAIL 100
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Waits at least the requested amount of time.
@@ -97,9 +96,9 @@ RtStatus_t ddi_power_Wait(uint32_t u32MicrosecondsToWait);
 //! regulator to become stable.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_WaitLinRegStable( uint32_t u32MinWaitTime,
-                                       uint32_t u32MaxWaitTime,
-                                       uint32_t u32RecheckTime );
+RtStatus_t ddi_power_WaitLinRegStable(uint32_t u32MinWaitTime,
+                                      uint32_t u32MaxWaitTime,
+                                      uint32_t u32RecheckTime);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns true.
@@ -117,7 +116,7 @@ RtStatus_t ddi_power_WaitLinRegStable( uint32_t u32MinWaitTime,
 //! stable in the future.  We can add this functionality to the wait logic
 //! when it becomes available.
 /////////////////////////////////////////////////////////////////////////////////
-bool ddi_power_IsLinRegStable( void );
+bool ddi_power_IsLinRegStable(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Waits until the DCDC is stable, or the timeout occurs.
@@ -140,9 +139,9 @@ bool ddi_power_IsLinRegStable( void );
 //! before re-checking if the DCDC has stabilized.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_WaitDcdcStable( uint32_t u32MinWaitTime,
-                                     uint32_t u32MaxWaitTime,
-                                     uint32_t u32RecheckTime );
+RtStatus_t ddi_power_WaitDcdcStable(uint32_t u32MinWaitTime,
+                                    uint32_t u32MaxWaitTime,
+                                    uint32_t u32RecheckTime);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns transition status of the DCDC
@@ -155,7 +154,7 @@ RtStatus_t ddi_power_WaitDcdcStable( uint32_t u32MinWaitTime,
 //! \retval False DCDC output is not stable.
 //!
 /////////////////////////////////////////////////////////////////////////////////
-bool ddi_power_IsDcdcStable( void );
+bool ddi_power_IsDcdcStable(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Waits until the 4p2 rail is stable, or the timeout occurs.
@@ -170,18 +169,17 @@ bool ddi_power_IsDcdcStable( void );
 //! \param[in] u32MaxWaitTime Maximum amount of time, in microseconds, to
 //! wait for the 4p2 rail to stabilize.
 //!
-//! \retval SUCCESS The 4p2 rail stablilized before the maximum wait time elapsed.
-//! \retval ERROR_DDI_POWER_ The maximum wait time elapsed.  The 4p2 rail may not
-//! be stable.
+//! \retval SUCCESS The 4p2 rail stablilized before the maximum wait time
+//! elapsed. \retval ERROR_DDI_POWER_ The maximum wait time elapsed.  The 4p2
+//! rail may not be stable.
 //!
 //! \note In the future, the 4p2 rail may notify us by interrupt when it
 //! becomes stable.  We will incorporate that logic into this function
 //! when it becomes available.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Wait4p2Stable( uint32_t u32MinWaitTime,
-                                    uint32_t u32MaxWaitTime,
-                                    uint32_t u32RecheckTime );
-
+RtStatus_t ddi_power_Wait4p2Stable(uint32_t u32MinWaitTime,
+                                   uint32_t u32MaxWaitTime,
+                                   uint32_t u32RecheckTime);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Locks the power rail to prevent access from other threads.
@@ -195,7 +193,7 @@ RtStatus_t ddi_power_Wait4p2Stable( uint32_t u32MinWaitTime,
 //!
 //! \retval SUCCESS Power rail lock acquired.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_LockRail( uint32_t MsecToWait );
+RtStatus_t ddi_power_LockRail(uint32_t MsecToWait);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Unlocks the power rail to provide other threads access.
@@ -209,8 +207,7 @@ RtStatus_t ddi_power_LockRail( uint32_t MsecToWait );
 //!
 //! \retval SUCCESS Power rail lock released.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_UnlockRail( uint32_t MsecToWait );
-
+RtStatus_t ddi_power_UnlockRail(uint32_t MsecToWait);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -239,11 +236,8 @@ void ddi_power_HandoffDebounceTimerCallback(uint32_t input);
 // Prototypes
 ////////////////////////////////////////////////////////////////////////////////
 
-
-#endif  //__DDI_POWER_INTERNAL_H
+#endif //__DDI_POWER_INTERNAL_H
 ////////////////////////////////////////////////////////////////////////////////
 // End of file
 ////////////////////////////////////////////////////////////////////////////////
 //! @}
-
-

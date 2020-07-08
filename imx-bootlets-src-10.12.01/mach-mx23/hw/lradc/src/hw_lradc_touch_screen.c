@@ -27,8 +27,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_lradc_GetTouchDetectPresent(void)
-{
+bool hw_lradc_GetTouchDetectPresent(void) {
     // Read the TOUCH_PANEL_PRESENT bit of HW_LRADC_STATUS register
     return (BF_RD(LRADC_STATUS, TOUCH_PANEL_PRESENT));
 }
@@ -36,14 +35,10 @@ bool hw_lradc_GetTouchDetectPresent(void)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_EnableTouchDetect(bool bValue)
-{
-    if(bValue)
-    {   //Enable the touch detector
+void hw_lradc_EnableTouchDetect(bool bValue) {
+    if (bValue) { // Enable the touch detector
         BF_SET(LRADC_CTRL0, TOUCH_DETECT_ENABLE);
-    }
-    else
-    {   // Disable the touch detector
+    } else { // Disable the touch detector
         BF_CLR(LRADC_CTRL0, TOUCH_DETECT_ENABLE);
     }
 }
@@ -51,14 +46,10 @@ void hw_lradc_EnableTouchDetect(bool bValue)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_EnableTouchDetectInterrupt(bool bValue)
-{
-    if(bValue)
-    {   //Enable the touch detector interrupt
+void hw_lradc_EnableTouchDetectInterrupt(bool bValue) {
+    if (bValue) { // Enable the touch detector interrupt
         BF_SET(LRADC_CTRL1, TOUCH_DETECT_IRQ_EN);
-    }
-    else
-    {   // Disable the touch detector interrupt
+    } else { // Disable the touch detector interrupt
         BF_CLR(LRADC_CTRL1, TOUCH_DETECT_IRQ_EN);
     }
 }
@@ -66,61 +57,47 @@ void hw_lradc_EnableTouchDetectInterrupt(bool bValue)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_lradc_GetTouchDetectInterruptFlag(void)
-{
+bool hw_lradc_GetTouchDetectInterruptFlag(void) {
     return ((bool)(BF_RD(LRADC_CTRL1, TOUCH_DETECT_IRQ)));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_ClearTouchDetectInterruptFlag(void)
-{
+void hw_lradc_ClearTouchDetectInterruptFlag(void) {
     BF_CLR(LRADC_CTRL1, TOUCH_DETECT_IRQ);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_EnableTouchDetectXDrive(bool bValue)
-{
-    if(bValue)
-    {   //Enable the X-Drive
+void hw_lradc_EnableTouchDetectXDrive(bool bValue) {
+    if (bValue) { // Enable the X-Drive
         BF_SET(LRADC_CTRL0, XMINUS_ENABLE);
         BF_SET(LRADC_CTRL0, XPLUS_ENABLE);
-    }
-    else
-    {   // Disable the X-Drive
+    } else { // Disable the X-Drive
         BF_CLR(LRADC_CTRL0, XMINUS_ENABLE);
         BF_CLR(LRADC_CTRL0, XPLUS_ENABLE);
     }
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_EnableTouchDetectYDrive(bool bValue)
-{
-    if(bValue)
-    {   //Enable the Y-Drive
+void hw_lradc_EnableTouchDetectYDrive(bool bValue) {
+    if (bValue) { // Enable the Y-Drive
         BF_SET(LRADC_CTRL0, YMINUS_ENABLE);
         BF_SET(LRADC_CTRL0, YPLUS_ENABLE);
-    }
-    else
-    {   // Disable the Y-Drive
+    } else { // Disable the Y-Drive
         BF_CLR(LRADC_CTRL0, YMINUS_ENABLE);
         BF_CLR(LRADC_CTRL0, YPLUS_ENABLE);
     }
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_lradc_GetTouchDetect(void)
-{
+bool hw_lradc_GetTouchDetect(void) {
     // Read the TOUCH_DETECT_RAW bit of HW_LRADC_STATUS register
     return ((bool)(BF_RD(LRADC_STATUS, TOUCH_DETECT_RAW)));
 }
-

@@ -39,16 +39,15 @@
 //! \endcode
 //!
 
-
-//the below is ugly, but its the only way to solve the int typedef type checking
+// the below is ugly, but its the only way to solve the int typedef type
+// checking
 // where errors show up as negative
-#define HW_GROUP                  (0x00100000) //0x80100000
-#define DDI_GROUP                 (0x00200000) //0x80200000
-#define OS_GROUP                  (0x00300000) //0x80300000
-#define MIDDLEWARE_GROUP          (0x00400000) //0x80400000
-#define ROM_GROUP                 (0x00500000) //0x80500000
-#define BM_GROUP                  (0x00600000) //0x80600000
-#define APPS_GROUP                (0x00700000) //0x80700000
-#define UTILITY_GROUP             (0x00800000) //0x80800000
-#endif//_GROUPS_H
-
+#define HW_GROUP (0x00100000)         // 0x80100000
+#define DDI_GROUP (0x00200000)        // 0x80200000
+#define OS_GROUP (0x00300000)         // 0x80300000
+#define MIDDLEWARE_GROUP (0x00400000) // 0x80400000
+#define ROM_GROUP (0x00500000)        // 0x80500000
+#define BM_GROUP (0x00600000)         // 0x80600000
+#define APPS_GROUP (0x00700000)       // 0x80700000
+#define UTILITY_GROUP (0x00800000)    // 0x80800000
+#endif                                //_GROUPS_H

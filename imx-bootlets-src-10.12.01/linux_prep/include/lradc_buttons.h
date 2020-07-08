@@ -25,8 +25,8 @@
  * input values and button codes for LRADC keypad
  */
 struct lradc_keycode {
-	u32 raw;
-	u32 kcode;
+    u32 raw;
+    u32 kcode;
 };
 
 /*

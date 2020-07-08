@@ -40,7 +40,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef _REGSSAIF_H
-#define _REGSSAIF_H  1
+#define _REGSSAIF_H 1
 
 #include "regs.h"
 
@@ -53,54 +53,50 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        unsigned RUN                  :  1;
-        unsigned READ_MODE            :  1;
-        unsigned SLAVE_MODE           :  1;
-        unsigned BITCLK_48XFS_ENABLE  :  1;
-        unsigned WORD_LENGTH          :  4;
-        unsigned BITCLK_EDGE          :  1;
-        unsigned LRCLK_POLARITY       :  1;
-        unsigned JUSTIFY              :  1;
-        unsigned DELAY                :  1;
-        unsigned BIT_ORDER            :  1;
-        unsigned RSRVD1               :  1;
-        unsigned CHANNEL_NUM_SELECT   :  2;
-        unsigned DMAWAIT_COUNT        :  5;
-        unsigned RSRVD2               :  3;
-        unsigned FIFO_SERVICE_IRQ_EN  :  1;
-        unsigned FIFO_ERROR_IRQ_EN    :  1;
-        unsigned BITCLK_BASE_RATE     :  1;
-        unsigned BITCLK_MULT_RATE     :  3;
-        unsigned CLKGATE              :  1;
-        unsigned SFTRST               :  1;
+typedef union {
+    reg32_t U;
+    struct {
+        unsigned RUN : 1;
+        unsigned READ_MODE : 1;
+        unsigned SLAVE_MODE : 1;
+        unsigned BITCLK_48XFS_ENABLE : 1;
+        unsigned WORD_LENGTH : 4;
+        unsigned BITCLK_EDGE : 1;
+        unsigned LRCLK_POLARITY : 1;
+        unsigned JUSTIFY : 1;
+        unsigned DELAY : 1;
+        unsigned BIT_ORDER : 1;
+        unsigned RSRVD1 : 1;
+        unsigned CHANNEL_NUM_SELECT : 2;
+        unsigned DMAWAIT_COUNT : 5;
+        unsigned RSRVD2 : 3;
+        unsigned FIFO_SERVICE_IRQ_EN : 1;
+        unsigned FIFO_ERROR_IRQ_EN : 1;
+        unsigned BITCLK_BASE_RATE : 1;
+        unsigned BITCLK_MULT_RATE : 3;
+        unsigned CLKGATE : 1;
+        unsigned SFTRST : 1;
     } B;
 } hw_saif_ctrl_t;
 #endif
-
 
 //
 // constants & macros for entire HW_SAIF_CTRL register
 //
 
-#define HW_SAIF_CTRL_ADDR      (REGS_SAIF_BASE + 0x00000000)
-#define HW_SAIF_CTRL_SET_ADDR  (REGS_SAIF_BASE + 0x00000004)
-#define HW_SAIF_CTRL_CLR_ADDR  (REGS_SAIF_BASE + 0x00000008)
-#define HW_SAIF_CTRL_TOG_ADDR  (REGS_SAIF_BASE + 0x0000000C)
+#define HW_SAIF_CTRL_ADDR (REGS_SAIF_BASE + 0x00000000)
+#define HW_SAIF_CTRL_SET_ADDR (REGS_SAIF_BASE + 0x00000004)
+#define HW_SAIF_CTRL_CLR_ADDR (REGS_SAIF_BASE + 0x00000008)
+#define HW_SAIF_CTRL_TOG_ADDR (REGS_SAIF_BASE + 0x0000000C)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_SAIF_CTRL           (*(volatile hw_saif_ctrl_t *) HW_SAIF_CTRL_ADDR)
-#define HW_SAIF_CTRL_RD()      (HW_SAIF_CTRL.U)
-#define HW_SAIF_CTRL_WR(v)     (HW_SAIF_CTRL.U = (v))
-#define HW_SAIF_CTRL_SET(v)    ((*(volatile reg32_t *) HW_SAIF_CTRL_SET_ADDR) = (v))
-#define HW_SAIF_CTRL_CLR(v)    ((*(volatile reg32_t *) HW_SAIF_CTRL_CLR_ADDR) = (v))
-#define HW_SAIF_CTRL_TOG(v)    ((*(volatile reg32_t *) HW_SAIF_CTRL_TOG_ADDR) = (v))
+#define HW_SAIF_CTRL (*(volatile hw_saif_ctrl_t *)HW_SAIF_CTRL_ADDR)
+#define HW_SAIF_CTRL_RD() (HW_SAIF_CTRL.U)
+#define HW_SAIF_CTRL_WR(v) (HW_SAIF_CTRL.U = (v))
+#define HW_SAIF_CTRL_SET(v) ((*(volatile reg32_t *)HW_SAIF_CTRL_SET_ADDR) = (v))
+#define HW_SAIF_CTRL_CLR(v) ((*(volatile reg32_t *)HW_SAIF_CTRL_CLR_ADDR) = (v))
+#define HW_SAIF_CTRL_TOG(v) ((*(volatile reg32_t *)HW_SAIF_CTRL_TOG_ADDR) = (v))
 #endif
-
 
 //
 // constants & macros for individual HW_SAIF_CTRL bitfields
@@ -108,249 +104,255 @@ typedef union
 
 //--- Register HW_SAIF_CTRL, field SFTRST
 
-#define BP_SAIF_CTRL_SFTRST      31
-#define BM_SAIF_CTRL_SFTRST      0x80000000
+#define BP_SAIF_CTRL_SFTRST 31
+#define BM_SAIF_CTRL_SFTRST 0x80000000
 
 #ifndef __LANGUAGE_ASM__
-#define BF_SAIF_CTRL_SFTRST(v)   ((((reg32_t) v) << 31) & BM_SAIF_CTRL_SFTRST)
+#define BF_SAIF_CTRL_SFTRST(v) ((((reg32_t)v) << 31) & BM_SAIF_CTRL_SFTRST)
 #else
-#define BF_SAIF_CTRL_SFTRST(v)   (((v) << 31) & BM_SAIF_CTRL_SFTRST)
+#define BF_SAIF_CTRL_SFTRST(v) (((v) << 31) & BM_SAIF_CTRL_SFTRST)
 #endif
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_SFTRST(v)   BF_CS1(SAIF_CTRL, SFTRST, v)
+#define BW_SAIF_CTRL_SFTRST(v) BF_CS1(SAIF_CTRL, SFTRST, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field CLKGATE
 
-#define BP_SAIF_CTRL_CLKGATE      30
-#define BM_SAIF_CTRL_CLKGATE      0x40000000
+#define BP_SAIF_CTRL_CLKGATE 30
+#define BM_SAIF_CTRL_CLKGATE 0x40000000
 
-#define BF_SAIF_CTRL_CLKGATE(v)   (((v) << 30) & BM_SAIF_CTRL_CLKGATE)
+#define BF_SAIF_CTRL_CLKGATE(v) (((v) << 30) & BM_SAIF_CTRL_CLKGATE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_CLKGATE(v)   BF_CS1(SAIF_CTRL, CLKGATE, v)
+#define BW_SAIF_CTRL_CLKGATE(v) BF_CS1(SAIF_CTRL, CLKGATE, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field BITCLK_MULT_RATE
 
-#define BP_SAIF_CTRL_BITCLK_MULT_RATE      27
-#define BM_SAIF_CTRL_BITCLK_MULT_RATE      0x38000000
+#define BP_SAIF_CTRL_BITCLK_MULT_RATE 27
+#define BM_SAIF_CTRL_BITCLK_MULT_RATE 0x38000000
 
-#define BF_SAIF_CTRL_BITCLK_MULT_RATE(v)   (((v) << 27) & BM_SAIF_CTRL_BITCLK_MULT_RATE)
+#define BF_SAIF_CTRL_BITCLK_MULT_RATE(v)                                       \
+    (((v) << 27) & BM_SAIF_CTRL_BITCLK_MULT_RATE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_BITCLK_MULT_RATE(v)   BF_CS1(SAIF_CTRL, BITCLK_MULT_RATE, v)
+#define BW_SAIF_CTRL_BITCLK_MULT_RATE(v) BF_CS1(SAIF_CTRL, BITCLK_MULT_RATE, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field BITCLK_BASE_RATE
 
-#define BP_SAIF_CTRL_BITCLK_BASE_RATE      26
-#define BM_SAIF_CTRL_BITCLK_BASE_RATE      0x04000000
+#define BP_SAIF_CTRL_BITCLK_BASE_RATE 26
+#define BM_SAIF_CTRL_BITCLK_BASE_RATE 0x04000000
 
-#define BF_SAIF_CTRL_BITCLK_BASE_RATE(v)   (((v) << 26) & BM_SAIF_CTRL_BITCLK_BASE_RATE)
+#define BF_SAIF_CTRL_BITCLK_BASE_RATE(v)                                       \
+    (((v) << 26) & BM_SAIF_CTRL_BITCLK_BASE_RATE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_BITCLK_BASE_RATE(v)   BF_CS1(SAIF_CTRL, BITCLK_BASE_RATE, v)
+#define BW_SAIF_CTRL_BITCLK_BASE_RATE(v) BF_CS1(SAIF_CTRL, BITCLK_BASE_RATE, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field FIFO_ERROR_IRQ_EN
 
-#define BP_SAIF_CTRL_FIFO_ERROR_IRQ_EN      25
-#define BM_SAIF_CTRL_FIFO_ERROR_IRQ_EN      0x02000000
+#define BP_SAIF_CTRL_FIFO_ERROR_IRQ_EN 25
+#define BM_SAIF_CTRL_FIFO_ERROR_IRQ_EN 0x02000000
 
-#define BF_SAIF_CTRL_FIFO_ERROR_IRQ_EN(v)   (((v) << 25) & BM_SAIF_CTRL_FIFO_ERROR_IRQ_EN)
+#define BF_SAIF_CTRL_FIFO_ERROR_IRQ_EN(v)                                      \
+    (((v) << 25) & BM_SAIF_CTRL_FIFO_ERROR_IRQ_EN)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_FIFO_ERROR_IRQ_EN(v)   BF_CS1(SAIF_CTRL, FIFO_ERROR_IRQ_EN, v)
+#define BW_SAIF_CTRL_FIFO_ERROR_IRQ_EN(v)                                      \
+    BF_CS1(SAIF_CTRL, FIFO_ERROR_IRQ_EN, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field FIFO_SERVICE_IRQ_EN
 
-#define BP_SAIF_CTRL_FIFO_SERVICE_IRQ_EN      24
-#define BM_SAIF_CTRL_FIFO_SERVICE_IRQ_EN      0x01000000
+#define BP_SAIF_CTRL_FIFO_SERVICE_IRQ_EN 24
+#define BM_SAIF_CTRL_FIFO_SERVICE_IRQ_EN 0x01000000
 
-#define BF_SAIF_CTRL_FIFO_SERVICE_IRQ_EN(v)   (((v) << 24) & BM_SAIF_CTRL_FIFO_SERVICE_IRQ_EN)
+#define BF_SAIF_CTRL_FIFO_SERVICE_IRQ_EN(v)                                    \
+    (((v) << 24) & BM_SAIF_CTRL_FIFO_SERVICE_IRQ_EN)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_FIFO_SERVICE_IRQ_EN(v)   BF_CS1(SAIF_CTRL, FIFO_SERVICE_IRQ_EN, v)
+#define BW_SAIF_CTRL_FIFO_SERVICE_IRQ_EN(v)                                    \
+    BF_CS1(SAIF_CTRL, FIFO_SERVICE_IRQ_EN, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field DMAWAIT_COUNT
 
-#define BP_SAIF_CTRL_DMAWAIT_COUNT      16
-#define BM_SAIF_CTRL_DMAWAIT_COUNT      0x001F0000
+#define BP_SAIF_CTRL_DMAWAIT_COUNT 16
+#define BM_SAIF_CTRL_DMAWAIT_COUNT 0x001F0000
 
-#define BF_SAIF_CTRL_DMAWAIT_COUNT(v)   (((v) << 16) & BM_SAIF_CTRL_DMAWAIT_COUNT)
+#define BF_SAIF_CTRL_DMAWAIT_COUNT(v) (((v) << 16) & BM_SAIF_CTRL_DMAWAIT_COUNT)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_DMAWAIT_COUNT(v)   BF_CS1(SAIF_CTRL, DMAWAIT_COUNT, v)
+#define BW_SAIF_CTRL_DMAWAIT_COUNT(v) BF_CS1(SAIF_CTRL, DMAWAIT_COUNT, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field CHANNEL_NUM_SELECT
 
-#define BP_SAIF_CTRL_CHANNEL_NUM_SELECT      14
-#define BM_SAIF_CTRL_CHANNEL_NUM_SELECT      0x0000C000
+#define BP_SAIF_CTRL_CHANNEL_NUM_SELECT 14
+#define BM_SAIF_CTRL_CHANNEL_NUM_SELECT 0x0000C000
 
-#define BF_SAIF_CTRL_CHANNEL_NUM_SELECT(v)   (((v) << 14) & BM_SAIF_CTRL_CHANNEL_NUM_SELECT)
+#define BF_SAIF_CTRL_CHANNEL_NUM_SELECT(v)                                     \
+    (((v) << 14) & BM_SAIF_CTRL_CHANNEL_NUM_SELECT)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_CHANNEL_NUM_SELECT(v)   BF_CS1(SAIF_CTRL, CHANNEL_NUM_SELECT, v)
+#define BW_SAIF_CTRL_CHANNEL_NUM_SELECT(v)                                     \
+    BF_CS1(SAIF_CTRL, CHANNEL_NUM_SELECT, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field BIT_ORDER
 
-#define BP_SAIF_CTRL_BIT_ORDER      12
-#define BM_SAIF_CTRL_BIT_ORDER      0x00001000
+#define BP_SAIF_CTRL_BIT_ORDER 12
+#define BM_SAIF_CTRL_BIT_ORDER 0x00001000
 
-#define BF_SAIF_CTRL_BIT_ORDER(v)   (((v) << 12) & BM_SAIF_CTRL_BIT_ORDER)
+#define BF_SAIF_CTRL_BIT_ORDER(v) (((v) << 12) & BM_SAIF_CTRL_BIT_ORDER)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_BIT_ORDER(v)   BF_CS1(SAIF_CTRL, BIT_ORDER, v)
+#define BW_SAIF_CTRL_BIT_ORDER(v) BF_CS1(SAIF_CTRL, BIT_ORDER, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field DELAY
 
-#define BP_SAIF_CTRL_DELAY      11
-#define BM_SAIF_CTRL_DELAY      0x00000800
+#define BP_SAIF_CTRL_DELAY 11
+#define BM_SAIF_CTRL_DELAY 0x00000800
 
-#define BF_SAIF_CTRL_DELAY(v)   (((v) << 11) & BM_SAIF_CTRL_DELAY)
+#define BF_SAIF_CTRL_DELAY(v) (((v) << 11) & BM_SAIF_CTRL_DELAY)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_DELAY(v)   BF_CS1(SAIF_CTRL, DELAY, v)
+#define BW_SAIF_CTRL_DELAY(v) BF_CS1(SAIF_CTRL, DELAY, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field JUSTIFY
 
-#define BP_SAIF_CTRL_JUSTIFY      10
-#define BM_SAIF_CTRL_JUSTIFY      0x00000400
+#define BP_SAIF_CTRL_JUSTIFY 10
+#define BM_SAIF_CTRL_JUSTIFY 0x00000400
 
-#define BF_SAIF_CTRL_JUSTIFY(v)   (((v) << 10) & BM_SAIF_CTRL_JUSTIFY)
+#define BF_SAIF_CTRL_JUSTIFY(v) (((v) << 10) & BM_SAIF_CTRL_JUSTIFY)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_JUSTIFY(v)   BF_CS1(SAIF_CTRL, JUSTIFY, v)
+#define BW_SAIF_CTRL_JUSTIFY(v) BF_CS1(SAIF_CTRL, JUSTIFY, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field LRCLK_POLARITY
 
-#define BP_SAIF_CTRL_LRCLK_POLARITY      9
-#define BM_SAIF_CTRL_LRCLK_POLARITY      0x00000200
+#define BP_SAIF_CTRL_LRCLK_POLARITY 9
+#define BM_SAIF_CTRL_LRCLK_POLARITY 0x00000200
 
-#define BF_SAIF_CTRL_LRCLK_POLARITY(v)   (((v) << 9) & BM_SAIF_CTRL_LRCLK_POLARITY)
+#define BF_SAIF_CTRL_LRCLK_POLARITY(v)                                         \
+    (((v) << 9) & BM_SAIF_CTRL_LRCLK_POLARITY)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_LRCLK_POLARITY(v)   BF_CS1(SAIF_CTRL, LRCLK_POLARITY, v)
+#define BW_SAIF_CTRL_LRCLK_POLARITY(v) BF_CS1(SAIF_CTRL, LRCLK_POLARITY, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field BITCLK_EDGE
 
-#define BP_SAIF_CTRL_BITCLK_EDGE      8
-#define BM_SAIF_CTRL_BITCLK_EDGE      0x00000100
+#define BP_SAIF_CTRL_BITCLK_EDGE 8
+#define BM_SAIF_CTRL_BITCLK_EDGE 0x00000100
 
-#define BF_SAIF_CTRL_BITCLK_EDGE(v)   (((v) << 8) & BM_SAIF_CTRL_BITCLK_EDGE)
+#define BF_SAIF_CTRL_BITCLK_EDGE(v) (((v) << 8) & BM_SAIF_CTRL_BITCLK_EDGE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_BITCLK_EDGE(v)   BF_CS1(SAIF_CTRL, BITCLK_EDGE, v)
+#define BW_SAIF_CTRL_BITCLK_EDGE(v) BF_CS1(SAIF_CTRL, BITCLK_EDGE, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field WORD_LENGTH
 
-#define BP_SAIF_CTRL_WORD_LENGTH      4
-#define BM_SAIF_CTRL_WORD_LENGTH      0x000000F0
+#define BP_SAIF_CTRL_WORD_LENGTH 4
+#define BM_SAIF_CTRL_WORD_LENGTH 0x000000F0
 
-#define BF_SAIF_CTRL_WORD_LENGTH(v)   (((v) << 4) & BM_SAIF_CTRL_WORD_LENGTH)
+#define BF_SAIF_CTRL_WORD_LENGTH(v) (((v) << 4) & BM_SAIF_CTRL_WORD_LENGTH)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_WORD_LENGTH(v)   BF_CS1(SAIF_CTRL, WORD_LENGTH, v)
+#define BW_SAIF_CTRL_WORD_LENGTH(v) BF_CS1(SAIF_CTRL, WORD_LENGTH, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field BITCLK_48XFS_ENABLE
 
-#define BP_SAIF_CTRL_BITCLK_48XFS_ENABLE      3
-#define BM_SAIF_CTRL_BITCLK_48XFS_ENABLE      0x00000008
+#define BP_SAIF_CTRL_BITCLK_48XFS_ENABLE 3
+#define BM_SAIF_CTRL_BITCLK_48XFS_ENABLE 0x00000008
 
-#define BF_SAIF_CTRL_BITCLK_48XFS_ENABLE(v)   (((v) << 3) & BM_SAIF_CTRL_BITCLK_48XFS_ENABLE)
+#define BF_SAIF_CTRL_BITCLK_48XFS_ENABLE(v)                                    \
+    (((v) << 3) & BM_SAIF_CTRL_BITCLK_48XFS_ENABLE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_BITCLK_48XFS_ENABLE(v)   BF_CS1(SAIF_CTRL, BITCLK_48XFS_ENABLE, v)
+#define BW_SAIF_CTRL_BITCLK_48XFS_ENABLE(v)                                    \
+    BF_CS1(SAIF_CTRL, BITCLK_48XFS_ENABLE, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field SLAVE_MODE
 
-#define BP_SAIF_CTRL_SLAVE_MODE      2
-#define BM_SAIF_CTRL_SLAVE_MODE      0x00000004
+#define BP_SAIF_CTRL_SLAVE_MODE 2
+#define BM_SAIF_CTRL_SLAVE_MODE 0x00000004
 
-#define BF_SAIF_CTRL_SLAVE_MODE(v)   (((v) << 2) & BM_SAIF_CTRL_SLAVE_MODE)
+#define BF_SAIF_CTRL_SLAVE_MODE(v) (((v) << 2) & BM_SAIF_CTRL_SLAVE_MODE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_SLAVE_MODE(v)   BF_CS1(SAIF_CTRL, SLAVE_MODE, v)
+#define BW_SAIF_CTRL_SLAVE_MODE(v) BF_CS1(SAIF_CTRL, SLAVE_MODE, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field READ_MODE
 
-#define BP_SAIF_CTRL_READ_MODE      1
-#define BM_SAIF_CTRL_READ_MODE      0x00000002
+#define BP_SAIF_CTRL_READ_MODE 1
+#define BM_SAIF_CTRL_READ_MODE 0x00000002
 
-#define BF_SAIF_CTRL_READ_MODE(v)   (((v) << 1) & BM_SAIF_CTRL_READ_MODE)
+#define BF_SAIF_CTRL_READ_MODE(v) (((v) << 1) & BM_SAIF_CTRL_READ_MODE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_READ_MODE(v)   BF_CS1(SAIF_CTRL, READ_MODE, v)
+#define BW_SAIF_CTRL_READ_MODE(v) BF_CS1(SAIF_CTRL, READ_MODE, v)
 #endif
 
 //--- Register HW_SAIF_CTRL, field RUN
 
-#define BP_SAIF_CTRL_RUN      0
-#define BM_SAIF_CTRL_RUN      0x00000001
+#define BP_SAIF_CTRL_RUN 0
+#define BM_SAIF_CTRL_RUN 0x00000001
 
-#define BF_SAIF_CTRL_RUN(v)   (((v) << 0) & BM_SAIF_CTRL_RUN)
+#define BF_SAIF_CTRL_RUN(v) (((v) << 0) & BM_SAIF_CTRL_RUN)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_CTRL_RUN(v)   BF_CS1(SAIF_CTRL, RUN, v)
+#define BW_SAIF_CTRL_RUN(v) BF_CS1(SAIF_CTRL, RUN, v)
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_SAIF_STAT - SAIF Status Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        unsigned BUSY                :  1;
-        unsigned RSRVD0              :  3;
-        unsigned FIFO_SERVICE_IRQ    :  1;
-        unsigned FIFO_OVERFLOW_IRQ   :  1;
-        unsigned FIFO_UNDERFLOW_IRQ  :  1;
-        unsigned RSRVD1              :  9;
-        unsigned DMA_PREQ            :  1;
-        unsigned RSRVD2              : 14;
-        unsigned PRESENT             :  1;
+typedef union {
+    reg32_t U;
+    struct {
+        unsigned BUSY : 1;
+        unsigned RSRVD0 : 3;
+        unsigned FIFO_SERVICE_IRQ : 1;
+        unsigned FIFO_OVERFLOW_IRQ : 1;
+        unsigned FIFO_UNDERFLOW_IRQ : 1;
+        unsigned RSRVD1 : 9;
+        unsigned DMA_PREQ : 1;
+        unsigned RSRVD2 : 14;
+        unsigned PRESENT : 1;
     } B;
 } hw_saif_stat_t;
 #endif
-
 
 //
 // constants & macros for entire HW_SAIF_STAT register
 //
 
-#define HW_SAIF_STAT_ADDR      (REGS_SAIF_BASE + 0x00000010)
-#define HW_SAIF_STAT_SET_ADDR  (REGS_SAIF_BASE + 0x00000014)
-#define HW_SAIF_STAT_CLR_ADDR  (REGS_SAIF_BASE + 0x00000018)
-#define HW_SAIF_STAT_TOG_ADDR  (REGS_SAIF_BASE + 0x0000001C)
+#define HW_SAIF_STAT_ADDR (REGS_SAIF_BASE + 0x00000010)
+#define HW_SAIF_STAT_SET_ADDR (REGS_SAIF_BASE + 0x00000014)
+#define HW_SAIF_STAT_CLR_ADDR (REGS_SAIF_BASE + 0x00000018)
+#define HW_SAIF_STAT_TOG_ADDR (REGS_SAIF_BASE + 0x0000001C)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_SAIF_STAT           (*(volatile hw_saif_stat_t *) HW_SAIF_STAT_ADDR)
-#define HW_SAIF_STAT_RD()      (HW_SAIF_STAT.U)
-#define HW_SAIF_STAT_WR(v)     (HW_SAIF_STAT.U = (v))
-#define HW_SAIF_STAT_SET(v)    ((*(volatile reg32_t *) HW_SAIF_STAT_SET_ADDR) = (v))
-#define HW_SAIF_STAT_CLR(v)    ((*(volatile reg32_t *) HW_SAIF_STAT_CLR_ADDR) = (v))
-#define HW_SAIF_STAT_TOG(v)    ((*(volatile reg32_t *) HW_SAIF_STAT_TOG_ADDR) = (v))
+#define HW_SAIF_STAT (*(volatile hw_saif_stat_t *)HW_SAIF_STAT_ADDR)
+#define HW_SAIF_STAT_RD() (HW_SAIF_STAT.U)
+#define HW_SAIF_STAT_WR(v) (HW_SAIF_STAT.U = (v))
+#define HW_SAIF_STAT_SET(v) ((*(volatile reg32_t *)HW_SAIF_STAT_SET_ADDR) = (v))
+#define HW_SAIF_STAT_CLR(v) ((*(volatile reg32_t *)HW_SAIF_STAT_CLR_ADDR) = (v))
+#define HW_SAIF_STAT_TOG(v) ((*(volatile reg32_t *)HW_SAIF_STAT_TOG_ADDR) = (v))
 #endif
-
 
 //
 // constants & macros for individual HW_SAIF_STAT bitfields
@@ -358,94 +360,94 @@ typedef union
 
 //--- Register HW_SAIF_STAT, field PRESENT
 
-#define BP_SAIF_STAT_PRESENT      31
-#define BM_SAIF_STAT_PRESENT      0x80000000
+#define BP_SAIF_STAT_PRESENT 31
+#define BM_SAIF_STAT_PRESENT 0x80000000
 
 #ifndef __LANGUAGE_ASM__
-#define BF_SAIF_STAT_PRESENT(v)   ((((reg32_t) v) << 31) & BM_SAIF_STAT_PRESENT)
+#define BF_SAIF_STAT_PRESENT(v) ((((reg32_t)v) << 31) & BM_SAIF_STAT_PRESENT)
 #else
-#define BF_SAIF_STAT_PRESENT(v)   (((v) << 31) & BM_SAIF_STAT_PRESENT)
+#define BF_SAIF_STAT_PRESENT(v) (((v) << 31) & BM_SAIF_STAT_PRESENT)
 #endif
 
 //--- Register HW_SAIF_STAT, field DMA_PREQ
 
-#define BP_SAIF_STAT_DMA_PREQ      16
-#define BM_SAIF_STAT_DMA_PREQ      0x00010000
+#define BP_SAIF_STAT_DMA_PREQ 16
+#define BM_SAIF_STAT_DMA_PREQ 0x00010000
 
-#define BF_SAIF_STAT_DMA_PREQ(v)   (((v) << 16) & BM_SAIF_STAT_DMA_PREQ)
+#define BF_SAIF_STAT_DMA_PREQ(v) (((v) << 16) & BM_SAIF_STAT_DMA_PREQ)
 
 //--- Register HW_SAIF_STAT, field FIFO_UNDERFLOW_IRQ
 
-#define BP_SAIF_STAT_FIFO_UNDERFLOW_IRQ      6
-#define BM_SAIF_STAT_FIFO_UNDERFLOW_IRQ      0x00000040
+#define BP_SAIF_STAT_FIFO_UNDERFLOW_IRQ 6
+#define BM_SAIF_STAT_FIFO_UNDERFLOW_IRQ 0x00000040
 
-#define BF_SAIF_STAT_FIFO_UNDERFLOW_IRQ(v)   (((v) << 6) & BM_SAIF_STAT_FIFO_UNDERFLOW_IRQ)
+#define BF_SAIF_STAT_FIFO_UNDERFLOW_IRQ(v)                                     \
+    (((v) << 6) & BM_SAIF_STAT_FIFO_UNDERFLOW_IRQ)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_STAT_FIFO_UNDERFLOW_IRQ(v)   BF_CS1(SAIF_STAT, FIFO_UNDERFLOW_IRQ, v)
+#define BW_SAIF_STAT_FIFO_UNDERFLOW_IRQ(v)                                     \
+    BF_CS1(SAIF_STAT, FIFO_UNDERFLOW_IRQ, v)
 #endif
 
 //--- Register HW_SAIF_STAT, field FIFO_OVERFLOW_IRQ
 
-#define BP_SAIF_STAT_FIFO_OVERFLOW_IRQ      5
-#define BM_SAIF_STAT_FIFO_OVERFLOW_IRQ      0x00000020
+#define BP_SAIF_STAT_FIFO_OVERFLOW_IRQ 5
+#define BM_SAIF_STAT_FIFO_OVERFLOW_IRQ 0x00000020
 
-#define BF_SAIF_STAT_FIFO_OVERFLOW_IRQ(v)   (((v) << 5) & BM_SAIF_STAT_FIFO_OVERFLOW_IRQ)
+#define BF_SAIF_STAT_FIFO_OVERFLOW_IRQ(v)                                      \
+    (((v) << 5) & BM_SAIF_STAT_FIFO_OVERFLOW_IRQ)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_STAT_FIFO_OVERFLOW_IRQ(v)   BF_CS1(SAIF_STAT, FIFO_OVERFLOW_IRQ, v)
+#define BW_SAIF_STAT_FIFO_OVERFLOW_IRQ(v)                                      \
+    BF_CS1(SAIF_STAT, FIFO_OVERFLOW_IRQ, v)
 #endif
 
 //--- Register HW_SAIF_STAT, field FIFO_SERVICE_IRQ
 
-#define BP_SAIF_STAT_FIFO_SERVICE_IRQ      4
-#define BM_SAIF_STAT_FIFO_SERVICE_IRQ      0x00000010
+#define BP_SAIF_STAT_FIFO_SERVICE_IRQ 4
+#define BM_SAIF_STAT_FIFO_SERVICE_IRQ 0x00000010
 
-#define BF_SAIF_STAT_FIFO_SERVICE_IRQ(v)   (((v) << 4) & BM_SAIF_STAT_FIFO_SERVICE_IRQ)
+#define BF_SAIF_STAT_FIFO_SERVICE_IRQ(v)                                       \
+    (((v) << 4) & BM_SAIF_STAT_FIFO_SERVICE_IRQ)
 
 //--- Register HW_SAIF_STAT, field BUSY
 
-#define BP_SAIF_STAT_BUSY      0
-#define BM_SAIF_STAT_BUSY      0x00000001
+#define BP_SAIF_STAT_BUSY 0
+#define BM_SAIF_STAT_BUSY 0x00000001
 
-#define BF_SAIF_STAT_BUSY(v)   (((v) << 0) & BM_SAIF_STAT_BUSY)
-
+#define BF_SAIF_STAT_BUSY(v) (((v) << 0) & BM_SAIF_STAT_BUSY)
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_SAIF_DATA - SAIF Data Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg16_t  PCM_LEFT;
-        reg16_t  PCM_RIGHT;
+typedef union {
+    reg32_t U;
+    struct {
+        reg16_t PCM_LEFT;
+        reg16_t PCM_RIGHT;
     } B;
 } hw_saif_data_t;
 #endif
-
 
 //
 // constants & macros for entire HW_SAIF_DATA register
 //
 
-#define HW_SAIF_DATA_ADDR      (REGS_SAIF_BASE + 0x00000020)
-#define HW_SAIF_DATA_SET_ADDR  (REGS_SAIF_BASE + 0x00000024)
-#define HW_SAIF_DATA_CLR_ADDR  (REGS_SAIF_BASE + 0x00000028)
-#define HW_SAIF_DATA_TOG_ADDR  (REGS_SAIF_BASE + 0x0000002C)
+#define HW_SAIF_DATA_ADDR (REGS_SAIF_BASE + 0x00000020)
+#define HW_SAIF_DATA_SET_ADDR (REGS_SAIF_BASE + 0x00000024)
+#define HW_SAIF_DATA_CLR_ADDR (REGS_SAIF_BASE + 0x00000028)
+#define HW_SAIF_DATA_TOG_ADDR (REGS_SAIF_BASE + 0x0000002C)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_SAIF_DATA           (*(volatile hw_saif_data_t *) HW_SAIF_DATA_ADDR)
-#define HW_SAIF_DATA_RD()      (HW_SAIF_DATA.U)
-#define HW_SAIF_DATA_WR(v)     (HW_SAIF_DATA.U = (v))
-#define HW_SAIF_DATA_SET(v)    ((*(volatile reg32_t *) HW_SAIF_DATA_SET_ADDR) = (v))
-#define HW_SAIF_DATA_CLR(v)    ((*(volatile reg32_t *) HW_SAIF_DATA_CLR_ADDR) = (v))
-#define HW_SAIF_DATA_TOG(v)    ((*(volatile reg32_t *) HW_SAIF_DATA_TOG_ADDR) = (v))
+#define HW_SAIF_DATA (*(volatile hw_saif_data_t *)HW_SAIF_DATA_ADDR)
+#define HW_SAIF_DATA_RD() (HW_SAIF_DATA.U)
+#define HW_SAIF_DATA_WR(v) (HW_SAIF_DATA.U = (v))
+#define HW_SAIF_DATA_SET(v) ((*(volatile reg32_t *)HW_SAIF_DATA_SET_ADDR) = (v))
+#define HW_SAIF_DATA_CLR(v) ((*(volatile reg32_t *)HW_SAIF_DATA_CLR_ADDR) = (v))
+#define HW_SAIF_DATA_TOG(v) ((*(volatile reg32_t *)HW_SAIF_DATA_TOG_ADDR) = (v))
 #endif
-
 
 //
 // constants & macros for individual HW_SAIF_DATA bitfields
@@ -453,60 +455,56 @@ typedef union
 
 //--- Register HW_SAIF_DATA, field PCM_RIGHT
 
-#define BP_SAIF_DATA_PCM_RIGHT      16
-#define BM_SAIF_DATA_PCM_RIGHT      0xFFFF0000
+#define BP_SAIF_DATA_PCM_RIGHT 16
+#define BM_SAIF_DATA_PCM_RIGHT 0xFFFF0000
 
 #ifndef __LANGUAGE_ASM__
-#define BF_SAIF_DATA_PCM_RIGHT(v)   ((((reg32_t) v) << 16) & BM_SAIF_DATA_PCM_RIGHT)
+#define BF_SAIF_DATA_PCM_RIGHT(v)                                              \
+    ((((reg32_t)v) << 16) & BM_SAIF_DATA_PCM_RIGHT)
 #else
-#define BF_SAIF_DATA_PCM_RIGHT(v)   (((v) << 16) & BM_SAIF_DATA_PCM_RIGHT)
+#define BF_SAIF_DATA_PCM_RIGHT(v) (((v) << 16) & BM_SAIF_DATA_PCM_RIGHT)
 #endif
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_DATA_PCM_RIGHT(v)   (HW_SAIF_DATA.B.PCM_RIGHT = (v))
+#define BW_SAIF_DATA_PCM_RIGHT(v) (HW_SAIF_DATA.B.PCM_RIGHT = (v))
 #endif
 
 //--- Register HW_SAIF_DATA, field PCM_LEFT
 
-#define BP_SAIF_DATA_PCM_LEFT      0
-#define BM_SAIF_DATA_PCM_LEFT      0x0000FFFF
+#define BP_SAIF_DATA_PCM_LEFT 0
+#define BM_SAIF_DATA_PCM_LEFT 0x0000FFFF
 
-#define BF_SAIF_DATA_PCM_LEFT(v)   (((v) << 0) & BM_SAIF_DATA_PCM_LEFT)
+#define BF_SAIF_DATA_PCM_LEFT(v) (((v) << 0) & BM_SAIF_DATA_PCM_LEFT)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SAIF_DATA_PCM_LEFT(v)   (HW_SAIF_DATA.B.PCM_LEFT = (v))
+#define BW_SAIF_DATA_PCM_LEFT(v) (HW_SAIF_DATA.B.PCM_LEFT = (v))
 #endif
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //// HW_SAIF_VERSION - SAIF Version Register
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg16_t  STEP;
-        reg8_t   MINOR;
-        reg8_t   MAJOR;
+typedef union {
+    reg32_t U;
+    struct {
+        reg16_t STEP;
+        reg8_t MINOR;
+        reg8_t MAJOR;
     } B;
 } hw_saif_version_t;
 #endif
-
 
 //
 // constants & macros for entire HW_SAIF_VERSION register
 //
 
-#define HW_SAIF_VERSION_ADDR      (REGS_SAIF_BASE + 0x00000030)
+#define HW_SAIF_VERSION_ADDR (REGS_SAIF_BASE + 0x00000030)
 
 #ifndef __LANGUAGE_ASM__
-#define HW_SAIF_VERSION           (*(volatile hw_saif_version_t *) HW_SAIF_VERSION_ADDR)
-#define HW_SAIF_VERSION_RD()      (HW_SAIF_VERSION.U)
+#define HW_SAIF_VERSION (*(volatile hw_saif_version_t *)HW_SAIF_VERSION_ADDR)
+#define HW_SAIF_VERSION_RD() (HW_SAIF_VERSION.U)
 #endif
-
 
 //
 // constants & macros for individual HW_SAIF_VERSION bitfields
@@ -514,29 +512,28 @@ typedef union
 
 //--- Register HW_SAIF_VERSION, field MAJOR
 
-#define BP_SAIF_VERSION_MAJOR      24
-#define BM_SAIF_VERSION_MAJOR      0xFF000000
+#define BP_SAIF_VERSION_MAJOR 24
+#define BM_SAIF_VERSION_MAJOR 0xFF000000
 
 #ifndef __LANGUAGE_ASM__
-#define BF_SAIF_VERSION_MAJOR(v)   ((((reg32_t) v) << 24) & BM_SAIF_VERSION_MAJOR)
+#define BF_SAIF_VERSION_MAJOR(v) ((((reg32_t)v) << 24) & BM_SAIF_VERSION_MAJOR)
 #else
-#define BF_SAIF_VERSION_MAJOR(v)   (((v) << 24) & BM_SAIF_VERSION_MAJOR)
+#define BF_SAIF_VERSION_MAJOR(v) (((v) << 24) & BM_SAIF_VERSION_MAJOR)
 #endif
 
 //--- Register HW_SAIF_VERSION, field MINOR
 
-#define BP_SAIF_VERSION_MINOR      16
-#define BM_SAIF_VERSION_MINOR      0x00FF0000
+#define BP_SAIF_VERSION_MINOR 16
+#define BM_SAIF_VERSION_MINOR 0x00FF0000
 
-#define BF_SAIF_VERSION_MINOR(v)   (((v) << 16) & BM_SAIF_VERSION_MINOR)
+#define BF_SAIF_VERSION_MINOR(v) (((v) << 16) & BM_SAIF_VERSION_MINOR)
 
 //--- Register HW_SAIF_VERSION, field STEP
 
-#define BP_SAIF_VERSION_STEP      0
-#define BM_SAIF_VERSION_STEP      0x0000FFFF
+#define BP_SAIF_VERSION_STEP 0
+#define BM_SAIF_VERSION_STEP 0x0000FFFF
 
-#define BF_SAIF_VERSION_STEP(v)   (((v) << 0) & BM_SAIF_VERSION_STEP)
-
+#define BF_SAIF_VERSION_STEP(v) (((v) << 0) & BM_SAIF_VERSION_STEP)
 
 #endif // _REGSSAIF_H
 

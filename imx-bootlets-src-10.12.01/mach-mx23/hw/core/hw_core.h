@@ -28,25 +28,24 @@
 #endif
 
 //! \brief TBD
-typedef enum
-{
+typedef enum {
     //! \brief TBD
-    VECTOR_RESET                   = 0,
+    VECTOR_RESET = 0,
     //! \brief TBD
-    VECTOR_UNDEFINED_INSTRUCTION   = 1,
+    VECTOR_UNDEFINED_INSTRUCTION = 1,
     //! \brief TBD
-    VECTOR_SWI                     = 2,
+    VECTOR_SWI = 2,
     //! \brief TBD
-    VECTOR_PREFETCH_ABORT          = 3,
+    VECTOR_PREFETCH_ABORT = 3,
     //! \brief TBD
-    VECTOR_DATA_ABORT              = 4,
-//  VECTOR_RESERVED                = 5,  // Comment out since not real.
+    VECTOR_DATA_ABORT = 4,
+    //  VECTOR_RESERVED                = 5,  // Comment out since not real.
     //! \brief TBD
-    VECTOR_IRQ                     = 6,
+    VECTOR_IRQ = 6,
     //! \brief TBD
-    VECTOR_FIQ                     = 7,
+    VECTOR_FIQ = 7,
     //! \brief TBD
-    NUMBER_VECTORS                 = 8
+    NUMBER_VECTORS = 8
 } HwCoreVector_t;
 
 //! \brief TBD
@@ -72,8 +71,6 @@ bool hw_core_EnableIrqInterrupt(bool bEnable);
 ////////////////////////////////////////////////////////////////////////////////
 bool hw_core_EnableFiqInterrupt(bool bEnable);
 
-
-
 #ifdef __cplusplus
 } // extern "C"
 #endif
@@ -84,4 +81,3 @@ bool hw_core_EnableFiqInterrupt(bool bEnable);
 // End of file
 ///////////////////////////////////////////////////////////////////////////////
 //! @}
-

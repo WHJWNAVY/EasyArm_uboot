@@ -40,7 +40,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef _REGSSIMGPMISEL_H
-#define _REGSSIMGPMISEL_H  1
+#define _REGSSIMGPMISEL_H 1
 
 #include "regs.h"
 
@@ -49,115 +49,126 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-//// multi-register-define name HW_SIMGPMISEL_CHANn_CFG : base 0x8003C050 : count 4 : offset 0x4
+//// multi-register-define name HW_SIMGPMISEL_CHANn_CFG : base 0x8003C050 :
+/// count 4 : offset 0x4
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef __LANGUAGE_ASM__
-typedef union
-{
-    reg32_t  U;
-    struct
-    {
-        reg16_t  DEV_CODE;
-        unsigned DEV_CLASS  :  4;
-        unsigned CE_SRC     :  4;
-        reg8_t   WIDTH;
+typedef union {
+    reg32_t U;
+    struct {
+        reg16_t DEV_CODE;
+        unsigned DEV_CLASS : 4;
+        unsigned CE_SRC : 4;
+        reg8_t WIDTH;
     } B;
 } hw_simgpmisel_chann_cfg_t;
 #endif
-
 
 //
 // constants & macros for entire HW_SIMGPMISEL_CHANn_CFG multi-register
 //
 
-#define HW_SIMGPMISEL_CHANn_CFG_COUNT        4
-#define HW_SIMGPMISEL_CHANn_CFG_ADDR(n)      (REGS_SIMGPMISEL_BASE + 0x00000000 + ((n) * 0x4))
+#define HW_SIMGPMISEL_CHANn_CFG_COUNT 4
+#define HW_SIMGPMISEL_CHANn_CFG_ADDR(n)                                        \
+    (REGS_SIMGPMISEL_BASE + 0x00000000 + ((n)*0x4))
 
 #ifndef __LANGUAGE_ASM__
-#define HW_SIMGPMISEL_CHANn_CFG(n)           (*(volatile hw_simgpmisel_chann_cfg_t *) HW_SIMGPMISEL_CHANn_CFG_ADDR(n))
-#define HW_SIMGPMISEL_CHANn_CFG_RD(n)        (HW_SIMGPMISEL_CHANn_CFG(n).U)
-#define HW_SIMGPMISEL_CHANn_CFG_WR(n, v)     (HW_SIMGPMISEL_CHANn_CFG(n).U = (v))
-#define HW_SIMGPMISEL_CHANn_CFG_SET(n, v)    (HW_SIMGPMISEL_CHANn_CFG_WR(n, HW_SIMGPMISEL_CHANn_CFG_RD(n) |  (v)))
-#define HW_SIMGPMISEL_CHANn_CFG_CLR(n, v)    (HW_SIMGPMISEL_CHANn_CFG_WR(n, HW_SIMGPMISEL_CHANn_CFG_RD(n) & ~(v)))
-#define HW_SIMGPMISEL_CHANn_CFG_TOG(n, v)    (HW_SIMGPMISEL_CHANn_CFG_WR(n, HW_SIMGPMISEL_CHANn_CFG_RD(n) ^  (v)))
+#define HW_SIMGPMISEL_CHANn_CFG(n)                                             \
+    (*(volatile hw_simgpmisel_chann_cfg_t *)HW_SIMGPMISEL_CHANn_CFG_ADDR(n))
+#define HW_SIMGPMISEL_CHANn_CFG_RD(n) (HW_SIMGPMISEL_CHANn_CFG(n).U)
+#define HW_SIMGPMISEL_CHANn_CFG_WR(n, v) (HW_SIMGPMISEL_CHANn_CFG(n).U = (v))
+#define HW_SIMGPMISEL_CHANn_CFG_SET(n, v)                                      \
+    (HW_SIMGPMISEL_CHANn_CFG_WR(n, HW_SIMGPMISEL_CHANn_CFG_RD(n) | (v)))
+#define HW_SIMGPMISEL_CHANn_CFG_CLR(n, v)                                      \
+    (HW_SIMGPMISEL_CHANn_CFG_WR(n, HW_SIMGPMISEL_CHANn_CFG_RD(n) & ~(v)))
+#define HW_SIMGPMISEL_CHANn_CFG_TOG(n, v)                                      \
+    (HW_SIMGPMISEL_CHANn_CFG_WR(n, HW_SIMGPMISEL_CHANn_CFG_RD(n) ^ (v)))
 #endif
 
-
 //
-// constants & macros for individual HW_SIMGPMISEL_CHANn_CFG multi-register bitfields
+// constants & macros for individual HW_SIMGPMISEL_CHANn_CFG multi-register
+// bitfields
 //
 
 //--- Register HW_SIMGPMISEL_CHANn_CFG, field WIDTH
 
-#define BP_SIMGPMISEL_CHANn_CFG_WIDTH      24
-#define BM_SIMGPMISEL_CHANn_CFG_WIDTH      0xFF000000
+#define BP_SIMGPMISEL_CHANn_CFG_WIDTH 24
+#define BM_SIMGPMISEL_CHANn_CFG_WIDTH 0xFF000000
 
 #ifndef __LANGUAGE_ASM__
-#define BF_SIMGPMISEL_CHANn_CFG_WIDTH(v)   ((((reg32_t) v) << 24) & BM_SIMGPMISEL_CHANn_CFG_WIDTH)
+#define BF_SIMGPMISEL_CHANn_CFG_WIDTH(v)                                       \
+    ((((reg32_t)v) << 24) & BM_SIMGPMISEL_CHANn_CFG_WIDTH)
 #else
-#define BF_SIMGPMISEL_CHANn_CFG_WIDTH(v)   (((v) << 24) & BM_SIMGPMISEL_CHANn_CFG_WIDTH)
+#define BF_SIMGPMISEL_CHANn_CFG_WIDTH(v)                                       \
+    (((v) << 24) & BM_SIMGPMISEL_CHANn_CFG_WIDTH)
 #endif
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SIMGPMISEL_CHANn_CFG_WIDTH(n, v)  (HW_SIMGPMISEL_CHANn_CFG(n).B.WIDTH = (v))
+#define BW_SIMGPMISEL_CHANn_CFG_WIDTH(n, v)                                    \
+    (HW_SIMGPMISEL_CHANn_CFG(n).B.WIDTH = (v))
 #endif
 
 //--- Register HW_SIMGPMISEL_CHANn_CFG, field CE_SRC
 
-#define BP_SIMGPMISEL_CHANn_CFG_CE_SRC      20
-#define BM_SIMGPMISEL_CHANn_CFG_CE_SRC      0x00F00000
+#define BP_SIMGPMISEL_CHANn_CFG_CE_SRC 20
+#define BM_SIMGPMISEL_CHANn_CFG_CE_SRC 0x00F00000
 
-#define BF_SIMGPMISEL_CHANn_CFG_CE_SRC(v)   (((v) << 20) & BM_SIMGPMISEL_CHANn_CFG_CE_SRC)
+#define BF_SIMGPMISEL_CHANn_CFG_CE_SRC(v)                                      \
+    (((v) << 20) & BM_SIMGPMISEL_CHANn_CFG_CE_SRC)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SIMGPMISEL_CHANn_CFG_CE_SRC(n, v)  BF_CS1n(SIMGPMISEL_CHANn_CFG, n, CE_SRC, v)
+#define BW_SIMGPMISEL_CHANn_CFG_CE_SRC(n, v)                                   \
+    BF_CS1n(SIMGPMISEL_CHANn_CFG, n, CE_SRC, v)
 #endif
 
-#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__PRIMARY      0x0
-#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__ALTERNATE_1  0x1
-#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__ALTERNATE_2  0x2
-#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__ALTERNATE_3  0x3
+#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__PRIMARY 0x0
+#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__ALTERNATE_1 0x1
+#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__ALTERNATE_2 0x2
+#define BV_SIMGPMISEL_CHANn_CFG_CE_SRC__ALTERNATE_3 0x3
 
 //--- Register HW_SIMGPMISEL_CHANn_CFG, field DEV_CLASS
 
-#define BP_SIMGPMISEL_CHANn_CFG_DEV_CLASS      16
-#define BM_SIMGPMISEL_CHANn_CFG_DEV_CLASS      0x000F0000
+#define BP_SIMGPMISEL_CHANn_CFG_DEV_CLASS 16
+#define BM_SIMGPMISEL_CHANn_CFG_DEV_CLASS 0x000F0000
 
-#define BF_SIMGPMISEL_CHANn_CFG_DEV_CLASS(v)   (((v) << 16) & BM_SIMGPMISEL_CHANn_CFG_DEV_CLASS)
+#define BF_SIMGPMISEL_CHANn_CFG_DEV_CLASS(v)                                   \
+    (((v) << 16) & BM_SIMGPMISEL_CHANn_CFG_DEV_CLASS)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SIMGPMISEL_CHANn_CFG_DEV_CLASS(n, v)  BF_CS1n(SIMGPMISEL_CHANn_CFG, n, DEV_CLASS, v)
+#define BW_SIMGPMISEL_CHANn_CFG_DEV_CLASS(n, v)                                \
+    BF_CS1n(SIMGPMISEL_CHANn_CFG, n, DEV_CLASS, v)
 #endif
 
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__RSRVD    0x0
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__NAND_16  0x1
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__NAND_8   0x2
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__ATA      0x3
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__RSRVD 0x0
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__NAND_16 0x1
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__NAND_8 0x2
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CLASS__ATA 0x3
 
 //--- Register HW_SIMGPMISEL_CHANn_CFG, field DEV_CODE
 
-#define BP_SIMGPMISEL_CHANn_CFG_DEV_CODE      0
-#define BM_SIMGPMISEL_CHANn_CFG_DEV_CODE      0x0000FFFF
+#define BP_SIMGPMISEL_CHANn_CFG_DEV_CODE 0
+#define BM_SIMGPMISEL_CHANn_CFG_DEV_CODE 0x0000FFFF
 
-#define BF_SIMGPMISEL_CHANn_CFG_DEV_CODE(v)   (((v) << 0) & BM_SIMGPMISEL_CHANn_CFG_DEV_CODE)
+#define BF_SIMGPMISEL_CHANn_CFG_DEV_CODE(v)                                    \
+    (((v) << 0) & BM_SIMGPMISEL_CHANn_CFG_DEV_CODE)
 
 #ifndef __LANGUAGE_ASM__
-#define BW_SIMGPMISEL_CHANn_CFG_DEV_CODE(n, v)  (HW_SIMGPMISEL_CHANn_CFG(n).B.DEV_CODE = (v))
+#define BW_SIMGPMISEL_CHANn_CFG_DEV_CODE(n, v)                                 \
+    (HW_SIMGPMISEL_CHANn_CFG(n).B.DEV_CODE = (v))
 #endif
 
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__RSRVD                   0x0
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__ATA_SDCFB256            0x1
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__ATA_UDMA                0x2
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_K9F1G08U0M       0x1
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_4M_2k            0x2
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_4M_4k            0x3
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_KM29U128         0x4
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_HN29V1G91        0x5
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_K9F2808U0C       0x6
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_TC58NVG0S3AFT05  0x7
-#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_16_K9F1G16U0M      0x1
-
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__RSRVD 0x0
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__ATA_SDCFB256 0x1
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__ATA_UDMA 0x2
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_K9F1G08U0M 0x1
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_4M_2k 0x2
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_4M_4k 0x3
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_KM29U128 0x4
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_HN29V1G91 0x5
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_K9F2808U0C 0x6
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_8_TC58NVG0S3AFT05 0x7
+#define BV_SIMGPMISEL_CHANn_CFG_DEV_CODE__NAND_16_K9F1G16U0M 0x1
 
 #endif // _REGSSIMGPMISEL_H
 

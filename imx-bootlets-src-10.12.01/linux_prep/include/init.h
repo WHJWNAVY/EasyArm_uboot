@@ -22,8 +22,8 @@
 
 typedef void (*hwinitcall_t)(void);
 
-#define hw_initcall(fn) \
-	static hwinitcall_t __hwinitcall_##fn __attribute__((__used__)) \
-	__attribute__((__section__(".hwinitcall"))) = fn
+#define hw_initcall(fn)                                                        \
+    static hwinitcall_t __hwinitcall_##fn __attribute__((__used__))            \
+        __attribute__((__section__(".hwinitcall"))) = fn
 
 #endif /* __INIT_H */

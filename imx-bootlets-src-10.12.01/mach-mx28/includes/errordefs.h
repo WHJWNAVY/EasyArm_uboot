@@ -47,10 +47,9 @@ typedef int RtStatus_t;
 #endif
 #endif
 
-#define SUCCESS                         (0x00000000)
-#define ERROR_GENERIC                          (-1)
+#define SUCCESS (0x00000000)
+#define ERROR_GENERIC (-1)
 
-#define ERROR_MASK                      (-268435456)
+#define ERROR_MASK (-268435456)
 
-#endif//_ERRORDEFS_H
-
+#endif //_ERRORDEFS_H

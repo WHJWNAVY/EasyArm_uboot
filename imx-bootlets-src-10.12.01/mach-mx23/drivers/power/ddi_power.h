@@ -26,11 +26,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 //! \brief TBD
-#define DDI_PWR_HANDOFF_DEBOUNCE_TICKS  3
+#define DDI_PWR_HANDOFF_DEBOUNCE_TICKS 3
 #define DDI_POWER_HANDOFF_DEBOUNCE_TICKS 3
 //! \brief TBD
 
-#define DDI_POWER_MAX_VOLTAGE_STEP_MV     100    // in millivolts
+#define DDI_POWER_MAX_VOLTAGE_STEP_MV 100 // in millivolts
 
 //! \brief The minimum voltage we will consider for initial battery detection.
 #define BATT_TEST__MIN_BATT_VOLT 2800
@@ -42,43 +42,40 @@
 
 //! \brief Voltage threshold where 4P2 comparison switches between 85% and 105%.
 #define BATT_VOLT__CMPTRIP_THRESHOLD 3700
-//! \brief Voltage threshold where 4P2 target switches between high and low setting.
+//! \brief Voltage threshold where 4P2 target switches between high and low
+//! setting.
 #define BATT_VOLT__4P2TRG_THRESHOLD 3700
 
 //! \brief Maximum time (mS) to wait for the lock/unlock function to complete.
 #define MAX_LOCK_WAIT_MS 100
 
-
-
 //! \brief Possible power sources for each power supply
-typedef enum _ddi_power_PowerSource_t
-{
-	//! \brief Powered by linear regulator.
+typedef enum _ddi_power_PowerSource_t {
+    //! \brief Powered by linear regulator.
     DDI_POWER_LINEAR_REGULATOR,
-	//! \brief Powered by DCDC converter.
+    //! \brief Powered by DCDC converter.
     DDI_POWER_DCDC
-}ddi_power_PowerSource_t;
-
+} ddi_power_PowerSource_t;
 
 //! \brief Available 5V detection methods.
-typedef enum _ddi_power_5vDetection_t
-{
+typedef enum _ddi_power_5vDetection_t {
     //! \brief VBUSVALID will be used for 5V/USB detection.
     DDI_POWER_VBUSVALID,
     //! \brief VDD5V_GT_VDDIO will be used for 5V/USB detection.
     DDI_POWER_VDD5V_GT_VDDIO,
-    //! \brief Uses VBUSVALID for 5V detection, but does not rely on the interrupt.
+    //! \brief Uses VBUSVALID for 5V detection, but does not rely on the
+    //! interrupt.
     DDI_POWER_VBUSVALID_WITH_POLLING
 } ddi_power_5vDetection_t;
 
 //! \brief Possible internal FET configurations for DCDC converter.
-typedef enum _ddi_power_FetStrength_t
-{
+typedef enum _ddi_power_FetStrength_t {
     //! \brief Internal power FETs will have approximately half their strength.
     DDI_POWER_FET_STRENGTH_HALF,
     //! \brief Internal power FETs will be normal strength.
     DDI_POWER_FET_STRENGTH_NORMAL,
-    //! \brief Internal power FETs will have approximately double their strength.
+    //! \brief Internal power FETs will have approximately double their
+    //! strength.
     DDI_POWER_FET_STRENGTH_DOUBLE,
 } ddi_power_FetStrength_t;
 
@@ -88,20 +85,18 @@ typedef void ddi_power_MsgHandler_t(void);
 ////////////////////////////////////////////////////////////////////////////////
 // Structures
 ////////////////////////////////////////////////////////////////////////////////
-typedef struct _ddi_power_InitValues_t
-{
+typedef struct _ddi_power_InitValues_t {
     //! \brief Time in milliseconds between battery voltage samples.
-    uint32_t                    u32BatterySamplingInterval;
+    uint32_t u32BatterySamplingInterval;
     //! \brief 5V detection used by software.
-    ddi_power_5vDetection_t     e5vDetection;
+    ddi_power_5vDetection_t e5vDetection;
     //! \brief 5V detection used by DCDC hardware.
-    ddi_power_5vDetection_t     eDcdc5vDetection;
+    ddi_power_5vDetection_t eDcdc5vDetection;
     //! \brief Selects whether or not to use 4p2 rail.
-    bool                        bEnable4p2;
+    bool bEnable4p2;
     //! \brief Voltage level for 5V to be considered valid. (mV)
-    uint16_t                    u16Valid5vThreshold;
+    uint16_t u16Valid5vThreshold;
 } ddi_power_InitValues_t;
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Externs
@@ -114,7 +109,7 @@ extern uint8_t g_ddi_power_BatteryBrownOutVoltageCode;
 // Prototypes
 ////////////////////////////////////////////////////////////////////////////////
 
-//Power supply driver public API.
+// Power supply driver public API.
 ////////////////////////////////////////////////////////////////////////////////
 //!
 //! \brief Initializes the power driver
@@ -130,22 +125,22 @@ extern uint8_t g_ddi_power_BatteryBrownOutVoltageCode;
 //! \internal
 //! \see To view the function definition, see ddi_power_init.c.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t  ddi_power_Init(ddi_power_InitValues_t* pInitValues);
+RtStatus_t ddi_power_Init(ddi_power_InitValues_t *pInitValues);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
 //! \brief Determines if the power driver has already been initialized.
 //!
-//! The power driver should only be initialized once.  If it has been initialized
-//! in the current application, the initialized flag will be set.  If it has
-//! been initialized by an outside application (i.e. PowerPrep), then we need
-//! to check some of the power registers.
+//! The power driver should only be initialized once.  If it has been
+//! initialized in the current application, the initialized flag will be set. If
+//! it has been initialized by an outside application (i.e. PowerPrep), then we
+//! need to check some of the power registers.
 //!
 //! \retval true Power driver was previously initialized.
 //! \retval false Power driver has not yet been initialized.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-bool IsPowerDriverInitialized( void );
+bool IsPowerDriverInitialized(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -158,7 +153,7 @@ bool IsPowerDriverInitialized( void );
 //! \retval false Power driver has not been initialized.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-bool IsBatteryMonitorInitialized( void );
+bool IsBatteryMonitorInitialized(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -171,7 +166,7 @@ bool IsBatteryMonitorInitialized( void );
 //! \retval false Power driver has not been initialized.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-bool IsPowerSupplyInitialized( void );
+bool IsPowerSupplyInitialized(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns status of the 5V initialization.
@@ -181,7 +176,7 @@ bool IsPowerSupplyInitialized( void );
 //! \retval True 5V detection has been initialized.
 //! \retval False 5V detection has not been initialized.
 /////////////////////////////////////////////////////////////////////////////////
-bool Is5vDetectionInitialized( void );
+bool Is5vDetectionInitialized(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns status of the 5V IRQ initialization.
@@ -191,7 +186,7 @@ bool Is5vDetectionInitialized( void );
 //! \retval True 5V IRQs have been initialized.
 //! \retval False 5V IRQs have not been initialized.
 /////////////////////////////////////////////////////////////////////////////////
-bool Is5vIrqInitialized( void );
+bool Is5vIrqInitialized(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns status of the hardware power driver initialization.
@@ -201,8 +196,7 @@ bool Is5vIrqInitialized( void );
 //! \retval True Hardware power driver has been initialized.
 //! \retval False Hardware power driver has not been initialized.
 /////////////////////////////////////////////////////////////////////////////////
-bool IsHwPowerInitialized( void );
-
+bool IsHwPowerInitialized(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -213,8 +207,8 @@ bool IsHwPowerInitialized( void );
 //! This function sets the VDDD value and VDDD brownout level specified by the
 //! input parameters. If the new brownout level is equal to the current setting
 //! it'll only update the VDDD setting. If the new brownout level is less than
-//! the current setting, it will update the VDDD brownout first and then the VDDD.
-//! Otherwise, it will update the VDDD first and then the brownout. This
+//! the current setting, it will update the VDDD brownout first and then the
+//! VDDD. Otherwise, it will update the VDDD first and then the brownout. This
 //! arrangement is intended to prevent from false VDDD brownout. This function
 //! will not return until the output VDDD is stable.
 //!
@@ -224,7 +218,7 @@ bool IsHwPowerInitialized( void );
 //! \return SUCCESS.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t  ddi_power_SetVddd(uint16_t  u16Vddd_mV, uint16_t  u16VdddBrownout_mV);
+RtStatus_t ddi_power_SetVddd(uint16_t u16Vddd_mV, uint16_t u16VdddBrownout_mV);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -261,8 +255,8 @@ uint16_t ddi_power_GetVdddBrownout(void);
 //! This function sets the VDDA value and VDDA brownout level specified by the
 //! input parameters. If the new brownout level is equal to the current setting
 //! it'll only update the VDDA setting. If the new brownout level is less than
-//! the current setting, it will update the VDDA brownout first and then the VDDA.
-//! Otherwise, it will update the VDDA first and then the brownout. This
+//! the current setting, it will update the VDDA brownout first and then the
+//! VDDA. Otherwise, it will update the VDDA first and then the brownout. This
 //! arrangement is intended to prevent from false VDDA brownout. This function
 //! will not return until the output VDDA stable.
 //!
@@ -274,7 +268,7 @@ uint16_t ddi_power_GetVdddBrownout(void);
 //! \internal
 //! \see To view the function definition, see ddi_power.c.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t  ddi_power_SetVdda(uint16_t  u16Vdda_mV, uint16_t  u16VddaBrownout_mV);
+RtStatus_t ddi_power_SetVdda(uint16_t u16Vdda_mV, uint16_t u16VddaBrownout_mV);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -311,8 +305,8 @@ uint16_t ddi_power_GetVddaBrownout(void);
 //! This function sets the VDDIO value and VDDIO brownout level specified by the
 //! input parameters. If the new brownout level is equal to the current setting
 //! it'll only update the VDDIO setting. If the new brownout level is less than
-//! the current setting, it will update the VDDIO brownout first and then the VDDIO.
-//! Otherwise, it will update the VDDIO first and then the brownout. This
+//! the current setting, it will update the VDDIO brownout first and then the
+//! VDDIO. Otherwise, it will update the VDDIO first and then the brownout. This
 //! arrangement is intended to prevent from false VDDIO brownout. This function
 //! will not return until the output VDDIO stable.
 //!
@@ -324,7 +318,8 @@ uint16_t ddi_power_GetVddaBrownout(void);
 //! \internal
 //! \see To view the function definition, see ddi_power.c.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t  ddi_power_SetVddio(uint16_t  u16Vddio_mV, uint16_t  u16VddioBrownout_mV);
+RtStatus_t ddi_power_SetVddio(uint16_t u16Vddio_mV,
+                              uint16_t u16VddioBrownout_mV);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -351,7 +346,6 @@ uint16_t ddi_power_GetVddio(void);
 //!
 ////////////////////////////////////////////////////////////////////////////////
 uint16_t ddi_power_GetVddioBrownout(void);
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -417,9 +411,6 @@ void ddi_power_EnableBatteryTo5VoltsHandoff(void);
 ////////////////////////////////////////////////////////////////////////////////
 void ddi_power_ExecuteBatteryTo5VoltsHandoff(void);
 
-
-
-
 ////////////////////////////////////////////////////////////////////////////////
 //!
 //! \brief Waits until the VDDD power supply is stable
@@ -442,8 +433,8 @@ void ddi_power_WaitForVdddStable(void);
 //! \param[out] - pu16Bo_mV - valid brownout voltage
 //!
 //! \retval SUCCESS - no adjustments made to proposed voltages
-//! \retval ERROR_DDI_POWER_VDDD_PARAM_ADJUSTED - adjustments made to one or both
-//! \retval                                       proposed voltages
+//! \retval ERROR_DDI_POWER_VDDD_PARAM_ADJUSTED - adjustments made to one or
+//! both \retval                                       proposed voltages
 ////////////////////////////////////////////////////////////////////////////////
 RtStatus_t ddi_power_LimitVdddAndBo(uint16_t *pu16Vddd_mV, uint16_t *pu16Bo_mV);
 
@@ -469,10 +460,11 @@ void ddi_power_WaitForVddioStable(void);
 //! \param[out] - pu16Bo_mV - valid brownout voltage
 //!
 //! \retval SUCCESS - no adjustments made to proposed voltages
-//! \retval ERROR_DDI_POWER_VDDIO_PARAM_ADJUSTED - adjustments made to one or both
-//! \retval                                       proposed voltages
+//! \retval ERROR_DDI_POWER_VDDIO_PARAM_ADJUSTED - adjustments made to one or
+//! both \retval                                       proposed voltages
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_LimitVddioAndBo(uint16_t *pu16Vddio_mV, uint16_t *pu16Bo_mV);
+RtStatus_t ddi_power_LimitVddioAndBo(uint16_t *pu16Vddio_mV,
+                                     uint16_t *pu16Bo_mV);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -496,8 +488,8 @@ void ddi_power_WaitForVddaStable(void);
 //! \param[out] - pu16Bo_mV - valid brownout voltage
 //!
 //! \retval SUCCESS - no adjustments made to proposed voltages
-//! \retval ERROR_DDI_POWER_VDDA_PARAM_ADJUSTED - adjustments made to one or both
-//! \retval                                       proposed voltages
+//! \retval ERROR_DDI_POWER_VDDA_PARAM_ADJUSTED - adjustments made to one or
+//! both \retval                                       proposed voltages
 ////////////////////////////////////////////////////////////////////////////////
 RtStatus_t ddi_power_LimitVddaAndBo(uint16_t *pu16Vdda_mV, uint16_t *pu16Bo_mV);
 
@@ -513,7 +505,7 @@ RtStatus_t ddi_power_LimitVddaAndBo(uint16_t *pu16Vdda_mV, uint16_t *pu16Bo_mV);
 //!
 //! \retval SUCCESS
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_SetPowerFetStrength( ddi_power_FetStrength_t Strength );
+RtStatus_t ddi_power_SetPowerFetStrength(ddi_power_FetStrength_t Strength);
 
 /////////////////////////////////////////////////////////////
 //! \brief Returns the logical state of the 4p2 rail.
@@ -539,7 +531,7 @@ bool ddi_power_Is4p2Enabled(void);
 //! true if 4p2 is enabled and false if disabled.
 //!
 /////////////////////////////////////////////////////////////
-void ddi_power_Save4p2Enabled( bool b4p2IsEnabled );
+void ddi_power_Save4p2Enabled(bool b4p2IsEnabled);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables the 4p2 rail and readies it for use.
@@ -556,7 +548,7 @@ void ddi_power_Save4p2Enabled( bool b4p2IsEnabled );
 //! power supplies to use the 4p2 rail when 5V becomes present.
 //! \retval ERROR_DDI_FAILED_TO_START_4P2_RAIL The 4p2 could not start properly.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Enable4p2( void );
+RtStatus_t ddi_power_Enable4p2(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Disables the 4p2 rail.
@@ -566,7 +558,7 @@ RtStatus_t ddi_power_Enable4p2( void );
 //!
 //! \retval SUCCESS
 ///////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Disable4p2( void );
+RtStatus_t ddi_power_Disable4p2(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Prepare the 4p2 rail for use when 5V becomes valid.
@@ -580,7 +572,7 @@ RtStatus_t ddi_power_Disable4p2( void );
 //! \retval ERROR_DDI_FAILED_TO_PREPARE_4P2_RAIL One of the three power sources,
 //! VDDD, VDDA, or VDDIO, was not set properly.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_PrepareToStart4p2( void );
+RtStatus_t ddi_power_PrepareToStart4p2(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Activates the 4p2 rail to allow the DCDC to use it as a power source.
@@ -593,7 +585,7 @@ RtStatus_t ddi_power_PrepareToStart4p2( void );
 //!
 //! \retval SUCCESS
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Start4p2( void );
+RtStatus_t ddi_power_Start4p2(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 //! \brief Stops DCDC 4p2, Powers down 4p2, and powers off internal 4p2 circuit
@@ -605,7 +597,7 @@ RtStatus_t ddi_power_Start4p2( void );
 //!
 //! \retval SUCCESS The 4p2 rail was turned off successfully.
 ///////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Stop4p2( void );
+RtStatus_t ddi_power_Stop4p2(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Charges the 4p2 rail.
@@ -622,8 +614,8 @@ RtStatus_t ddi_power_Stop4p2( void );
 //!
 //! \retval SUCCESS
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Charge4p2Rail( uint32_t u32NewChargeCurrentLimit,
-                                    uint32_t u32ChargeCurrentStepSize );
+RtStatus_t ddi_power_Charge4p2Rail(uint32_t u32NewChargeCurrentLimit,
+                                   uint32_t u32ChargeCurrentStepSize);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Charges the 4p2 capacitor.
@@ -634,22 +626,20 @@ RtStatus_t ddi_power_Charge4p2Rail( uint32_t u32NewChargeCurrentLimit,
 //! primarily for very low or dead battery conditions since the 4p2 pin will
 //! be at a very low level.
 //!
-//! \param[in] u32NewChargeCurrentLimit The new current limit, in milliamps, that
-//! should be set in hardware after the 4p2 capacitor has been charged.
-//! \param[in] u32ChargeCurrentStepSize The amount of current, in milliamps, that
-//! each iteration should increment by.
+//! \param[in] u32NewChargeCurrentLimit The new current limit, in milliamps,
+//! that should be set in hardware after the 4p2 capacitor has been charged.
+//! \param[in] u32ChargeCurrentStepSize The amount of current, in milliamps,
+//! that each iteration should increment by.
 //!
 //! \retval SUCCESS
 //!
-//! \note  This isn't the only thing needed because you can't enable DCDC for 4p2
-//! until the circuiry is ready regardless of what voltage is present on 4p2.
-//! This is mostly for the very low or dead battery cases.
-//! \note  If there is external load on 4p2, we could get stuck here.
+//! \note  This isn't the only thing needed because you can't enable DCDC for
+//! 4p2 until the circuiry is ready regardless of what voltage is present on
+//! 4p2. This is mostly for the very low or dead battery cases. \note  If there
+//! is external load on 4p2, we could get stuck here.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Charge4p2Cap( uint32_t u32NewChargeCurrentLimit,
-                                   uint32_t u32ChargeCurrentStepSize );
-
-
+RtStatus_t ddi_power_Charge4p2Cap(uint32_t u32NewChargeCurrentLimit,
+                                  uint32_t u32ChargeCurrentStepSize);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -661,7 +651,7 @@ RtStatus_t ddi_power_Charge4p2Cap( uint32_t u32NewChargeCurrentLimit,
 //! \retval true Battery is sufficiently charged to power DCDC.
 //! \retval false Battery is not sufficient to power DCDC.
 ////////////////////////////////////////////////////////////////////////////////
-bool ddi_power_IsBattValidForHandoff( void );
+bool ddi_power_IsBattValidForHandoff(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Saves the battery connected status.
@@ -671,7 +661,7 @@ bool ddi_power_IsBattValidForHandoff( void );
 //! \param[in] bConnected True if battery is connected, false if no battery is
 //! present.
 /////////////////////////////////////////////////////////////////////////////////
-void ddi_power_BatteryConnected( bool bConnected );
+void ddi_power_BatteryConnected(bool bConnected);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns status of battery connection.
@@ -684,7 +674,7 @@ void ddi_power_BatteryConnected( bool bConnected );
 //! \retval True A battery is connected to the device.
 //! \retval False A battery is not connected to the device.
 /////////////////////////////////////////////////////////////////////////////////
-bool ddi_power_IsBatteryConnected( void );
+bool ddi_power_IsBatteryConnected(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Runs the test to determine if a battery is connected to device.
@@ -699,7 +689,7 @@ bool ddi_power_IsBatteryConnected( void );
 //! \retval True Test determined battery is connected.
 //! \retval False Test determined battery is not connected.
 /////////////////////////////////////////////////////////////////////////////////
-bool ddi_power_TestBatteryConnection( void );
+bool ddi_power_TestBatteryConnection(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Determines if the current application has already run the
@@ -708,7 +698,7 @@ bool ddi_power_TestBatteryConnection( void );
 //! \retval True Current application has already run the test once.
 //! \retval False Current application has not yet run the test.
 /////////////////////////////////////////////////////////////////////////////////
-bool DidCurrAppRunBattTest( void );
+bool DidCurrAppRunBattTest(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Determines if a previous application has already run the
@@ -717,14 +707,14 @@ bool DidCurrAppRunBattTest( void );
 //! \retval True A previous application has already run the test once.
 //! \retval False A previous application has not yet run the test.
 /////////////////////////////////////////////////////////////////////////////////
-bool DidPrevAppRunBattTest( void );
+bool DidPrevAppRunBattTest(void);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Saves the battery connection test result for a previous test.
 //!
 //! \param[in] bResult True if battery is present, false if not present.
 /////////////////////////////////////////////////////////////////////////////////
-void SetPrevAppTestResult( bool bResult );
+void SetPrevAppTestResult(bool bResult);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns the battery connection test result for a previous test.
@@ -732,7 +722,7 @@ void SetPrevAppTestResult( bool bResult );
 //! \retval True Battery detected in a previous test.
 //! \retval False Battery not detected in a previous test.
 /////////////////////////////////////////////////////////////////////////////////
-bool GetPrevAppTestResult( void );
+bool GetPrevAppTestResult(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //!
@@ -772,12 +762,11 @@ bool ddi_power_GetSafeVoltageLimitsStatus(void);
 //!
 //! \retval SUCCESS Detection methods and thresholds set.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Configure5vDetection( ddi_power_5vDetection_t eDcdc5vDetection,
-                                           ddi_power_5vDetection_t eSw5vDetection,
-                                           uint16_t u16VbusValidThresh );
+RtStatus_t
+ddi_power_Configure5vDetection(ddi_power_5vDetection_t eDcdc5vDetection,
+                               ddi_power_5vDetection_t eSw5vDetection,
+                               uint16_t u16VbusValidThresh);
 #endif // _DDI_POWER_H
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // End of file

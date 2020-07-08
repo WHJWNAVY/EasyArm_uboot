@@ -21,32 +21,29 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
-typedef enum
-{
+typedef enum {
     HW_PACKAGE_TYPE_169BGA,
     HW_PACKAGE_TYPE_128TQFP
 } hw_digctl_packageType_t;
 
-typedef enum
-{
-    HW_UNKNOWN_CHIP_OR_REVISION=0,
-    HW_3780_TA1=0x378000a1,
-    HW_3780_TA2=0x378000a2,
-    HW_3780_TA3=0x378000a3,
-    HW_3780_TA4=0x378000a4
+typedef enum {
+    HW_UNKNOWN_CHIP_OR_REVISION = 0,
+    HW_3780_TA1 = 0x378000a1,
+    HW_3780_TA2 = 0x378000a2,
+    HW_3780_TA3 = 0x378000a3,
+    HW_3780_TA4 = 0x378000a4
 } hw_digctl_ChipAndRevision;
 
 //! Indeces for chipStr array
-#define CHIP_STR_TA1    0
-#define CHIP_STR_TA2    1
-#define CHIP_STR_TA3    2
-#define CHIP_STR_TA4    3
-#define CHIP_STR_TA5    4
-#define CHIP_STR_TA6    5
-#define CHIP_STR_TB1    6
-#define CHIP_STR_TC1    7
-#define CHIP_STR_UNK    8
-
+#define CHIP_STR_TA1 0
+#define CHIP_STR_TA2 1
+#define CHIP_STR_TA3 2
+#define CHIP_STR_TA4 3
+#define CHIP_STR_TA5 4
+#define CHIP_STR_TA6 5
+#define CHIP_STR_TB1 6
+#define CHIP_STR_TC1 7
+#define CHIP_STR_UNK 8
 
 ////////////////////////////////////////////////////////////////////////////////
 // Function prototypes (public API)
@@ -75,7 +72,7 @@ uint32_t hw_digctl_GetCurrentTime(void);
 //! \return     TRUE        Timeout occured
 //!             FALSE       Not timeout yet
 ////////////////////////////////////////////////////////////////////////////////
-bool     hw_digctl_CheckTimeOut(uint32_t StartTime, uint32_t TimeOut);
+bool hw_digctl_CheckTimeOut(uint32_t StartTime, uint32_t TimeOut);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Waits a specified number of microseconds
@@ -96,7 +93,6 @@ void hw_digctl_MicrosecondWait(uint32_t u32Microseconds);
 //! \retval     HW_PACKAGE_TYPE_128TQFP
 ////////////////////////////////////////////////////////////////////////////////
 hw_digctl_packageType_t hw_digctl_CheckPackageType(void);
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns chip revision number
@@ -120,7 +116,7 @@ void hw_digctl_SetArmCacheTiming(uint16_t u16Timing);
 //! \param[in] revision Chip revision number (hexidecimal format)
 //! \retval Pointer to string that contains chip revision.
 ////////////////////////////////////////////////////////////////////////////////
-const char * hw_digctl_getChipRevStr(uint32_t revision);
+const char *hw_digctl_getChipRevStr(uint32_t revision);
 
 #ifdef __cplusplus
 } // extern "C"

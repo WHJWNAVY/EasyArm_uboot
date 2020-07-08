@@ -19,45 +19,43 @@
  */
 
 #include <stdarg.h>
-void printhex(int data)
-{
-	int i = 0;
-	char c;
-	for (i = sizeof(int)*2-1; i >= 0; i--) {
-		c = data>>(i*4);
-		c &= 0xf;
-		if (c > 9)
-			putc(c-10+'A');
-		else
-			putc(c+'0');
-	}
+void printhex(int data) {
+    int i = 0;
+    char c;
+    for (i = sizeof(int) * 2 - 1; i >= 0; i--) {
+        c = data >> (i * 4);
+        c &= 0xf;
+        if (c > 9)
+            putc(c - 10 + 'A');
+        else
+            putc(c + '0');
+    }
 }
-void printf(char *fmt, ...)
-{
-	va_list args;
-	int one;
-	va_start(args, fmt);
-	while (*fmt) {
+void printf(char *fmt, ...) {
+    va_list args;
+    int one;
+    va_start(args, fmt);
+    while (*fmt) {
 
-		if (*fmt == '%') {
-			fmt++;
-			switch (*fmt) {
+        if (*fmt == '%') {
+            fmt++;
+            switch (*fmt) {
 
-			case 'x':
-			case 'X':
-				printhex(va_arg(args, int));
-				break;
-			case '%':
-				putc('%');
-				break;
-			default:
-				break;
-			}
+            case 'x':
+            case 'X':
+                printhex(va_arg(args, int));
+                break;
+            case '%':
+                putc('%');
+                break;
+            default:
+                break;
+            }
 
-		} else {
-			putc(*fmt);
-		}
-		fmt++;
-	}
-	va_end(args);
+        } else {
+            putc(*fmt);
+        }
+        fmt++;
+    }
+    va_end(args);
 }

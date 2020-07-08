@@ -11,15 +11,14 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
-
 //   Includes and external references
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.h"
-#include "error.h"                  // Common SigmaTel Error Codes
+#include "error.h" // Common SigmaTel Error Codes
 
 #include "hw/power/hw_power.h"
 
-#include "drivers/power/ddi_power.h"       // Driver API
+#include "drivers/power/ddi_power.h" // Driver API
 #include "drivers/power/ddi_power_errordefs.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +41,6 @@
 //! "Battery Level Monitor Register Description" in the data sheet for details.
 uint8_t g_ddi_power_SafeBatteryVoltageCode = 23;
 
-
 //! This global variable contains a code that represents the "brown out" battery
 //! voltage. In normal operation, if the battery voltage dips down to or below
 //! this level, and the 5V supply is not present, then the hardware will
@@ -52,8 +50,6 @@ uint8_t g_ddi_power_SafeBatteryVoltageCode = 23;
 //! "Battery Level Monitor Register Description" in the data sheet for details.
 uint8_t g_ddi_power_BatteryBrownOutVoltageCode = 14;
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // Code
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +57,6 @@ uint8_t g_ddi_power_BatteryBrownOutVoltageCode = 14;
 ////////////////////////////////////////////////////////////////////////////////
 // Battery Charger Status
 ////////////////////////////////////////////////////////////////////////////////
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Battery Voltage
@@ -78,12 +73,10 @@ uint8_t g_ddi_power_BatteryBrownOutVoltageCode = 14;
 //! \retval The voltage across the battery, in mV.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t  ddi_power_GetBattery(void)
-{
+uint16_t ddi_power_GetBattery(void) {
     // Should return a value in range ~3000 - 4200 mV
     return hw_power_GetBatteryVoltage();
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // End of file

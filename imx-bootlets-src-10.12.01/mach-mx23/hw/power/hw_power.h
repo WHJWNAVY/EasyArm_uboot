@@ -38,8 +38,8 @@
 //! \brief Number of mV to add if rounding up in LiIon mode
 #define BATT_BRWNOUT_LIION_LEVEL_STEP_MV 40
 //! \brief Constant value to be calculated by preprocessing
-#define BATT_BRWNOUT_LIION_EQN_CONST \
-	(BATT_BRWNOUT_LIION_BASE_MV - BATT_BRWNOUT_LIION_CEILING_OFFSET_MV)
+#define BATT_BRWNOUT_LIION_EQN_CONST                                           \
+    (BATT_BRWNOUT_LIION_BASE_MV - BATT_BRWNOUT_LIION_CEILING_OFFSET_MV)
 //! \brief Base voltage to start battery calculations for Alkaline/NiMH
 #define BATT_BRWNOUT_ALKAL_BASE_MV 800
 //! \brief Constant to help with determining whether to round up or not
@@ -47,8 +47,8 @@
 //! \brief Number of mV to add if rounding up in Alkaline/NiMH mode
 #define BATT_BRWNOUT_ALKAL_LEVEL_STEP_MV 20
 //! \brief Constant value to be calculated by preprocessing
-#define BATT_BRWNOUT_ALKAL_EQN_CONST \
-	(BATT_BRWNOUT_ALKAL_BASE_MV - BATT_BRWNOUT_ALKAL_CEILING_OFFSET_MV)
+#define BATT_BRWNOUT_ALKAL_EQN_CONST                                           \
+    (BATT_BRWNOUT_ALKAL_BASE_MV - BATT_BRWNOUT_ALKAL_CEILING_OFFSET_MV)
 //! \brief Max register code for battery brownout field.
 #define BATT_BRWNOUT_MAX_REG_CODE_378x 0x1F
 
@@ -79,90 +79,88 @@ extern bool bMasterFlagsInitialized;
 ////////////////////////////////////////////////////////////////////////////////
 
 //! \brief Important voltage values for VDDD, VDDA, and VDDIO
-typedef enum _hw_power_VoltageValues_t
-{
+typedef enum _hw_power_VoltageValues_t {
     //! \brief Size of voltage steps in mV.
-    VOLTAGE_STEP_MV     = 25,
+    VOLTAGE_STEP_MV = 25,
     //! \brief Minimum brownout offset from target voltage.
-    BO_MIN_OFFSET_MV    = 25,
+    BO_MIN_OFFSET_MV = 25,
     //! \brief Maximum brownout offset from target voltage.
-    BO_MAX_OFFSET_MV    = VOLTAGE_STEP_MV * 7,
+    BO_MAX_OFFSET_MV = VOLTAGE_STEP_MV * 7,
 
     //! \brief Number of steps between target and brownout
-    VDDD_MARGIN_STEPS   = 3,
+    VDDD_MARGIN_STEPS = 3,
     //! \brief Minimum margin between VDDD target and brownout
-    VDDD_TO_BO_MARGIN  = (VDDD_MARGIN_STEPS * VOLTAGE_STEP_MV),
+    VDDD_TO_BO_MARGIN = (VDDD_MARGIN_STEPS * VOLTAGE_STEP_MV),
     //! \brief Default VDDD voltage at power on.
-    VDDD_DEFAULT_MV    = 1200,
+    VDDD_DEFAULT_MV = 1200,
     //! \brief Default VDDD BO level at power on.
-    VDDD_DEFAULT_BO    = (VDDD_DEFAULT_MV - VDDD_TO_BO_MARGIN),
+    VDDD_DEFAULT_BO = (VDDD_DEFAULT_MV - VDDD_TO_BO_MARGIN),
     //! \brief Absolute minimum VDDD voltage.
-    VDDD_ABS_MIN_MV    = 800,
+    VDDD_ABS_MIN_MV = 800,
     //! \brief Absolute maximum VDDD voltage.
-    VDDD_ABS_MAX_MV    = 1550,
+    VDDD_ABS_MAX_MV = 1550,
     //! \brief Maximum safe VDDD voltage.
-    VDDD_SAFE_MAX_MV   = 1550,
+    VDDD_SAFE_MAX_MV = 1550,
     //! \brief Minimum safe VDDD voltage.
-    VDDD_SAFE_MIN_MV   = (VDDD_ABS_MIN_MV + BO_MIN_OFFSET_MV),
+    VDDD_SAFE_MIN_MV = (VDDD_ABS_MIN_MV + BO_MIN_OFFSET_MV),
     //! \brief Maximum voltage for alkaline battery
     VDDD_ALKALINE_MAX_MV = 1300,
     //! \brief Minimum possible VDDD brownout voltage
-    VDDD_BO_MIN_MV     = 800,
+    VDDD_BO_MIN_MV = 800,
     //! \brief Maximum possible VDDD brownout voltage
-    VDDD_BO_MAX_MV     = 1475,
+    VDDD_BO_MAX_MV = 1475,
     //! \brief Base VDDD voltage for calculations.  Equivalent to 0 value reg.
-    VDDD_BASE_MV       = VDDD_ABS_MIN_MV,
+    VDDD_BASE_MV = VDDD_ABS_MIN_MV,
 
     //! \brief Number of steps between target and brownout
-    VDDA_MARGIN_STEPS   = 4,
+    VDDA_MARGIN_STEPS = 4,
     //! \brief Minimum margin between VDDA target and brownout
-    VDDA_TO_BO_MARGIN  = (VDDA_MARGIN_STEPS * VOLTAGE_STEP_MV),
+    VDDA_TO_BO_MARGIN = (VDDA_MARGIN_STEPS * VOLTAGE_STEP_MV),
     //! \brief Default VDDA voltage at power on.
-    VDDA_DEFAULT_MV    = 1750,
+    VDDA_DEFAULT_MV = 1750,
     //! \brief Default VDDA BO level at power on.
-    VDDA_DEFAULT_BO    = (VDDA_DEFAULT_MV - VDDA_TO_BO_MARGIN),
+    VDDA_DEFAULT_BO = (VDDA_DEFAULT_MV - VDDA_TO_BO_MARGIN),
     //! \brief Absolute minimum VDDA voltage.
-    VDDA_ABS_MIN_MV    = 1500,
+    VDDA_ABS_MIN_MV = 1500,
     //! \brief Absolute maximum VDDA voltage.
-    VDDA_ABS_MAX_MV    = 2100,
+    VDDA_ABS_MAX_MV = 2100,
     //! \brief Maximum safe VDDA voltage.
-    VDDA_SAFE_MAX_MV   = 1950,
+    VDDA_SAFE_MAX_MV = 1950,
     //! \brief Minimum safe VDDA voltage.
-    VDDA_SAFE_MIN_MV   = 1725,
+    VDDA_SAFE_MIN_MV = 1725,
     //! \brief Minimum possible VDDA brownout voltage
-    VDDA_BO_MIN_MV     = 1625,
+    VDDA_BO_MIN_MV = 1625,
     //! \brief Maximum possible VDDA brownout voltage
-    VDDA_BO_MAX_MV     = 2175,
+    VDDA_BO_MAX_MV = 2175,
     //! \brief Base VDDA voltage for calculations. Equivalent to zero value reg.
-    VDDA_BASE_MV       = VDDA_ABS_MIN_MV,
+    VDDA_BASE_MV = VDDA_ABS_MIN_MV,
 
     //! \brief Number of steps between target and brownout
-    VDDIO_MARGIN_STEPS  = 4,
+    VDDIO_MARGIN_STEPS = 4,
     //! \brief Minimum margin between VDDIO target and brownout
-    VDDIO_TO_BO_MARGIN  = (VDDIO_MARGIN_STEPS * VOLTAGE_STEP_MV),
+    VDDIO_TO_BO_MARGIN = (VDDIO_MARGIN_STEPS * VOLTAGE_STEP_MV),
     //! \brief Default VDDIO voltage at power on.
-    VDDIO_DEFAULT_MV    = 3100,
+    VDDIO_DEFAULT_MV = 3100,
     //! \brief Default VDDIO BO level at power on.
-    VDDIO_DEFAULT_BO    = (VDDIO_DEFAULT_MV - VDDIO_TO_BO_MARGIN),
+    VDDIO_DEFAULT_BO = (VDDIO_DEFAULT_MV - VDDIO_TO_BO_MARGIN),
     //! \brief Absolute minimum VDDIO voltage.
-    VDDIO_ABS_MIN_MV    = 2800,
+    VDDIO_ABS_MIN_MV = 2800,
     //! \brief Absolute maximum VDDIO voltage.
-    VDDIO_ABS_MAX_MV    = 3575,
+    VDDIO_ABS_MAX_MV = 3575,
     //! \brief Maximum safe VDDIO voltage.
-    VDDIO_SAFE_MAX_MV   = 3575,
+    VDDIO_SAFE_MAX_MV = 3575,
     //! \brief Minimum safe VDDIO voltage.
-    VDDIO_SAFE_MIN_MV   = (VDDIO_ABS_MIN_MV + BO_MIN_OFFSET_MV),
+    VDDIO_SAFE_MIN_MV = (VDDIO_ABS_MIN_MV + BO_MIN_OFFSET_MV),
     //! \brief Minimum possible VDDIO brownout voltage
-    VDDIO_BO_MIN_MV     = 2700,
+    VDDIO_BO_MIN_MV = 2700,
     //! \brief Maximum possible VDDIO brownout voltage
-    VDDIO_BO_MAX_MV     = 3475,
+    VDDIO_BO_MAX_MV = 3475,
     //! \brief Base VDDIO voltage for calculations.  Equivalent to 0 value reg.
-    VDDIO_BASE_MV       = VDDIO_ABS_MIN_MV,
+    VDDIO_BASE_MV = VDDIO_ABS_MIN_MV,
 } hw_power_VoltageValues_t;
 
 //! \brief Threshold values for Vbus valid comparator
-typedef enum _hw_power_VbusValidThresh_t
-{
+typedef enum _hw_power_VbusValidThresh_t {
 
     //! \brief 2.900V threshold on insertion.
     VBUS_VALID_THRESH_2900 = 0,
@@ -181,22 +179,21 @@ typedef enum _hw_power_VbusValidThresh_t
     //! \brief 4.600V threshold on insertion.
     VBUS_VALID_THRESH_4600 = 7,
     //! \brief Maximum threshold value for the register setting.
-    VBUS_VALID_THRESH_MAX  = 7,
+    VBUS_VALID_THRESH_MAX = 7,
 
     //! \brief Use under normal operating conditions.
     VBUS_VALID_THRESH_NORMAL = VBUS_VALID_THRESH_4300,
     //! \brief Use when a lower than normal threshold is needed.
-    VBUS_VALID_THRESH_LOW    = VBUS_VALID_THRESH_4000,
+    VBUS_VALID_THRESH_LOW = VBUS_VALID_THRESH_4000,
     //! \brief Use when a higher than normal threshold is needed.
-    VBUS_VALID_THRESH_HIGH   = VBUS_VALID_THRESH_4600,
+    VBUS_VALID_THRESH_HIGH = VBUS_VALID_THRESH_4600,
     //! \brief Use only for testing, or under SigmaTel guidance.
-    VBUS_VALID_THRESH_TEST   = VBUS_VALID_THRESH_2900
+    VBUS_VALID_THRESH_TEST = VBUS_VALID_THRESH_2900
 
 } hw_power_VbusValidThresh_t;
 
 //! \brief Threshold values for Vbus droop.
-typedef enum _hw_power_VbusDroopThresh_t
-{
+typedef enum _hw_power_VbusDroopThresh_t {
     //! \brief 4.300V threshold for droop detection.
     VBUS_DROOP_THRESH_4300 = 0,
     //! \brief 4.400V threshold for droop detection.
@@ -206,16 +203,15 @@ typedef enum _hw_power_VbusDroopThresh_t
     //! \brief 4.700V threshold for droop detection.
     VBUS_DROOP_THRESH_4700 = 3,
     //! \brief Maximum threshold value for the register setting.
-    VBUS_DROOP_THRESH_MAX  = 3,
+    VBUS_DROOP_THRESH_MAX = 3,
 
     //! \brief Use under normal operating conditions.
     VBUS_DROOP_THRESH_NORMAL = VBUS_DROOP_THRESH_4400,
 } hw_power_VbusDroopThresh_t;
 
 //! \brief Possible power sources for each power supply
-typedef enum _hw_power_PowerSource_t
-{
-	//! \brief Powered by linear regulator.  DCDC output is gated off and
+typedef enum _hw_power_PowerSource_t {
+    //! \brief Powered by linear regulator.  DCDC output is gated off and
     //! the linreg output is equal to the target.
     HW_POWER_LINREG_DCDC_OFF,
     //! \brief Powered by linear regulator.  DCDC output is not gated off
@@ -223,7 +219,7 @@ typedef enum _hw_power_PowerSource_t
     //! event.  The converters are not enabled when 5V is present. LinReg output
     //! is 25mV below target.
     HW_POWER_LINREG_DCDC_READY,
-	//! \brief Powered by DCDC converter and the LinReg is on. LinReg output
+    //! \brief Powered by DCDC converter and the LinReg is on. LinReg output
     //! is 25mV below target.
     HW_POWER_DCDC_LINREG_ON,
     //! \brief Powered by DCDC converter and the LinReg is off. LinReg output
@@ -244,36 +240,34 @@ typedef enum _hw_power_PowerSource_t
     HW_POWER_EXTERNAL_SOURCE_BATTERY,
     //! \brief Unknown configuration.  This is an error.
     HW_POWER_UNKNOWN_SOURCE,
-}hw_power_PowerSource_t;
+} hw_power_PowerSource_t;
 
 //! \brief Battery charging current magnitudes converted to register settings.
-typedef enum _hw_power_BattChargeCurrentMag_t
-{
- 	//! \brief Current magniude 400mA
+typedef enum _hw_power_BattChargeCurrentMag_t {
+    //! \brief Current magniude 400mA
     HW_POWER_CURRENT_MAG_400 = 0x20,
- 	//! \brief Current magniude 200mA
+    //! \brief Current magniude 200mA
     HW_POWER_CURRENT_MAG_200 = 0x10,
- 	//! \brief Current magniude 100mA
+    //! \brief Current magniude 100mA
     HW_POWER_CURRENT_MAG_100 = 0x08,
- 	//! \brief Current magniude 50mA
-    HW_POWER_CURRENT_MAG_50  = 0x04,
- 	//! \brief Current magniude 20mA
-    HW_POWER_CURRENT_MAG_20  = 0x02,
- 	//! \brief Current magniude 10mA
-    HW_POWER_CURRENT_MAG_10  = 0x01
+    //! \brief Current magniude 50mA
+    HW_POWER_CURRENT_MAG_50 = 0x04,
+    //! \brief Current magniude 20mA
+    HW_POWER_CURRENT_MAG_20 = 0x02,
+    //! \brief Current magniude 10mA
+    HW_POWER_CURRENT_MAG_10 = 0x01
 } hw_power_BattChargeCurrentMag_t;
 
 //! \brief Linear regulator offset values
-typedef enum _hw_power_LinRegOffsetStep_t
-{
-	//! \brief No offset.  Linear regualator output equals target.
-    HW_POWER_LINREG_OFFSET_NO_STEP    = 0,
-	//! \brief Linear regulator is one 25mV step above the target.
+typedef enum _hw_power_LinRegOffsetStep_t {
+    //! \brief No offset.  Linear regualator output equals target.
+    HW_POWER_LINREG_OFFSET_NO_STEP = 0,
+    //! \brief Linear regulator is one 25mV step above the target.
     HW_POWER_LINREG_OFFSET_STEP_ABOVE = 1,
-	//! \brief Linear regulator is one 25mV step below the target.
+    //! \brief Linear regulator is one 25mV step below the target.
     HW_POWER_LINREG_OFFSET_STEP_BELOW = 2,
-	//! \brief Max offset. Linear regulator is one 25mV step above target.
-    HW_POWER_LINREG_OFFSET_MAX        = 3,
+    //! \brief Max offset. Linear regulator is one 25mV step above target.
+    HW_POWER_LINREG_OFFSET_MAX = 3,
     //! \brief No step is used for LinReg mode.
     HW_POWER_LINREG_OFFSET_LINREG_MODE = HW_POWER_LINREG_OFFSET_NO_STEP,
     //! \brief No step is used for LinReg mode.
@@ -282,36 +276,33 @@ typedef enum _hw_power_LinRegOffsetStep_t
 } hw_power_LinRegOffsetStep_t;
 
 //! \brief Possible RC Scale values to increase transient load response
-typedef enum _hw_power_RcScaleLevels_t
-{
-	//! \brief Use nominal response
-    HW_POWER_RCSCALE_DISABLED   = 0,
-	//! \brief Increase response by factor of 2
-    HW_POWER_RCSCALE_2X_INCR    = 1,
-	//! \brief Increase response by factor of 4
-    HW_POWER_RCSCALE_4X_INCR    = 2,
-	//! \brief Increase response by factor of 8
-    HW_POWER_RCSCALE_8X_INCR    = 3
+typedef enum _hw_power_RcScaleLevels_t {
+    //! \brief Use nominal response
+    HW_POWER_RCSCALE_DISABLED = 0,
+    //! \brief Increase response by factor of 2
+    HW_POWER_RCSCALE_2X_INCR = 1,
+    //! \brief Increase response by factor of 4
+    HW_POWER_RCSCALE_4X_INCR = 2,
+    //! \brief Increase response by factor of 8
+    HW_POWER_RCSCALE_8X_INCR = 3
 } hw_power_RcScaleLevels_t;
 
 //! \brief Interrupt polarities for power hardware
-typedef enum _hw_power_InterruptPolarity_t
-{
+typedef enum _hw_power_InterruptPolarity_t {
     //! \brief Generate interrupt when 5V is disconnected
-    HW_POWER_CHECK_5V_DISCONNECTED      = 0,
+    HW_POWER_CHECK_5V_DISCONNECTED = 0,
     //! \brief Generate interrupt when 5V is connected
-    HW_POWER_CHECK_5V_CONNECTED         = 1,
+    HW_POWER_CHECK_5V_CONNECTED = 1,
     //! \brief Generate interrupt when linear regulators are stable
     HW_POWER_CHECK_LINEAR_REGULATORS_OK = 1,
     //! \brief Generate interrupt when Pswitch goes high
-    HW_POWER_CHECK_PSWITCH_HIGH         = 1,
+    HW_POWER_CHECK_PSWITCH_HIGH = 1,
     //! \brief Generate interrupt when Pswitch goes low
-    HW_POWER_CHECK_PSWITCH_LOW          = 0
+    HW_POWER_CHECK_PSWITCH_LOW = 0
 } hw_power_InterruptPolarity_t;
 
 //! \brief Possible sources for Pswitch IRQ source
-typedef enum _hw_power_PswitchIrqSource_t
-{
+typedef enum _hw_power_PswitchIrqSource_t {
     //! \brief Use bit 0 for Pswitch source
     HW_POWER_STS_PSWITCH_BIT_0,
     //! \brief Use bit 1 for Pswitch source
@@ -319,8 +310,7 @@ typedef enum _hw_power_PswitchIrqSource_t
 } hw_power_PswitchIrqSource_t;
 
 //! \brief Possible 5V detection methods
-typedef enum _hw_power_5vDetection_t
-{
+typedef enum _hw_power_5vDetection_t {
     //! \brief Uninitialized detection method.
     HW_POWER_5V_UNINITIALIZED,
     //! \brief Use VBUSVALID comparator for detection
@@ -332,8 +322,7 @@ typedef enum _hw_power_5vDetection_t
 } hw_power_5vDetection_t;
 
 //! \brief Register settings to use as initialization flags
-typedef enum _hw_power_InitFlagSettings_t
-{
+typedef enum _hw_power_InitFlagSettings_t {
     //! \brief Value of speed sensor control when driver uninitialized.
     POWER_REGS_UNINITIALIZED = 0,
     //! \brief Valud of speed sensor control when driver is initialized.
@@ -341,16 +330,15 @@ typedef enum _hw_power_InitFlagSettings_t
 } hw_power_InitFlagSettings_t;
 
 //! \brief Brownout offset settings
-typedef enum _hw_power_BrownoutOffset_t
-{
+typedef enum _hw_power_BrownoutOffset_t {
     //! \brief 0 mV offset from target
-    BO_OFFSET_0MV   = 0,
+    BO_OFFSET_0MV = 0,
     //! \brief 25 mV offset from target
-    BO_OFFSET_25MV  = 1,
+    BO_OFFSET_25MV = 1,
     //! \brief 50 mV offset from target
-    BO_OFFSET_50MV  = 2,
+    BO_OFFSET_50MV = 2,
     //! \brief 75 mV offset from target
-    BO_OFFSET_75MV  = 3,
+    BO_OFFSET_75MV = 3,
     //! \brief 100 mV offset from target
     BO_OFFSET_100MV = 4,
     //! \brief 125 mV offset from target
@@ -360,7 +348,6 @@ typedef enum _hw_power_BrownoutOffset_t
     //! \brief 175 mV offset from target
     BO_OFFSET_175MV = 7,
 
-
     //! \brief 0 mV offset from target
     BO_OFFSET_MIN = BO_OFFSET_0MV,
     //! \brief 0 mV offset from target
@@ -368,8 +355,7 @@ typedef enum _hw_power_BrownoutOffset_t
 } hw_power_BrownoutOffset_t;
 
 //! \brief Available dropout margins.
-typedef enum _hw_power_4p2DropoutMargin_t
-{
+typedef enum _hw_power_4p2DropoutMargin_t {
     //! \brief 25 mV drop margin
     DROPOUT_MARGIN_25,
     //! \brief 50 mV drop margin
@@ -381,8 +367,7 @@ typedef enum _hw_power_4p2DropoutMargin_t
 } hw_power_4p2DropoutMargin_t;
 
 //! \brief Available configurations for 4p2 DCDC input.
-typedef enum _hw_power_4p2SourceSelect_t
-{
+typedef enum _hw_power_4p2SourceSelect_t {
     //! \brief Always use the DCDC4P2 input regardless of the battery voltage.
     DCDC4P2_ALWAYS,
     //! \brief Use the DCDC4P2 input only when it is greater than the DCDC_BATT
@@ -396,8 +381,7 @@ typedef enum _hw_power_4p2SourceSelect_t
 } hw_power_4p2SourceSelect_t;
 
 //! \brief Available DCDC4P2 and battery comparison trip points.
-typedef enum _hw_power_4p2CmpTripPoints_t
-{
+typedef enum _hw_power_4p2CmpTripPoints_t {
     //! \brief Compare DCDC4P2 voltage with 85% of battery voltage.
     CMPTRIP_85PCT,
     //! \brief Compare DCDC4P2 voltage with 86% of battery voltage.
@@ -426,9 +410,8 @@ typedef enum _hw_power_4p2CmpTripPoints_t
 ////////////////////////////////////////////////////////////////////////////////
 RtStatus_t hw_power_Init(void);
 
-
 RtStatus_t hw_power_InitBatteryMonitor(hw_lradc_DelayTrigger_t eTrigger,
-	 uint32_t u32SamplingInterval);
+                                       uint32_t u32SamplingInterval);
 RtStatus_t hw_power_InitPowerSupplies(void);
 RtStatus_t hw_power_InitFiq(void);
 
@@ -787,7 +770,7 @@ RtStatus_t hw_power_Enable5vDetection(hw_power_5vDetection_t eDetection);
 //!
 //! \param[in] eDetection Selected 5V detection method.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetDcdc5vDetect( hw_power_5vDetection_t eDetection );
+void hw_power_SetDcdc5vDetect(hw_power_5vDetection_t eDetection);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Sets the detection method to use for software 5V detection.
@@ -799,7 +782,7 @@ void hw_power_SetDcdc5vDetect( hw_power_5vDetection_t eDetection );
 //!
 //! \param[in] eDetection Selected 5V detection method.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetSw5vDetect( hw_power_5vDetection_t eDetection );
+void hw_power_SetSw5vDetect(hw_power_5vDetection_t eDetection);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables the VBUSVALID 5V detection hardware.
@@ -811,7 +794,7 @@ void hw_power_SetSw5vDetect( hw_power_5vDetection_t eDetection );
 //!
 //! \param[in] True to enable, false to disable.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_EnableVbusValid5vDetect( bool bEnable );
+void hw_power_EnableVbusValid5vDetect(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables the USB 5V detection hardware.
@@ -823,7 +806,7 @@ void hw_power_EnableVbusValid5vDetect( bool bEnable );
 //!
 //! \param[in] True to enable, false to disable.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_EnableUsb5vDetect( bool bEnable );
+void hw_power_EnableUsb5vDetect(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables the VDD5V_GT_VDDIO detection hardware.
@@ -835,7 +818,7 @@ void hw_power_EnableUsb5vDetect( bool bEnable );
 //!
 //! \param[in] True to enable, false to disable.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_EnableVdd5vGtVddio5vDetect( bool bEnable );
+void hw_power_EnableVdd5vGtVddio5vDetect(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Saves the detection method for software
@@ -843,14 +826,14 @@ void hw_power_EnableVdd5vGtVddio5vDetect( bool bEnable );
 //! \param[in] eDetection One of the enumerations from hw_power_5vDetection_t
 //! specifies which 5V detection method to use.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetDetectionMethod( hw_power_5vDetection_t eDetection );
+void hw_power_SetDetectionMethod(hw_power_5vDetection_t eDetection);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns the detection method for software
 //!
 //! \retval The current 5V detection method.
 ////////////////////////////////////////////////////////////////////////////////
-hw_power_5vDetection_t hw_power_GetDetectionMethod( void );
+hw_power_5vDetection_t hw_power_GetDetectionMethod(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief 5V interrupt triggers on 5V insertion
@@ -903,7 +886,6 @@ bool hw_power_CheckDcdcTransitionDone(void);
 ////////////////////////////////////////////////////////////////////////////////
 void hw_power_EnableDcdcDuring5vConnection(bool bEnable);
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //!
 ////////////////////////////////////////////////////////////////////////////////
@@ -919,7 +901,6 @@ void hw_power_DisableVddaDcdcFet(bool bDisable);
 ////////////////////////////////////////////////////////////////////////////////
 void hw_power_DisableVddioDcdcFet(bool bDisable);
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // Battery
 ////////////////////////////////////////////////////////////////////////////////
@@ -931,7 +912,7 @@ void hw_power_DisableVddioDcdcFet(bool bDisable);
 //!
 //! \param[in] BoRegCode Register code for battery brownout field.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetBatteryBrownoutCode( uint16_t BoRegCode );
+void hw_power_SetBatteryBrownoutCode(uint16_t BoRegCode);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Reads the brownout register code.
@@ -940,7 +921,7 @@ void hw_power_SetBatteryBrownoutCode( uint16_t BoRegCode );
 //!
 //! \retval Register code for the battery brownout field.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetBatteryBrownoutCode( void );
+uint16_t hw_power_GetBatteryBrownoutCode(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Use hw_power_SetBatteryBrownoutVoltage.
@@ -975,7 +956,7 @@ uint16_t hw_power_GetBatteryBrownoutValue(void);
 //!
 //! \param[in] BoVolt New battery brownout voltage (mV)
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetBatteryBrownoutVoltage( uint16_t BoVolt );
+void hw_power_SetBatteryBrownoutVoltage(uint16_t BoVolt);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns current brownout voltage in mV
@@ -1010,7 +991,6 @@ uint16_t hw_power_GetBatteryVoltage(void);
 ////////////////////////////////////////////////////////////////////////////////
 void hw_power_SetBatteryMonitorVoltage(uint16_t u16BattVolt);
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns maximum battery charge current
 //!
@@ -1040,7 +1020,7 @@ uint16_t hw_power_GetMaxBatteryChargeCurrent(void);
 //! \notes None
 //!
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t  hw_power_SetBatteryChargeCurrentThreshold(uint16_t u16Threshold);
+uint16_t hw_power_SetBatteryChargeCurrentThreshold(uint16_t u16Threshold);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns battery charge current threshold
@@ -1412,10 +1392,10 @@ void hw_power_SetVbusValidThresh(hw_power_VbusValidThresh_t eThresh);
 //! \brief Returns value of VBUSVALID_THRSH field.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-hw_power_VbusValidThresh_t hw_power_GetVbusValidThresh( void );
+hw_power_VbusValidThresh_t hw_power_GetVbusValidThresh(void);
 
-void hw_power_SetVbusDroopThresh( hw_power_VbusDroopThresh_t eThresh );
-hw_power_VbusDroopThresh_t hw_power_GetVbusDroopThresh( void );
+void hw_power_SetVbusDroopThresh(hw_power_VbusDroopThresh_t eThresh);
+hw_power_VbusDroopThresh_t hw_power_GetVbusDroopThresh(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Clears PWDN_BATTBRNOUT bit in POWER_BATTMONITOR
@@ -1480,8 +1460,8 @@ void hw_power_SetPowerDownBatteryCharger(bool bPowerDown);
 //!
 //! \fntype Function
 //!
-//! The linear regulator for each rail can be set equal to or 25 mV above or below
-//! the target voltage.  This function sets the new value of the offset.
+//! The linear regulator for each rail can be set equal to or 25 mV above or
+//! below the target voltage.  This function sets the new value of the offset.
 //!
 //! \param[in] eOffset - HW_POWER_LINREG_OFFSET_NO_STEP
 //!				LinReg output = target voltage
@@ -1502,8 +1482,8 @@ void hw_power_SetVdddLinRegOffset(hw_power_LinRegOffsetStep_t eOffset);
 //!
 //! \fntype Function
 //!
-//! The linear regulator for each rail can be set equal to or 25 mV above or below
-//! the target voltage.  This function sets the new value of the offset.
+//! The linear regulator for each rail can be set equal to or 25 mV above or
+//! below the target voltage.  This function sets the new value of the offset.
 //!
 //! \param[in] eOffset - HW_POWER_LINREG_OFFSET_NO_STEP
 //!				LinReg output = target voltage
@@ -1524,8 +1504,8 @@ void hw_power_SetVddaLinRegOffset(hw_power_LinRegOffsetStep_t eOffset);
 //!
 //! \fntype Function
 //!
-//! The linear regulator for each rail can be set equal to or 25 mV above or below
-//! the target voltage.  This function sets the new value of the offset.
+//! The linear regulator for each rail can be set equal to or 25 mV above or
+//! below the target voltage.  This function sets the new value of the offset.
 //!
 //! \param[in] eOffset - HW_POWER_LINREG_OFFSET_NO_STEP
 //!				LinReg output = target voltage
@@ -1542,12 +1522,14 @@ void hw_power_SetVddaLinRegOffset(hw_power_LinRegOffsetStep_t eOffset);
 void hw_power_SetVddioLinRegOffset(hw_power_LinRegOffsetStep_t eOffset);
 
 ////////////////////////////////////////////////////////////////////////////////
-//! \brief Returns offset from target voltage that the LinReg is currently set to
+//! \brief Returns offset from target voltage that the LinReg is currently set
+//! to
 //!
 //! \fntype Function
 //!
-//! The linear regulator for each rail can be set equal to or 25 mV above or below
-//! the target voltage.  This function returns the current value of the offset.
+//! The linear regulator for each rail can be set equal to or 25 mV above or
+//! below the target voltage.  This function returns the current value of the
+//! offset.
 //!
 //! \param[in] eOffset - HW_POWER_LINREG_OFFSET_NO_STEP
 //!				LinReg output = target voltage
@@ -1564,12 +1546,14 @@ void hw_power_SetVddioLinRegOffset(hw_power_LinRegOffsetStep_t eOffset);
 hw_power_LinRegOffsetStep_t hw_power_GetVdddLinRegOffset(void);
 
 ////////////////////////////////////////////////////////////////////////////////
-//! \brief Returns offset from target voltage that the LinReg is currently set to
+//! \brief Returns offset from target voltage that the LinReg is currently set
+//! to
 //!
 //! \fntype Function
 //!
-//! The linear regulator for each rail can be set equal to or 25 mV above or below
-//! the target voltage.  This function returns the current value of the offset.
+//! The linear regulator for each rail can be set equal to or 25 mV above or
+//! below the target voltage.  This function returns the current value of the
+//! offset.
 //!
 //! \param[in] eOffset - HW_POWER_LINREG_OFFSET_NO_STEP
 //!				LinReg output = target voltage
@@ -1586,12 +1570,14 @@ hw_power_LinRegOffsetStep_t hw_power_GetVdddLinRegOffset(void);
 hw_power_LinRegOffsetStep_t hw_power_GetVddaLinRegOffset(void);
 
 ////////////////////////////////////////////////////////////////////////////////
-//! \brief Returns offset from target voltage that the LinReg is currently set to
+//! \brief Returns offset from target voltage that the LinReg is currently set
+//! to
 //!
 //! \fntype Function
 //!
-//! The linear regulator for each rail can be set equal to or 25 mV above or below
-//! the target voltage.  This function returns the current value of the offset.
+//! The linear regulator for each rail can be set equal to or 25 mV above or
+//! below the target voltage.  This function returns the current value of the
+//! offset.
 //!
 //! \param[in] eOffset - HW_POWER_LINREG_OFFSET_NO_STEP
 //!				LinReg output = target voltage
@@ -1643,8 +1629,7 @@ bool hw_power_Get5vPresentFlag(void);
 //! \retval True 5V is present.
 //! \retval False 5V is not present.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_Is5vPresent( void );
-
+bool hw_power_Is5vPresent(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Powers down the chip
@@ -1692,7 +1677,7 @@ void hw_power_DisablePowerDown(bool bDisable);
 //! \retval  The corresponding setting.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t  hw_power_ConvertCurrentToSetting(uint16_t u16Current);
+uint16_t hw_power_ConvertCurrentToSetting(uint16_t u16Current);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Convert a hardware current setting to a value in mA.
@@ -1710,7 +1695,7 @@ uint16_t  hw_power_ConvertCurrentToSetting(uint16_t u16Current);
 //! \retval  The corresponding current in mA.
 //!
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t  hw_power_ConvertSettingToCurrent(uint16_t u16Setting);
+uint16_t hw_power_ConvertSettingToCurrent(uint16_t u16Setting);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Convert a mV value to the corresponding VDDD voltage setting
@@ -1789,8 +1774,8 @@ uint16_t hw_power_ConvertSettingToVdda(uint16_t u16Setting);
 //!
 //! \fntype Function
 //!
-//! This function converts the mV value passed in to the VDDIO voltage setting to
-//! be used in HW_POWER_VDDIOCTRL.B.TRG.
+//! This function converts the mV value passed in to the VDDIO voltage setting
+//! to be used in HW_POWER_VDDIOCTRL.B.TRG.
 //!
 //! Note that the hardware target voltage fields are 5 bits wide. The higher
 //! bits are ignored.
@@ -1848,7 +1833,7 @@ uint16_t hw_power_ConvertBattToSetting(uint16_t u16Batt, uint16_t u16BattMode);
 //! \retval Battery voltage for the given register value.
 ////////////////////////////////////////////////////////////////////////////////
 uint16_t hw_power_ConvertSettingToBatt(uint16_t u16Setting,
-	 uint16_t u16BattMode);
+                                       uint16_t u16BattMode);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Converts battery brownout voltage to the register setting.
@@ -1892,8 +1877,8 @@ uint16_t hw_power_ConvertSettingToBattBo(uint16_t u16Setting);
 //!
 //! \retval Register setting that corresponds best to requested voltage.
 ////////////////////////////////////////////////////////////////////////////////
-hw_power_VbusValidThresh_t hw_power_ConvertVoltToVbusThresh(
-	uint16_t u16ThreshVolt );
+hw_power_VbusValidThresh_t
+hw_power_ConvertVoltToVbusThresh(uint16_t u16ThreshVolt);
 
 /////////////////////////////////////////////////////////////////////////////////
 //! \brief Converts VBUS threshold register setting to voltage.
@@ -1907,7 +1892,7 @@ hw_power_VbusValidThresh_t hw_power_ConvertVoltToVbusThresh(
 //!
 //! \retval Voltage level in millivolts of requested register setting.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_ConvertVbusThreshToVolt( hw_power_VbusValidThresh_t eThresh );
+uint16_t hw_power_ConvertVbusThreshToVolt(hw_power_VbusValidThresh_t eThresh);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Set the positive limit for the boost mode duty-cycle.
@@ -2111,7 +2096,7 @@ void hw_power_Enable2p5(bool bEnable);
 //!
 //! \retval Current limit for 4p2 and battery charger.  In milliamps.
 ////////////////////////////////////////////////////////////////////////////////
-uint32_t hw_power_GetCharge4p2CurrentLimit( void );
+uint32_t hw_power_GetCharge4p2CurrentLimit(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Sets the value of CHARGE_4P2_ILIMIT in the HW_POWER_5VCTRL register.
@@ -2120,7 +2105,7 @@ uint32_t hw_power_GetCharge4p2CurrentLimit( void );
 //!
 //! \param[in] u32mA New current limit for 4p2 and battery charger in milliamps.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetCharge4p2CurrentLimit( uint32_t u32mA );
+void hw_power_SetCharge4p2CurrentLimit(uint32_t u32mA);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Turns on power to the 4p2 rail's components.
@@ -2129,7 +2114,7 @@ void hw_power_SetCharge4p2CurrentLimit( uint32_t u32mA );
 //!
 //! \retval SUCCESS 4p2 rail powered on successfully.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t hw_power_PowerOn4p2Rail( void );
+RtStatus_t hw_power_PowerOn4p2Rail(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Turns off power to the 4p2 rail's components.
@@ -2138,7 +2123,7 @@ RtStatus_t hw_power_PowerOn4p2Rail( void );
 //!
 //! \retval SUCCESS 4p2 rail powered off successfully.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t hw_power_PowerOff4p2Rail( void );
+RtStatus_t hw_power_PowerOff4p2Rail(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables the 4p2 rail.
@@ -2147,7 +2132,7 @@ RtStatus_t hw_power_PowerOff4p2Rail( void );
 //!
 //! \retval SUCCESS 4p2 rail enabled successfully
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t hw_power_Enable4p2Rail( void );
+RtStatus_t hw_power_Enable4p2Rail(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Disables the 4p2 rail.
@@ -2156,7 +2141,7 @@ RtStatus_t hw_power_Enable4p2Rail( void );
 //!
 //! \retval SUCCESS 4p2 rail disabled successfully.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t hw_power_Disable4p2Rail( void );
+RtStatus_t hw_power_Disable4p2Rail(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns the brownout status of the 4p2 rail.
@@ -2166,7 +2151,7 @@ RtStatus_t hw_power_Disable4p2Rail( void );
 //! \retval True A brownout occurred on the 4p2 rail.
 //! \retval False A brownout has not occurred on the 4p2 rail.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_GetDcdc4p2Brownout( void );
+bool hw_power_GetDcdc4p2Brownout(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables/disables the hardware's ability to powerdown the chip because
@@ -2181,7 +2166,7 @@ bool hw_power_GetDcdc4p2Brownout( void );
 //!
 //! \note PWD_OFF must also be cleared for a 5V brownout to powerdown the chip.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_Enable5vBrownoutPowerdown( bool bEnable );
+bool hw_power_Enable5vBrownoutPowerdown(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables/disables the hardware's ability to powerdown the chip because
@@ -2197,7 +2182,7 @@ bool hw_power_Enable5vBrownoutPowerdown( bool bEnable );
 //! \note PWD_OFF must also be cleared for a battery brownout to powerdown the
 //! chip.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_EnableBattBrownoutPowerdown( bool bEnable );
+bool hw_power_EnableBattBrownoutPowerdown(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables/disables the hardware's ability to powerdown the chip for
@@ -2216,7 +2201,7 @@ bool hw_power_EnableBattBrownoutPowerdown( bool bEnable );
 //!
 //! \retval Current state of hardware's ability before writing new state.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_EnableHardwarePowerdown( bool bEnable );
+bool hw_power_EnableHardwarePowerdown(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Sets the value of the speed sensor control bitfield.
@@ -2226,7 +2211,7 @@ bool hw_power_EnableHardwarePowerdown( bool bEnable );
 //! \param[in] u16Ctrl New control value
 //!
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetSpeedSensorControl( uint16_t u16Ctrl );
+void hw_power_SetSpeedSensorControl(uint16_t u16Ctrl);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns the value of the speed sensor control bitfield.
@@ -2235,7 +2220,7 @@ void hw_power_SetSpeedSensorControl( uint16_t u16Ctrl );
 //!
 //! \retval Value of the speed sensor control bitfield.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetSpeedSensorControl( void );
+uint16_t hw_power_GetSpeedSensorControl(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Writes a flag value to a register to save intialization information.
@@ -2250,7 +2235,7 @@ uint16_t hw_power_GetSpeedSensorControl( void );
 //! \param[in] Value of flag
 //!
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetPowerRegInitFlag( uint16_t u16Flag );
+void hw_power_SetPowerRegInitFlag(uint16_t u16Flag);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Returns the value of the saved initialization flag.
@@ -2259,7 +2244,7 @@ void hw_power_SetPowerRegInitFlag( uint16_t u16Flag );
 //!
 //! \retval Value of the saved intialization flag.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetPowerRegInitFlag( void );
+uint16_t hw_power_GetPowerRegInitFlag(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables/disables the master brownout bit for a 5V brownout.
@@ -2274,7 +2259,7 @@ uint16_t hw_power_GetPowerRegInitFlag( void );
 //!
 //! \retval bool Previous state of the master brownout bit.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_EnableMaster5vBrownout( bool bEnable );
+bool hw_power_EnableMaster5vBrownout(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables/disables the master brownout bit for a battery brownout.
@@ -2289,7 +2274,7 @@ bool hw_power_EnableMaster5vBrownout( bool bEnable );
 //!
 //! \retval bool Previous state of the master brownout bit.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_EnableMasterBattBrownout( bool bEnable );
+bool hw_power_EnableMasterBattBrownout(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Configures the master brownout bit.
@@ -2302,7 +2287,7 @@ bool hw_power_EnableMasterBattBrownout( bool bEnable );
 //!
 //! \retval New state of the master brownout bit.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_ConfigureMasterBrownout( void );
+bool hw_power_ConfigureMasterBrownout(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Sets the ENABLE_LOAD status for the 4.2V rail
@@ -2311,7 +2296,7 @@ bool hw_power_ConfigureMasterBrownout( void );
 //!
 //! \retval Previous setting.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_EnableLoadOn4p2( bool bEnable );
+bool hw_power_EnableLoadOn4p2(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Configures the master enable switch for battery charger.
@@ -2324,7 +2309,7 @@ bool hw_power_EnableLoadOn4p2( bool bEnable );
 //!
 //! \retval Previous master switch setting.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_EnableMasterCharge( bool bEnable );
+bool hw_power_EnableMasterCharge(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Configures the master enable switch for the 4P2 rail.
@@ -2337,7 +2322,7 @@ bool hw_power_EnableMasterCharge( bool bEnable );
 //!
 //! \retval Previous master switch setting.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_EnableMaster4p2( bool bEnable );
+bool hw_power_EnableMaster4p2(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables/disables the master enable switch for charger and 4P2 rail.
@@ -2354,7 +2339,7 @@ bool hw_power_EnableMaster4p2( bool bEnable );
 //!
 //! \retval Previous master enable setting.
 ////////////////////////////////////////////////////////////////////////////////
-bool hw_power_ConfigureMasterChargeAnd4p2( void );
+bool hw_power_ConfigureMasterChargeAnd4p2(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Enables/disables the 4P2 input to the DCDC.
@@ -2364,7 +2349,7 @@ bool hw_power_ConfigureMasterChargeAnd4p2( void );
 //! The 4P2 input to the DCDC is controlled by software.  The DCDC will not use
 //! the 4P2 input until it has been configured to do so.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_Enable4p2DcdcInput( bool bEnable );
+void hw_power_Enable4p2DcdcInput(bool bEnable);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Configures the droput control for the 4P2 linear regualtor.
@@ -2384,8 +2369,8 @@ void hw_power_Enable4p2DcdcInput( bool bEnable );
 //!
 ////////////////////////////////////////////////////////////////////////////////
 void hw_power_Configure4p2DropoutControl(
-	hw_power_4p2DropoutMargin_t eDropoutMargin,
-        hw_power_4p2SourceSelect_t  eSourceSelect);
+    hw_power_4p2DropoutMargin_t eDropoutMargin,
+    hw_power_4p2SourceSelect_t eSourceSelect);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Establishes the trip point for the DCDC control logic comparison
@@ -2401,7 +2386,7 @@ void hw_power_Configure4p2DropoutControl(
 //! \param[in] CmpTrip Requested trip point. See hw_power_4p2CmpTripPoints_t for
 //! available values.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_Set4p2CmpTripPoint( hw_power_4p2CmpTripPoints_t CmpTrip );
+void hw_power_Set4p2CmpTripPoint(hw_power_4p2CmpTripPoints_t CmpTrip);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Sets the headroom adjustment for 4P2 and charger optimizations.
@@ -2413,18 +2398,10 @@ void hw_power_Set4p2CmpTripPoint( hw_power_4p2CmpTripPoints_t CmpTrip );
 //! \param[in] Adj New adjustment value.  Valid values are 0 - 7 since the
 //! bitfield in only 3 bits wide.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetHeadroomAdj( uint16_t Adj );
+void hw_power_SetHeadroomAdj(uint16_t Adj);
 
 ////////////////////////////////////////////////////////////////////////////////
 // End of file
 ////////////////////////////////////////////////////////////////////////////////
 //! @}
 #endif // __HW_POWER_H
-
-
-
-
-
-
-
-

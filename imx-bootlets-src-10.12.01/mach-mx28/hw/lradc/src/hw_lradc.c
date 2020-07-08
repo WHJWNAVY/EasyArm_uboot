@@ -28,45 +28,42 @@
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_ClearInterruptFlag(hw_lradc_Channel_t eChannel)
-{
+void hw_lradc_ClearInterruptFlag(hw_lradc_Channel_t eChannel) {
     // Clears a LRADC channel interrupt flag
-    switch (eChannel)
-    {
-        case LRADC_CH0:
-            BF_CLR(LRADC_CTRL1, LRADC0_IRQ);
-            break;
-        case LRADC_CH1:
-            BF_CLR(LRADC_CTRL1, LRADC1_IRQ);
-            break;
-        case LRADC_CH2:
-            BF_CLR(LRADC_CTRL1, LRADC2_IRQ);
-            break;
-        case LRADC_CH3:
-            BF_CLR(LRADC_CTRL1, LRADC3_IRQ);
-            break;
-        case LRADC_CH4:
-            BF_CLR(LRADC_CTRL1, LRADC4_IRQ);
-            break;
-        case LRADC_CH5:
-            BF_CLR(LRADC_CTRL1, LRADC5_IRQ);
-            break;
-        case LRADC_CH6:
-            BF_CLR(LRADC_CTRL1, LRADC6_IRQ);
-            break;
-        case LRADC_CH7:
-            BF_CLR(LRADC_CTRL1, LRADC7_IRQ);
-            break;
-        default:
-            break;
+    switch (eChannel) {
+    case LRADC_CH0:
+        BF_CLR(LRADC_CTRL1, LRADC0_IRQ);
+        break;
+    case LRADC_CH1:
+        BF_CLR(LRADC_CTRL1, LRADC1_IRQ);
+        break;
+    case LRADC_CH2:
+        BF_CLR(LRADC_CTRL1, LRADC2_IRQ);
+        break;
+    case LRADC_CH3:
+        BF_CLR(LRADC_CTRL1, LRADC3_IRQ);
+        break;
+    case LRADC_CH4:
+        BF_CLR(LRADC_CTRL1, LRADC4_IRQ);
+        break;
+    case LRADC_CH5:
+        BF_CLR(LRADC_CTRL1, LRADC5_IRQ);
+        break;
+    case LRADC_CH6:
+        BF_CLR(LRADC_CTRL1, LRADC6_IRQ);
+        break;
+    case LRADC_CH7:
+        BF_CLR(LRADC_CTRL1, LRADC7_IRQ);
+        break;
+    default:
+        break;
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_lradc.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_lradc_GetAccumValue(hw_lradc_Channel_t eChannel)
-{
+uint16_t hw_lradc_GetAccumValue(hw_lradc_Channel_t eChannel) {
     // Read the accumulator value of the channel
     return (uint16_t)(BF_RDn(LRADC_CHn, eChannel, VALUE));
 }

@@ -15,29 +15,25 @@
 
 #include "hw_lradc_errordefs.h"
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // Definitions
 ////////////////////////////////////////////////////////////////////////////////
 
-#define LRADC_SFTRST_ON        1
-#define LRADC_SFTRST_OFF       !LRADC_SFTRST_ON
-#define LRADC_CLKGATE_OPEN     0
-#define LRADC_CLKGATE_CLOSE    !LRADC_CLKGATE_OPEN
+#define LRADC_SFTRST_ON 1
+#define LRADC_SFTRST_OFF !LRADC_SFTRST_ON
+#define LRADC_CLKGATE_OPEN 0
+#define LRADC_CLKGATE_CLOSE !LRADC_CLKGATE_OPEN
 
-#define GAIN_CORRECTION        1012    // 1.012
-
+#define GAIN_CORRECTION 1012 // 1.012
 
 //! Enumeration of LRADC temperature sensor interface
-typedef enum _hw_lradc_TempSensor
-{
+typedef enum _hw_lradc_TempSensor {
     TEMP_SENSOR0,
     TEMP_SENSOR1
 } hw_lradc_TempSensor_t;
 
 //! Enumeration of LRADC temperature sensor current magnitude
-typedef enum _hw_lradc_CurrentMagnitude
-{
+typedef enum _hw_lradc_CurrentMagnitude {
     TEMP_SENSOR_CURRENT_0UA,
     TEMP_SENSOR_CURRENT_20UA,
     TEMP_SENSOR_CURRENT_40UA,
@@ -60,51 +56,48 @@ typedef enum _hw_lradc_CurrentMagnitude
 } hw_lradc_CurrentMagnitude_t;
 
 //! Enumeration of LRADC Channels
-typedef enum _hw_lradc_Channel
-{
-    LRADC_CH0           = 0,
-    LRADC_CH1           = 1,
-    LRADC_CH2           = 2,
-    LRADC_CH3           = 3,
-    LRADC_CH4           = 4,
-    LRADC_CH5           = 5,
-    LRADC_CH6           = 6,
-    LRADC_CH7           = 7,
-    LRADC_CH8           = 8,
-    LRADC_CH9           = 9,
-    LRADC_CH10          = 10,
-    LRADC_CH11          = 11,
-    LRADC_CH12          = 12,
-    LRADC_CH13          = 13,
-    LRADC_CH14          = 14,
-    LRADC_CH15          = 15,
+typedef enum _hw_lradc_Channel {
+    LRADC_CH0 = 0,
+    LRADC_CH1 = 1,
+    LRADC_CH2 = 2,
+    LRADC_CH3 = 3,
+    LRADC_CH4 = 4,
+    LRADC_CH5 = 5,
+    LRADC_CH6 = 6,
+    LRADC_CH7 = 7,
+    LRADC_CH8 = 8,
+    LRADC_CH9 = 9,
+    LRADC_CH10 = 10,
+    LRADC_CH11 = 11,
+    LRADC_CH12 = 12,
+    LRADC_CH13 = 13,
+    LRADC_CH14 = 14,
+    LRADC_CH15 = 15,
 
-    VDDIO_VOLTAGE_CH    = LRADC_CH6,
-    BATTERY_VOLTAGE_CH  = LRADC_CH7,
-    PMOS_THIN_CH        = LRADC_CH8,
-    NMOS_THIN_CH        = LRADC_CH9,
-    NMOS_THICK_CH       = LRADC_CH10,
-    PMOS_THICK_CH       = LRADC_CH11,
-    USB_DP_CH           = LRADC_CH12,
-    USB_DN_CH           = LRADC_CH13,
-    VBG_CH              = LRADC_CH14,
-    VDD5V_INPUT_CH      = LRADC_CH15,
+    VDDIO_VOLTAGE_CH = LRADC_CH6,
+    BATTERY_VOLTAGE_CH = LRADC_CH7,
+    PMOS_THIN_CH = LRADC_CH8,
+    NMOS_THIN_CH = LRADC_CH9,
+    NMOS_THICK_CH = LRADC_CH10,
+    PMOS_THICK_CH = LRADC_CH11,
+    USB_DP_CH = LRADC_CH12,
+    USB_DN_CH = LRADC_CH13,
+    VBG_CH = LRADC_CH14,
+    VDD5V_INPUT_CH = LRADC_CH15,
 
 } hw_lradc_Channel_t;
 
 //! Enumeration of LRADC Delay Triggers
-typedef enum _hw_lradc_DelayTrigger
-{
-    LRADC_DELAY_TRIGGER0    = 0,
-    LRADC_DELAY_TRIGGER1    = 1,
-    LRADC_DELAY_TRIGGER2    = 2,
-    LRADC_DELAY_TRIGGER3    = 3,
+typedef enum _hw_lradc_DelayTrigger {
+    LRADC_DELAY_TRIGGER0 = 0,
+    LRADC_DELAY_TRIGGER1 = 1,
+    LRADC_DELAY_TRIGGER2 = 2,
+    LRADC_DELAY_TRIGGER3 = 3,
     LRADC_DELAY_TRIGGER_MAX = 3
 } hw_lradc_DelayTrigger_t;
 
 //! Enumeration of LRADC clock frequency
-typedef enum _hw_lradc_ClockFreq_t
-{
+typedef enum _hw_lradc_ClockFreq_t {
     LRADC_CLOCK_6MHZ,
     LRADC_CLOCK_4MHZ,
     LRADC_CLOCK_3MHZ,
@@ -115,7 +108,7 @@ typedef enum _hw_lradc_ClockFreq_t
 // Prototypes
 ////////////////////////////////////////////////////////////////////////////////
 
-//Function prototypes of the LRADC common
+// Function prototypes of the LRADC common
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Initializes the LRADC block.
 //! \fntype Non-Reentrant Function
@@ -123,7 +116,7 @@ typedef enum _hw_lradc_ClockFreq_t
 //!                                   0 = Disable the onchip ground reference
 //! \param[in] eFreq                  LRADC conversion clock frequency
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_Init(bool bEnableOnChipGroungRef,  hw_lradc_ClockFreq_t eFreq);
+void hw_lradc_Init(bool bEnableOnChipGroungRef, hw_lradc_ClockFreq_t eFreq);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Get the present state of a specified LRADC channel converter.
@@ -188,10 +181,9 @@ void hw_lradc_ClearInterruptFlag(hw_lradc_Channel_t eChannel);
 //! \param[in]  u8NumSamples        Number of conversion cycles to sum together
 //!                                 to the accumulator.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_ConfigureChannel(hw_lradc_Channel_t  eChannel,
-                               bool                bEnableDivideByTwo,
-                               bool                bEnableAccum,
-                               uint8_t             u8NumSamples);
+void hw_lradc_ConfigureChannel(hw_lradc_Channel_t eChannel,
+                               bool bEnableDivideByTwo, bool bEnableAccum,
+                               uint8_t u8NumSamples);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Maps the physical LRADC channel to the virtual channel
@@ -201,8 +193,8 @@ void hw_lradc_ConfigureChannel(hw_lradc_Channel_t  eChannel,
 //! \param[in]  eVirtualChannel     Virtual channel number. Channels 0-7
 //! \param[in]  ePhysicalChannel    Physical channel number. Channels 0-15
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_AssignChannel( hw_lradc_Channel_t eVirtualChannel,
-                             hw_lradc_Channel_t ePhysicalChannel );
+void hw_lradc_AssignChannel(hw_lradc_Channel_t eVirtualChannel,
+                            hw_lradc_Channel_t ePhysicalChannel);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Gets the Toggle flag of a specified LRADC channel.
@@ -245,11 +237,10 @@ void hw_lradc_ClearAccum(hw_lradc_Channel_t eChannel);
 //! \param[in]  u32DelayCount:      The value of DEALY bitfield
 //! \retval     None
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_SetDelayTrigger(hw_lradc_DelayTrigger_t   eDelayTrigger,
-                              uint32_t                  u32TriggerLradcs,
-                              uint32_t                  u32DelayTriggers,
-                              uint32_t                  u32LoopCount,
-                              uint32_t                  u32DelayCount);
+void hw_lradc_SetDelayTrigger(hw_lradc_DelayTrigger_t eDelayTrigger,
+                              uint32_t u32TriggerLradcs,
+                              uint32_t u32DelayTriggers, uint32_t u32LoopCount,
+                              uint32_t u32DelayCount);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Start or stop the delay trigger cycle of a specified LRADC
@@ -265,7 +256,7 @@ void hw_lradc_SetDelayTrigger(hw_lradc_DelayTrigger_t   eDelayTrigger,
 void hw_lradc_SetDelayTriggerKick(hw_lradc_DelayTrigger_t eDelayTrigger,
                                   bool bValue);
 
-//Function prototypes for the LRADC resistor ladder
+// Function prototypes for the LRADC resistor ladder
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Init a LRADC channel for a resistor ladder
 //! \fntype     Non-Reentrant Function
@@ -277,9 +268,9 @@ void hw_lradc_SetDelayTriggerKick(hw_lradc_DelayTrigger_t eDelayTrigger,
 //!                 from 0 to 2047 (1023.5 ms) with 0.5ms incremental step.
 //!                 e.g.  u16SamplingInterval=20 is 10ms.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t hw_lradc_InitLadder(hw_lradc_Channel_t      eChannel,
+RtStatus_t hw_lradc_InitLadder(hw_lradc_Channel_t eChannel,
                                hw_lradc_DelayTrigger_t eTrigger,
-                               uint16_t                u16SamplingInterval);
+                               uint16_t u16SamplingInterval);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Measure Vddio voltage level for a resistor ladder
@@ -290,7 +281,7 @@ RtStatus_t hw_lradc_InitLadder(hw_lradc_Channel_t      eChannel,
 ////////////////////////////////////////////////////////////////////////////////
 uint16_t hw_lradc_MeasureVddio(void);
 
-//Function prototypes for the LRADC touch screen I/F
+// Function prototypes for the LRADC touch screen I/F
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Get the present state of the LRADC touch panel controller.
 //! \fntype     Non-Reentrant Function
@@ -367,7 +358,7 @@ void hw_lradc_EnableTouchDetectYDrive(bool bValue);
 ////////////////////////////////////////////////////////////////////////////////
 bool hw_lradc_GetTouchDetect(void);
 
-//Function prototypes for battery and Vddio voltage measurement I/F
+// Function prototypes for battery and Vddio voltage measurement I/F
 void hw_lradc_SetLradc6Select(hw_lradc_Channel_t eChannel);
 void hw_lradc_SetLradc7Select(hw_lradc_Channel_t eChannel);
 
@@ -385,12 +376,12 @@ void hw_lradc_SetLradc7Select(hw_lradc_Channel_t eChannel);
 //! \retval     SUCCESS             Battery measurement setup successful
 //!             ERROR_HW_LRADC_CH_NOT_PRESENT LRADC-7 is not present in hardware
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t hw_lradc_EnableBatteryMeasurement(
-	hw_lradc_DelayTrigger_t   eTrigger,uint16_t u16SamplingInterval);
+RtStatus_t hw_lradc_EnableBatteryMeasurement(hw_lradc_DelayTrigger_t eTrigger,
+                                             uint16_t u16SamplingInterval);
 
 hw_lradc_DelayTrigger_t hw_lradc_AcquireBatteryMonitorDelayTrigger(void);
 
-//Function prototypes for the LRADC temperature sensor I/F
+// Function prototypes for the LRADC temperature sensor I/F
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief Get the present state of a specified LRADC temperture sensor I/F.
 //! \fntype Non-Reentrant Function
@@ -413,7 +404,7 @@ bool hw_lradc_GetTempSensorPresent(hw_lradc_TempSensor_t eSensor);
 //! \param[in]  eValue:  the current magnitude to the sensor.
 //! \retval     None
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_SetTempSensorCurrentValue(hw_lradc_TempSensor_t       eSensor,
+void hw_lradc_SetTempSensorCurrentValue(hw_lradc_TempSensor_t eSensor,
                                         hw_lradc_CurrentMagnitude_t eValue);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -428,8 +419,8 @@ void hw_lradc_SetTempSensorCurrentValue(hw_lradc_TempSensor_t       eSensor,
 //!                      0 = Disable the sensor current
 //! \retval     None
 ////////////////////////////////////////////////////////////////////////////////
-void hw_lradc_EnableTempSensorCurrent(hw_lradc_TempSensor_t  eSensor,
-                                      bool                   bValue);
+void hw_lradc_EnableTempSensorCurrent(hw_lradc_TempSensor_t eSensor,
+                                      bool bValue);
 
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Measure the internal die temperature using 2 specified LRADC
@@ -455,7 +446,6 @@ uint16_t hw_lradc_MeasureInternalDieTemperature(hw_lradc_Channel_t eChannel0,
 ////////////////////////////////////////////////////////////////////////////////
 uint16_t hw_lradc_MeasureBatteryTemperature(hw_lradc_Channel_t BattTempChannel);
 
-
 ////////////////////////////////////////////////////////////////////////////////
 //! \brief      Sets the temperature sensor current.
 //!
@@ -476,7 +466,6 @@ void hw_lradc_SetTempSensorCurrent(hw_lradc_TempSensor_t TempSensor,
 //! \param[in]  bEnable True to enable the block, false to disable
 ////////////////////////////////////////////////////////////////////////////////
 void hw_lradc_EnableTempSensor(bool bEnable);
-
 
 void hw_lradc_EnableAutomaticBatteryUpdate(void);
 void hw_lradc_DisableAutomaticBatteryUpdate(void);

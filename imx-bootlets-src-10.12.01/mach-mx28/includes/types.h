@@ -11,7 +11,6 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
-
 #ifndef _TYPES_H
 #define _TYPES_H
 
@@ -21,8 +20,7 @@
 //! \brief TBD
 //! \todo [PUBS] Add definition(s)...
 //! \todo Where does this really go?
-typedef struct
-{
+typedef struct {
     //! \brief TBD
     uint32_t val[4];
 } uint128_t;
@@ -44,7 +42,7 @@ typedef struct
 
 //! \brief TBD
 #if !defined(TRUE)
-#define TRUE  true
+#define TRUE true
 #endif
 
 //! \brief TBD
@@ -53,68 +51,67 @@ typedef struct
 #endif
 
 //! \brief TBD
-typedef bool        BOOL;
+typedef bool BOOL;
 
 //! \brief TBD
-typedef uint8_t     UINT8;
+typedef uint8_t UINT8;
 //! \brief TBD
-typedef uint8_t     BYTE;
+typedef uint8_t BYTE;
 //! \brief TBD
-typedef uint8_t     PACKED_BYTE;
+typedef uint8_t PACKED_BYTE;
 
 //! \brief TBD
-typedef uint16_t    UINT16;
+typedef uint16_t UINT16;
 //! \brief TBD
-typedef uint16_t    USHORT;
+typedef uint16_t USHORT;
 //! \brief TBD
-typedef uint16_t    WCHAR;
+typedef uint16_t WCHAR;
 //! \brief TBD
-typedef uint16_t    UCS3;
+typedef uint16_t UCS3;
 //! \brief TBD
-typedef int16_t     SHORT;
+typedef int16_t SHORT;
 
 //! \brief TBD
-typedef uint32_t    UINT32;
+typedef uint32_t UINT32;
 //! \brief TBD
-typedef uint32_t    WORD;
+typedef uint32_t WORD;
 //! \brief TBD
-typedef uint32_t    SECTOR_BUFFER;
+typedef uint32_t SECTOR_BUFFER;
 //! \brief TBD
-typedef uint32_t *  P_SECTOR_BUFFER;
+typedef uint32_t *P_SECTOR_BUFFER;
 
 //! \brief TBD
-typedef uint64_t    DWORD;
+typedef uint64_t DWORD;
 //! \brief TBD
-typedef int64_t     INT64;
+typedef int64_t INT64;
 //! \brief TBD
-typedef int64_t     UINT64;
+typedef int64_t UINT64;
 
 //! \brief TBD
-typedef uint128_t   UINT128;
+typedef uint128_t UINT128;
 
 //! \brief TBD
-typedef float       FLOAT;
+typedef float FLOAT;
 
 //! \brief TBD
-#define FRACT       _fract
+#define FRACT _fract
 //! \brief TBD
-#define CIRC        _circ
+#define CIRC _circ
 
 //! \brief Provides a default of 16 bytes (128 bits / 8 bits per byte)
 #ifndef MAX_NUM_RAW_SERIAL_NUMBER_BYTES
-    #define MAX_NUM_RAW_SERIAL_NUMBER_BYTES (16)
+#define MAX_NUM_RAW_SERIAL_NUMBER_BYTES (16)
 #endif
 
 //! \brief Provides a default value that allows each nibble of raw to be
 //! converted to its
 //! ASCII hex character (1 extra for NULL termination)
 #ifndef MAX_NUM_ASCII_SERIAL_NUMBER_CHARS
-   #define MAX_NUM_ASCII_SERIAL_NUMBER_CHARS (2*MAX_NUM_RAW_SERIAL_NUMBER_BYTES)
+#define MAX_NUM_ASCII_SERIAL_NUMBER_CHARS (2 * MAX_NUM_RAW_SERIAL_NUMBER_BYTES)
 #endif
 
 //! \brief Serial number.
-typedef struct SerialNumber
-{
+typedef struct SerialNumber {
     //! \brief TBD
     uint8_t rawSizeInBytes;
     //! \brief TBD
@@ -122,7 +119,7 @@ typedef struct SerialNumber
     //! \brief TBD
     uint8_t raw[MAX_NUM_RAW_SERIAL_NUMBER_BYTES];
     // One extra for NULL termination
-    char ascii[MAX_NUM_ASCII_SERIAL_NUMBER_CHARS+1];
+    char ascii[MAX_NUM_ASCII_SERIAL_NUMBER_CHARS + 1];
 } SerialNumber_t;
 
 //------------------------------------------------------------------------------

@@ -11,17 +11,16 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
-
 //   Includes and external references
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.h"
-#include "error.h"                  // Common SigmaTel Error Codes
+#include "error.h" // Common SigmaTel Error Codes
 
 #include "hw/power/hw_power.h"
 #include "hw/icoll/hw_icoll.h"
 //#include "hw/core/hw_core.h"
 
-#include "drivers/power/ddi_power.h"       // Driver API
+#include "drivers/power/ddi_power.h" // Driver API
 //#include "drivers/icoll/ddi_icoll.h"
 
 #include "ddi_power_internal.h"
@@ -61,57 +60,53 @@
 //!
 //! \retval SUCCESS Detection methods and thresholds set.
 /////////////////////////////////////////////////////////////////////////////////
-RtStatus_t ddi_power_Configure5vDetection( ddi_power_5vDetection_t eDcdc5vDetection,
-                                           ddi_power_5vDetection_t eSw5vDetection,
-                                           uint16_t u16VbusValidThresh )
-{
+RtStatus_t
+ddi_power_Configure5vDetection(ddi_power_5vDetection_t eDcdc5vDetection,
+                               ddi_power_5vDetection_t eSw5vDetection,
+                               uint16_t u16VbusValidThresh) {
     hw_power_5vDetection_t eDcdc = HW_POWER_5V_UNINITIALIZED;
     hw_power_5vDetection_t eSw = HW_POWER_5V_UNINITIALIZED;
     hw_power_VbusValidThresh_t eThresh;
 
     // Translate the DCDC detection method to hw level.
-    switch( eDcdc5vDetection )
-    {
-        case DDI_POWER_VBUSVALID:
-            eDcdc = HW_POWER_5V_VBUSVALID;
-            break;
+    switch (eDcdc5vDetection) {
+    case DDI_POWER_VBUSVALID:
+        eDcdc = HW_POWER_5V_VBUSVALID;
+        break;
 
-        case DDI_POWER_VBUSVALID_WITH_POLLING:
-            eDcdc = HW_POWER_5V_VBUSVALID_WITH_POLLING;
-            break;
+    case DDI_POWER_VBUSVALID_WITH_POLLING:
+        eDcdc = HW_POWER_5V_VBUSVALID_WITH_POLLING;
+        break;
 
-        case DDI_POWER_VDD5V_GT_VDDIO:
-            eDcdc = HW_POWER_5V_VDD5V_GT_VDDIO;
-            break;
+    case DDI_POWER_VDD5V_GT_VDDIO:
+        eDcdc = HW_POWER_5V_VDD5V_GT_VDDIO;
+        break;
     }
 
     // Translate the software detection method to hw level.
-    switch( eSw5vDetection )
-    {
-        case DDI_POWER_VBUSVALID:
-            eSw = HW_POWER_5V_VBUSVALID;
-            break;
+    switch (eSw5vDetection) {
+    case DDI_POWER_VBUSVALID:
+        eSw = HW_POWER_5V_VBUSVALID;
+        break;
 
-        case DDI_POWER_VBUSVALID_WITH_POLLING:
-            eSw = HW_POWER_5V_VBUSVALID_WITH_POLLING;
-            break;
+    case DDI_POWER_VBUSVALID_WITH_POLLING:
+        eSw = HW_POWER_5V_VBUSVALID_WITH_POLLING;
+        break;
 
-        case DDI_POWER_VDD5V_GT_VDDIO:
-            eSw = HW_POWER_5V_VDD5V_GT_VDDIO;
-            break;
+    case DDI_POWER_VDD5V_GT_VDDIO:
+        eSw = HW_POWER_5V_VDD5V_GT_VDDIO;
+        break;
     }
 
-
-
     // Set the DCDC control logic's 5V detection method.
-    hw_power_SetDcdc5vDetect( eDcdc );
+    hw_power_SetDcdc5vDetect(eDcdc);
 
     // Set the software's 5V detection method.
-    hw_power_SetSw5vDetect( eSw );
+    hw_power_SetSw5vDetect(eSw);
 
     // Convert the voltage to register setting and set the threshold.
-    eThresh = hw_power_ConvertVoltToVbusThresh( u16VbusValidThresh );
-    hw_power_SetVbusValidThresh( eThresh );
+    eThresh = hw_power_ConvertVoltToVbusThresh(u16VbusValidThresh);
+    hw_power_SetVbusValidThresh(eThresh);
 
     return SUCCESS;
 }
@@ -119,4 +114,3 @@ RtStatus_t ddi_power_Configure5vDetection( ddi_power_5vDetection_t eDcdc5vDetect
 // End of file
 ////////////////////////////////////////////////////////////////////////////////
 //! @}
-

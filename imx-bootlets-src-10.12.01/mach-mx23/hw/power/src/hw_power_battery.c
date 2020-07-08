@@ -25,37 +25,34 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Code
 ////////////////////////////////////////////////////////////////////////////////
-#pragma ghs section text=".static.text"
+#pragma ghs section text = ".static.text"
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetBatteryBrownoutCode( uint16_t BoRegCode )
-{
-    BF_WR(POWER_BATTMONITOR, BRWNOUT_LVL, BoRegCode );
+void hw_power_SetBatteryBrownoutCode(uint16_t BoRegCode) {
+    BF_WR(POWER_BATTMONITOR, BRWNOUT_LVL, BoRegCode);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetBatteryBrownoutCode( void )
-{
+uint16_t hw_power_GetBatteryBrownoutCode(void) {
     return BF_RD(POWER_BATTMONITOR, BRWNOUT_LVL);
 }
-#pragma ghs section text=default
+#pragma ghs section text = default
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-RtStatus_t hw_power_SetBatteryBrownoutValue(int16_t i16BatteryBrownout_mV)
-{
+RtStatus_t hw_power_SetBatteryBrownoutValue(int16_t i16BatteryBrownout_mV) {
     uint16_t BattBoVolt;
 
     // Type cast to unsigned integer.  A negative brownout voltage is
     // not valid is this system.
-    BattBoVolt = (uint16_t) i16BatteryBrownout_mV;
+    BattBoVolt = (uint16_t)i16BatteryBrownout_mV;
 
     // Set the value with the new API.
-    hw_power_SetBatteryBrownoutVoltage( BattBoVolt );
+    hw_power_SetBatteryBrownoutVoltage(BattBoVolt);
 
     // Return success because we aren't going to do as much error checking
     // in the hw layer anymore.  (in the ddi_layer instead)
@@ -65,53 +62,47 @@ RtStatus_t hw_power_SetBatteryBrownoutValue(int16_t i16BatteryBrownout_mV)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetBatteryBrownoutValue(void)
-{
+uint16_t hw_power_GetBatteryBrownoutValue(void) {
     return hw_power_GetBatteryBrownoutVoltage();
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetBatteryBrownoutVoltage( uint16_t BoVolt )
-{
+void hw_power_SetBatteryBrownoutVoltage(uint16_t BoVolt) {
     uint16_t BoRegCode;
     uint16_t MaxBoRegCode;
 
-    BoRegCode = hw_power_ConvertBattBoToSetting( BoVolt);
+    BoRegCode = hw_power_ConvertBattBoToSetting(BoVolt);
 
     // Verify the value is valid and set it.  Note that an invalid value
     // will not be set to the register.
 
     MaxBoRegCode = BATT_BRWNOUT_MAX_REG_CODE_378x;
 
-    if ( BoRegCode <= MaxBoRegCode )
-    {
-        hw_power_SetBatteryBrownoutCode( BoRegCode );
+    if (BoRegCode <= MaxBoRegCode) {
+        hw_power_SetBatteryBrownoutCode(BoRegCode);
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetBatteryBrownoutVoltage(void)
-{
+uint16_t hw_power_GetBatteryBrownoutVoltage(void) {
     uint16_t BoRegCode;
 
     // Collect parameters for the conversion.
     BoRegCode = hw_power_GetBatteryBrownoutCode();
 
     // Return the converted value.
-    return hw_power_ConvertSettingToBattBo( BoRegCode);
+    return hw_power_ConvertSettingToBattBo(BoRegCode);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetBatteryVoltage(void)
-{
-    uint16_t    u16BattVolt;
+uint16_t hw_power_GetBatteryVoltage(void) {
+    uint16_t u16BattVolt;
 
     // Get the raw result of battery measurement
     u16BattVolt = HW_POWER_BATTMONITOR.B.BATT_VAL;
@@ -123,12 +114,11 @@ uint16_t hw_power_GetBatteryVoltage(void)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_SetBatteryMonitorVoltage(uint16_t u16BattVolt)
-{
+void hw_power_SetBatteryMonitorVoltage(uint16_t u16BattVolt) {
     uint16_t u16BattValue;
 
     // Adjust for 8-mV LSB resolution
-    u16BattValue = u16BattVolt/BATT_VAL_FIELD_RESOL;
+    u16BattValue = u16BattVolt / BATT_VAL_FIELD_RESOL;
 
     // Write to register
     BF_WR(POWER_BATTMONITOR, BATT_VAL, u16BattValue);
@@ -137,13 +127,12 @@ void hw_power_SetBatteryMonitorVoltage(uint16_t u16BattVolt)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_SetMaxBatteryChargeCurrent(uint16_t u16Current)
-{
-    uint16_t   u16OldSetting;
-    uint16_t   u16NewSetting;
-    uint16_t   u16ToggleMask;
+uint16_t hw_power_SetMaxBatteryChargeCurrent(uint16_t u16Current) {
+    uint16_t u16OldSetting;
+    uint16_t u16NewSetting;
+    uint16_t u16ToggleMask;
 
-    if(u16Current > 780)
+    if (u16Current > 780)
         u16Current = 780;
 
     // Get the old setting.
@@ -159,17 +148,16 @@ uint16_t hw_power_SetMaxBatteryChargeCurrent(uint16_t u16Current)
     HW_POWER_CHARGE_TOG(u16ToggleMask << BP_POWER_CHARGE_BATTCHRG_I);
 
     // Tell the caller what current we're set at now.
-    return(hw_power_ConvertSettingToCurrent(u16NewSetting));
+    return (hw_power_ConvertSettingToCurrent(u16NewSetting));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t  hw_power_SetBatteryChargeCurrentThreshold(uint16_t u16Threshold)
-{
-    uint16_t   u16OldSetting;
-    uint16_t   u16NewSetting;
-    uint16_t   u16ToggleMask;
+uint16_t hw_power_SetBatteryChargeCurrentThreshold(uint16_t u16Threshold) {
+    uint16_t u16OldSetting;
+    uint16_t u16NewSetting;
+    uint16_t u16ToggleMask;
 
     //--------------------------------------------------------------------------
     // See hw_power_SetMaxBatteryChargeCurrent for an explanation of why we're
@@ -189,7 +177,8 @@ uint16_t  hw_power_SetBatteryChargeCurrentThreshold(uint16_t u16Threshold)
     // Thresholds larger than 180mA can't be expressed.
     //--------------------------------------------------------------------------
 
-    if (u16Threshold > 180) u16Threshold = 180;
+    if (u16Threshold > 180)
+        u16Threshold = 180;
 
     ////////////////////////////////////////
     // Create the mask
@@ -207,7 +196,6 @@ uint16_t  hw_power_SetBatteryChargeCurrentThreshold(uint16_t u16Threshold)
     // Shift to the correct bit position
     u16ToggleMask = BF_POWER_CHARGE_STOP_ILIMIT(u16ToggleMask);
 
-
     /////////////////////////////////////////
     // Write to the register
     /////////////////////////////////////////
@@ -216,14 +204,13 @@ uint16_t  hw_power_SetBatteryChargeCurrentThreshold(uint16_t u16Threshold)
     HW_POWER_CHARGE_TOG(u16ToggleMask);
 
     // Tell the caller what current we're set at now.
-    return(hw_power_ConvertSettingToCurrent(u16NewSetting));
+    return (hw_power_ConvertSettingToCurrent(u16NewSetting));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetBatteryChargeCurrentThreshold(void)
-{
+uint16_t hw_power_GetBatteryChargeCurrentThreshold(void) {
     uint16_t u16Threshold;
 
     u16Threshold = BF_RD(POWER_CHARGE, STOP_ILIMIT);
@@ -234,8 +221,7 @@ uint16_t hw_power_GetBatteryChargeCurrentThreshold(void)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-uint16_t hw_power_GetMaxBatteryChargeCurrent(void)
-{
+uint16_t hw_power_GetMaxBatteryChargeCurrent(void) {
     uint8_t u8Bits;
 
     // Get the raw data from register
@@ -248,30 +234,29 @@ uint16_t hw_power_GetMaxBatteryChargeCurrent(void)
 ////////////////////////////////////////////////////////////////////////////////
 //! See hw_power.h for details.
 ////////////////////////////////////////////////////////////////////////////////
-void hw_power_GetDieTemperature(int16_t * pi16Low, int16_t * pi16High)
-{
+void hw_power_GetDieTemperature(int16_t *pi16Low, int16_t *pi16High) {
     int16_t i16High, i16Low;
     uint16_t u16Reading;
 
-    // Temperature constant
-    #define TEMP_READING_ERROR_MARGIN 5
-    #define KELVIN_TO_CELSIUS_CONST 273
+// Temperature constant
+#define TEMP_READING_ERROR_MARGIN 5
+#define KELVIN_TO_CELSIUS_CONST 273
 
     // Get the reading in Kelvins
     u16Reading = hw_lradc_MeasureInternalDieTemperature(DIE_TEMP_CHAN_0,
-	DIE_TEMP_CHAN_1);
+                                                        DIE_TEMP_CHAN_1);
 
     // Adjust for error margin
     i16High = u16Reading + TEMP_READING_ERROR_MARGIN;
-    i16Low  = u16Reading - TEMP_READING_ERROR_MARGIN;
+    i16Low = u16Reading - TEMP_READING_ERROR_MARGIN;
 
     // Convert to Celsius
     i16High -= KELVIN_TO_CELSIUS_CONST;
-    i16Low  -= KELVIN_TO_CELSIUS_CONST;
+    i16Low -= KELVIN_TO_CELSIUS_CONST;
 
     // Return the results
     *pi16High = i16High;
-    *pi16Low  = i16Low;
+    *pi16Low = i16Low;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
