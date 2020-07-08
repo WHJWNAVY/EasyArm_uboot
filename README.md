@@ -1,28 +1,69 @@
 # EasyArm SDboot
-> EasyArm-u-boot-2017.11-Linux2.6.35-SDboot
 
-## u-boot-v2020.07-rc4
+
+
+## u-boot
+
 * [README - v2020.07-rc4-port-easyarm280](u-boot-2020.07-rc4/README.md)
 * [Source - v2020.07-rc4-port-easyarm280](https://github.com/WHJWNAVY/u-boot/tree/v2020.07-rc4-port-easyarm280)
 
-## imx-bootlets-src-10.12.01.tar.gz
 
-[imx-bootlets-src-10.12.01.tar.gz](http://repository.timesys.com/buildsources/i/imx-bootlets/imx-bootlets-10.12.01/imx-bootlets-src-10.12.01.tar.gz)
-[imx-bootlets-src-10.12.01.tar.gz](http://download.ossystems.com.br/bsp/freescale/source/imx-bootlets-src-10.12.01.tar.gz)
 
-[ref-git.yoctoproject.org](http://git.yoctoproject.org/cgit/cgit.cgi/meta-freescale/tree/recipes-bsp/imx-bootlets/imx-bootlets_10.12.01.bb?h=pyro)
+## linux
 
-## README
-
-* [EasyArm_IMX280A_从SD卡启动系统](easyarm_sdboot/EasyArm_IMX280A_从SD卡启动系统.pdf)
-* [EasyArm_IMX280A_SD分区详解](easyarm_sdboot/EasyArm_IMX280A_SD分区详解.pdf)
-* [EasyArm_IMX280A_SD卡启动引导](easyarm_sdboot/EasyArm_IMX280A_SD卡启动引导.pdf)
-* [EasyArm_IMX280A_u-boot的FAT32支持](easyarm_sdboot/EasyArm_IMX280A_u-boot的FAT32支持.pdf)
-* [SD_TF卡启动系统Easy-28xx](easyarm_sdboot/SD_TF卡启动系统Easy-28xx.pdf)
+* [README - linux-5.5.5](linux-5.5.5/README.md)
 
 
 
-## 制作TF卡启动盘
+## imx-bootlets-src
+
+* [imx-bootlets-src-10.12.01.tar.gz](http://repository.timesys.com/buildsources/i/imx-bootlets/imx-bootlets-10.12.01/imx-bootlets-src-10.12.01.tar.gz)
+* [imx-bootlets-src-10.12.01.tar.gz](http://download.ossystems.com.br/bsp/freescale/source/imx-bootlets-src-10.12.01.tar.gz)
+
+* [ref-git.yoctoproject.org](http://git.yoctoproject.org/cgit/cgit.cgi/meta-freescale/tree/recipes-bsp/imx-bootlets/imx-bootlets_10.12.01.bb?h=pyro)
+
+
+
+## documents
+
+* [EasyArm_IMX280A_从SD卡启动系统](mk_sdboot/EasyArm_IMX280A_从SD卡启动系统.pdf)
+* [EasyArm_IMX280A_SD分区详解](mk_sdboot/EasyArm_IMX280A_SD分区详解.pdf)
+* [EasyArm_IMX280A_SD卡启动引导](mk_sdboot/EasyArm_IMX280A_SD卡启动引导.pdf)
+* [EasyArm_IMX280A_u-boot的FAT32支持](mk_sdboot/EasyArm_IMX280A_u-boot的FAT32支持.pdf)
+* [SD_TF卡启动系统Easy-28xx](mk_sdboot/SD_TF卡启动系统Easy-28xx.pdf)
+
+
+
+## make sdcard boot
+
+
+
+### linux
+
+```bash
+#!/bin/sh
+
+echo "Please input sdcard device name, (e.g. <sdc>)"
+read sdcard
+
+if [[ -z "$sdcard" ]]; then
+    echo "Invalid device name!"
+    exit 1
+fi
+
+fdisk /dev/${sdcard} < fdisk.part
+mkdir /tmp/fat32
+mount /dev/${sdcard}2 /tmp/fat32
+cp uImage /tmp/fat32/
+cp zImage /tmp/fat32/
+cp imx28-evk.dtb /tmp/fat32/
+dd if=u-boot.sd of=/dev/${sdcard}1
+dd if=rootfs.full.img of=/dev/${sdcard}3
+```
+
+
+
+### windows
 
 ```bat
 @echo off
@@ -57,24 +98,7 @@ echo.
 pause>nul
 ```
 
-
-
-## bootargs
-
-* BOOT FROM NAND FLASH
-```bash
-bootargs=gpmi=g console=ttyAM0,115200n8 ubi.mtd=1 root=ubi0:rootfs rootfstype=ubifs fec_mac= ethact mem=64M
-```
-
-* BOOT FROM SD CARD
-```bash
-setenv bootargs 'gpmi=g console=ttyAM0,115200n8 root=/dev/mmcblk0p3 rw rootwait rootfstype=ext2 init=/sbin/init fec_mac= ethact mem=64M'
-# uImage放在SD卡的fat32分区中,uboot支持fat32分区,可以用fatload直接从fat32分区中加载uImage
-setenv sdcard_boot 'fatload mmc 0:1 $(loadaddr) uImage;bootm'
-setenv bootcmd 'run sdcard_boot'
-```
-
-## cfimager.exe
+> cfimager.exe
 ```bash
 cfimager.exe -h
 Usage: cfimager.exe [options]
@@ -119,4 +143,81 @@ the i.MX51 file on the card is determined automatically by cfimager
 The -no-format option causes the tool to skip writing the FAT partition, but
 still writes the corresponding partition entry in the MBR. This lets you use
 the operating system's native formatter.
+```
+
+
+
+## bootargs
+
+> BOOT FROM SD CARD
+
+```bash
+baudrate=115200
+boot_fdt=try
+bootargs=console=ttyAMA0,115200 root=/dev/nfs ip=dhcp nfsroot=:,v3,tcp
+bootcmd=mmc dev ${mmcdev}; if mmc rescan; then if run loadbootscript; then run bootscript; else if run loadimage; then run mmcboot; else run netboot; fi; fi; else run netboot; fi
+bootdelay=3
+bootfile=uImage
+bootscript=echo Running bootscript from mmc ...; source
+console_fsl=ttyAM0
+console_mainline=ttyAMA0
+ethact=FEC0
+ethaddr=00:04:29:2a:ae:02
+ethprime=FEC0
+fdt_addr=0x41000000
+fdt_file=imx28-evk.dtb
+get_cmd=dhcp
+image=zImage
+ip_dyn=yes
+loadaddr=0x42000000
+loadbootscript=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};
+loadfdt=fatload mmc ${mmcdev}:${mmcpart} ${fdt_addr} ${fdt_file}
+loadimage=fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${image}
+mmcargs=setenv bootargs console=${console_mainline},${baudrate} root=${mmcroot}
+mmcboot=echo Booting from mmc ...; run mmcargs; if test ${boot_fdt} = yes || test ${boot_fdt} = try; then if run loadfdt; then bootz ${loadaddr} - ${fdt_addr}; else if test ${boot_fdt} = try; then bootz; else echo WARN: Cannot load the DT; fi; fi; else bootz; fi;
+mmcdev=0
+mmcpart=2
+mmcroot=/dev/mmcblk0p3 rw rootwait
+script=boot.scr
+update_sd_firmware=if mmc rescan ; then if tftp ${update_sd_firmware_filename} ; then setexpr fw_sz ${filesize} / 0x200 ; setexpr fw_sz ${fw_sz} + 1 ; mmc write ${loadaddr} 0x800 ${fw_sz} ; fi ; fi
+update_sd_firmware_filename=u-boot.sd
+```
+
+> bootcmd
+
+```bash
+mmc dev ${mmcdev};
+if mmc rescan; then
+    if run loadbootscript; then
+        run bootscript;
+    else
+        if run loadimage; then
+            run mmcboot;
+        else
+            run netboot;
+        fi;
+    fi;
+else
+    run netboot;
+fi
+```
+
+> mmcboot
+
+```bash
+echo Booting from mmc ...;
+run mmcargs;
+if test ${boot_fdt} = yes || test ${boot_fdt} = try; then
+    if run loadfdt; then
+        bootz ${loadaddr} - ${fdt_addr};
+    else
+        if test ${boot_fdt} = try; then
+            bootz;
+        else
+            echo WARN: Cannot load the DT;
+        fi;
+    fi;
+else
+    bootz;
+fi;
 ```
