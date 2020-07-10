@@ -16,4 +16,3 @@ cp zImage /tmp/fat32/
 cp imx28-evk.dtb /tmp/fat32/
 dd if=u-boot.sd of=/dev/${sdcard}1
 dd if=rootfs.full.img of=/dev/${sdcard}3
-
