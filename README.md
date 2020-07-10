@@ -1,5 +1,10 @@
 # EasyArm SDboot
 
+## build-env
+
+* [install_build_package.sh](toolchain/install_build_package.sh)
+* [crosstool-ng-armv5te-arm926ejs-build](toolchain/README.md)
+
 
 
 ## u-boot
@@ -15,7 +20,7 @@
 
 
 
-## imx-bootlets-src
+## ~~imx-bootlets-src~~
 
 * [imx-bootlets-src-10.12.01.tar.gz](http://repository.timesys.com/buildsources/i/imx-bootlets/imx-bootlets-10.12.01/imx-bootlets-src-10.12.01.tar.gz)
 * [imx-bootlets-src-10.12.01.tar.gz](http://download.ossystems.com.br/bsp/freescale/source/imx-bootlets-src-10.12.01.tar.gz)
@@ -38,9 +43,7 @@
 
 ## make sdcard boot
 
-
-
-### linux
+### [linux](mk_sdboot/linux/README.md)
 
 ```bash
 #!/bin/sh
@@ -63,9 +66,7 @@ dd if=u-boot.sd of=/dev/${sdcard}1
 dd if=rootfs.full.img of=/dev/${sdcard}3
 ```
 
-
-
-### windows
+### ~~[windows](mk_sdboot/win/mk_sdboot.bat)~~
 
 ```bat
 @echo off
@@ -79,22 +80,13 @@ echo 注意:
 echo 文件会被烧写在 %diskpath% 盘
 echo. 
 rem ---------------------------------------------------------------------------------------------
-rem %cmdpath%cfimager.exe -a -f %cmdpath%imx28_ivt_uboot.sb -d %diskpath%
-%cmdpath%cfimager.exe -a -f %cmdpath%imx28_ivt_uboot.sb -e %cmdpath%rootfs.ext2.img -d %diskpath%
-rem ---------------------------------------------------------------------------------------------
-rem 从第2048(0x800)个扇区开始存放uImage,即从第1048576(0x100000)字节开始存放uImage
-rem 总共2048个扇区,每个扇区512个字节,所以是2048*512=1048576
-rem %cmdpath%cfimager.exe -raw -offset 0x100000 -f %cmdpath%uImage -d %diskpath%
+%cmdpath%cfimager.exe -a -f %cmdpath%u-boot.sb -e %cmdpath%rootfs.full.img -d %diskpath%
 rem ---------------------------------------------------------------------------------------------
 rem 用copy把uImage拷贝到FAT32分区中,避免直接烧写造成FAT32分区信息被破坏.
 rem 由于uboot支持对fat32文件系统的读写,所以可以直接使用uboot的fatload命令把
 rem uImage加载到内存中并启动. 命令为:"fatload mmc 0:1 $(loadaddr) uImage;bootm"
-copy %cmdpath%uImage %diskpath%: /y
-rem ---------------------------------------------------------------------------------------------
-rem 用全0文件填充uboot环境变量存放区域
-rem uboot的环境变量默认存放在从第1024(0x400)字节处开始的127Kb空间中
-%cmdpath%cfimager.exe -raw -offset 0x400 -f %cmdpath%zero.raw -d %diskpath%
-rem ---------------------------------------------------------------------------------------------
+copy %cmdpath%zImage %diskpath%: /y
+copy %cmdpath%imx28-evk.dtb %diskpath%: /y
 echo 烧写完毕，按键退出
 echo.
 pause>nul
