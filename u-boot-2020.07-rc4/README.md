@@ -6,7 +6,7 @@
 $ sudo ./install_build_package.sh
 ```
 
-## [install_build_package.sh](./patch-imx280a/install_build_package.sh)
+## [install_build_package.sh](../toolchain/install_build_package.sh)
 
 ```bash
 #!/bin/sh
@@ -46,7 +46,7 @@ echo "Package install over, See log at $install_log"
 
 > [crosstool-NG](http://crosstool-ng.github.io/)是一个神器，专门用来编译生成自己的gcc工具链，我就是用`crosstool-ng`自己编译的最新版(`9.2.0`)的`arm-926ejs-linux-gnueabi-gcc`，具体编译方法参考另一篇文档:
 
-## [crosstool-ng-armv5te-arm926ejs-build.md](./patch-imx280a/crosstool-ng-armv5te-arm926ejs-build.md)
+## [crosstool-ng-armv5te-arm926ejs-build.md](../toolchain/crosstool-ng-armv5te-arm926ejs-build.md)
 
 
 
