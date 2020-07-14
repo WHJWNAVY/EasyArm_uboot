@@ -249,29 +249,29 @@ CONFIG_ENV_OFFSET=0x40000
 $ sudo fdisk /dev/${sdcard}
     * o ..................... create a clear partition table
     * n ..................... create new partition
-        * p ............. primary partition
-        * 1 ............. first partition(uboot)
-        * (default) .......... first sector is 2048
-        * +1M ........... make the partition 1Mb big
+        * p ................. primary partition
+        * 1 ................. first partition(uboot)
+        * (default) ......... first sector is 2048
+        * +1M ............... make the partition 1Mb big
     * n ..................... create new partition
-        * p ............. primary partition
-        * 2 ............. second partition(fat32)
-        * (default) .......... first sector is 2048(default)
-        * +100M ........... make the partition 100Mb big
+        * p ................. primary partition
+        * 2 ................. second partition(fat32)
+        * (default) ......... first sector is 2048(default)
+        * +100M ............. make the partition 100Mb big
     * n ..................... create new partition
-        * p ............. primary partition
-        * 3 ............. third partition
-        * (default) .......... first sector is 2048(default)
-        * (default) ........... use all remaining space
-    * t ................... change partition ID
-        * 1 ............ change first partition ID
-        * 53 ............ change the ID to 0x53 (OnTrack DM6 Aux3)
-    * t ................... change partition ID
-        * 2 ............ change second partition ID
-        * b ............ change the ID to 0x0b (Win95 FAT32)
-    * t ................... change partition ID
-        * 3 ............ change third partition ID
-        * 10 ............ change the ID to 0x10 (OPUS)
+        * p ................. primary partition
+        * 3 ................. third partition
+        * (default) ......... first sector is 2048(default)
+        * (default) ......... use all remaining space
+    * t ..................... change partition ID
+        * 1 ................. change first partition ID
+        * 53 ................ change the ID to 0x53 (OnTrack DM6 Aux3)
+    * t ..................... change partition ID
+        * 2 ................. change second partition ID
+        * b ................. change the ID to 0x0b (Win95 FAT32)
+    * t ..................... change partition ID
+        * 3 ................. change third partition ID
+        * 10 ................ change the ID to 0x10 (OPUS)
     * w ..................... write partition table to disk
 
 $ sudo fdisk -l /dev/sdd
