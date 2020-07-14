@@ -140,73 +140,73 @@ mxsboot的源码在`tools\mxsboot.c`中,其关键代码如下:
 static uint32_t sd_sector = 2048;
 
 struct mx28_sd_drive_info {
-	uint32_t		chip_num;
-	uint32_t		drive_type;
-	uint32_t		tag;
-	uint32_t		first_sector_number;
-	uint32_t		sector_count;
+    uint32_t        chip_num;
+    uint32_t        drive_type;
+    uint32_t        tag;
+    uint32_t        first_sector_number;
+    uint32_t        sector_count;
 };
 
 struct mx28_sd_config_block {
-	uint32_t			signature;
-	uint32_t			primary_boot_tag;
-	uint32_t			secondary_boot_tag;
-	uint32_t			num_copies;
-	struct mx28_sd_drive_info	drv_info[1];
+    uint32_t            signature;
+    uint32_t            primary_boot_tag;
+    uint32_t            secondary_boot_tag;
+    uint32_t            num_copies;
+    struct mx28_sd_drive_info   drv_info[1];
 };
 
 static int mx28_create_sd_image(int infd, int outfd)
 {
-	int ret = -1;
-	uint32_t *buf;
-	int size;
-	off_t fsize;
-	ssize_t wr_size;
-	struct mx28_sd_config_block *cb;
+    int ret = -1;
+    uint32_t *buf;
+    int size;
+    off_t fsize;
+    ssize_t wr_size;
+    struct mx28_sd_config_block *cb;
 
-	fsize = lseek(infd, 0, SEEK_END);
-	lseek(infd, 0, SEEK_SET);
-	size = fsize + 4 * 512; //u-boot.sb的大小+4个扇区的BCB信息
+    fsize = lseek(infd, 0, SEEK_END);
+    lseek(infd, 0, SEEK_SET);
+    size = fsize + 4 * 512; //u-boot.sb的大小+4个扇区的BCB信息
 
-	buf = malloc(size);
-	if (!buf) {
-		printf("Can not allocate output buffer of %d bytes\n", size);
-		goto err0;
-	}
+    buf = malloc(size);
+    if (!buf) {
+        printf("Can not allocate output buffer of %d bytes\n", size);
+        goto err0;
+    }
 
     //把u-boot.sb放入分区镜像的第四个扇区之后的位置(从第五个扇区开始),这里是相对地址
-	ret = read(infd, (uint8_t *)buf + 4 * 512, fsize);
-	if (ret != fsize) {
-		ret = -1;
-		goto err1;
-	}
+    ret = read(infd, (uint8_t *)buf + 4 * 512, fsize);
+    if (ret != fsize) {
+        ret = -1;
+        goto err1;
+    }
 
     //前四个扇区用于存放BCB,这里是相对地址
-	cb = (struct mx28_sd_config_block *)buf;
+    cb = (struct mx28_sd_config_block *)buf;
 
-	cb->signature = cpu_to_le32(0x00112233);
-	cb->primary_boot_tag = cpu_to_le32(0x1);
-	cb->secondary_boot_tag = cpu_to_le32(0x1);
-	cb->num_copies = cpu_to_le32(1);
-	cb->drv_info[0].chip_num = cpu_to_le32(0x0);
-	cb->drv_info[0].drive_type = cpu_to_le32(0x0);
-	cb->drv_info[0].tag = cpu_to_le32(0x1);
+    cb->signature = cpu_to_le32(0x00112233);
+    cb->primary_boot_tag = cpu_to_le32(0x1);
+    cb->secondary_boot_tag = cpu_to_le32(0x1);
+    cb->num_copies = cpu_to_le32(1);
+    cb->drv_info[0].chip_num = cpu_to_le32(0x0);
+    cb->drv_info[0].drive_type = cpu_to_le32(0x0);
+    cb->drv_info[0].tag = cpu_to_le32(0x1);
     //u-boot.sb的绝对扇区号 : 分区起始扇区号(sd_sector) + 偏移BCB大小(分区前4扇区)
-	cb->drv_info[0].first_sector_number = cpu_to_le32(sd_sector + 4);
-	cb->drv_info[0].sector_count = cpu_to_le32((size - 4) / 512);
+    cb->drv_info[0].first_sector_number = cpu_to_le32(sd_sector + 4);
+    cb->drv_info[0].sector_count = cpu_to_le32((size - 4) / 512);
 
-	wr_size = write(outfd, buf, size);
-	if (wr_size != size) {
-		ret = -1;
-		goto err1;
-	}
+    wr_size = write(outfd, buf, size);
+    if (wr_size != size) {
+        ret = -1;
+        goto err1;
+    }
 
-	ret = 0;
+    ret = 0;
 
 err1:
-	free(buf);
+    free(buf);
 err0:
-	return ret;
+    return ret;
 }
 ```
 
@@ -240,10 +240,8 @@ CONFIG_ENV_OFFSET=0x40000
 |   分区   |  ID  |     作用      |     大小     |
 | :------: | :--: | :-----------: | :----------: |
 | 第一分区 | 0x53 | UBOOT启动分区 |      1M      |
-| 第二分区 | 0x10 |   FAT32分区   |     100M     |
-| 第三分区 | 0x0b |  ROOTFS分区   | SD卡剩余空间 |
-
-
+| 第二分区 | 0x0b |   FAT32分区   |     100M     |
+| 第三分区 | 0x10 |  ROOTFS分区   | SD卡剩余空间 |
 
 ## 给SD卡分区
 
@@ -270,13 +268,27 @@ $ sudo fdisk /dev/${sdcard}
         * 53 ............ change the ID to 0x53 (OnTrack DM6 Aux3)
     * t ................... change partition ID
         * 2 ............ change second partition ID
-        * 10 ............ change the ID to 0x10 (Win95 FAT32)
+        * b ............ change the ID to 0x0b (Win95 FAT32)
     * t ................... change partition ID
         * 3 ............ change third partition ID
-        * b ............ change the ID to 0x0b (OPUS)
+        * 10 ............ change the ID to 0x10 (OPUS)
     * w ..................... write partition table to disk
+
+$ sudo fdisk -l /dev/sdd
+Disk /dev/sdd: 7.5 GiB, 8068792320 bytes, 15759360 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xdd654323
+
+Device     Boot  Start      End  Sectors  Size Id Type
+/dev/sdd1         2048     4095     2048    1M 53 OnTrack DM6 Aux3
+/dev/sdd2         4096   208895   204800  100M  b W95 FAT32
+/dev/sdd3       208896 15759359 15550464  7.4G 10 OPUS
 ```
 
+![fdisk_part](./fdisk_part.png)
 
 
 ## 烧写并启动
