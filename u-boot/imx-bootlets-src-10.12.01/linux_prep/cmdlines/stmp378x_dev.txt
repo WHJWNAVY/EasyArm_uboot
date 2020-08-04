@@ -1,0 +1,6 @@
+console=ttyAM0,115200 root=/dev/mmcblk0p3 rw rootwait lcd_panel=lms430 no_console_suspend
+console=ttyAM0,115200 root=/dev/mmcblk0p3 rw rootwait lcd_panel=lms350
+console=ttyAM0,115200 ssp1=spi1 ubi.mtd=2 root=ubi0:rootfs0 rootfstype=ubifs lcd_panel=lms430
+
+
+

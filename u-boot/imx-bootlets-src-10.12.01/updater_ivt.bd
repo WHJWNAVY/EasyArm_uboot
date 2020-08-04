@@ -1,0 +1,52 @@
+// STMP378x ROM command script to load and run Linux kernel
+options {
+	driveTag = 0x00;
+	flags = 0x01;
+}
+sources {
+	power_prep="./power_prep/power_prep";
+	sdram_prep="./boot_prep/boot_prep";
+	linux_prep="./linux_prep/output-target/linux_prep";
+	zImage="zImage";
+	initramfs="initramfs.cpio.gz";
+}
+
+section (0) {
+
+	//----------------------------------------------------------
+	// Power Supply initialization
+	//----------------------------------------------------------
+
+	load power_prep;
+	load ivt (entry = power_prep:_start) > 0x8000;
+	hab call 0x8000;
+
+	//----------------------------------------------------------
+	// SDRAM initialization
+	//----------------------------------------------------------
+
+	load sdram_prep;
+	load ivt (entry = sdram_prep:_start) > 0x8000;
+	hab call 0x8000;
+
+	//----------------------------------------------------------
+	// Prepare to boot Linux
+	//----------------------------------------------------------
+
+	load linux_prep;
+	load ivt (entry = linux_prep:_start) > 0x8000;
+	hab call 0x8000;
+
+        //----------------------------------------------------------
+        //  Load ans start Linux kernel
+        //----------------------------------------------------------
+
+        load zImage > 0x40008000;
+
+	// extern data in initramfs should be zero
+
+	load 0.b    > 0x40800000..0x40c00000;
+	load initramfs > 0x40800000;
+	load ivt (entry = linux_prep:_start) > 0x8000;
+	hab jump 0x8000;
+}
