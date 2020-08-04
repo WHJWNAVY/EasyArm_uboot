@@ -1,0 +1,47 @@
+#!/bin/sh
+
+echo "U-Boot build menu, please select your choice:"
+echo "  1   make distclean"
+echo "  2   config for mx28"
+echo "  3   build U-Boot"
+echo "  4   build U-Boot.sb"
+echo "  q   exit"
+
+CC=/usr/bin/arm-linux-gnueabi-
+TFTPBOOT=/home/work/tftpboot
+
+make_distclean() {
+    echo "make distclean"
+    make ARCH=arm CROSS_COMPILE=$CC distclean
+	find . -name "*.o" -type f | xargs rm -f
+}
+
+config_mx28() {
+    make ARCH=arm CROSS_COMPILE=$CC mx28evk_config
+}
+
+
+build_uboot() {
+    #make -j4 ARCH=arm CROSS_COMPILE=$CC u-boot.sb
+    make ARCH=arm CROSS_COMPILE=$CC u-boot.sb
+}
+
+build_uboot_sb() {
+    echo "Do elftosb ..."
+    elftosb -f imx28 -c arch/arm/cpu/arm926ejs/mxs/u-boot-imx28.bd -o u-boot.sb
+    #echo "Do mxsboot ..."
+    #./tools/mxsboot sd u-boot.sb u-boot.sd
+}
+
+read sel
+echo "select $sel"
+
+case $sel in
+    [1]) make_distclean;;
+    [2]) config_mx28;;
+    [3]) build_uboot;;
+    [4]) build_uboot_sb;;
+    [q]) exit 0;;
+    *)   echo "ONLY accept 1/2/3/4/q/Q"
+esac    
+

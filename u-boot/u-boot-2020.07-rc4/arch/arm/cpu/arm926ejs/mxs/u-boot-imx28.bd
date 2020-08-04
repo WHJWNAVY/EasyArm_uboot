@@ -1,0 +1,14 @@
+sources {
+	u_boot_spl="spl/u-boot-spl";
+	u_boot="u-boot";
+}
+
+section (0) {
+	load u_boot_spl;
+	load ivt (entry = u_boot_spl:_start) > 0x8000;
+	hab call 0x8000;
+
+	load u_boot;
+	load ivt (entry = u_boot:_start) > 0x8000;
+	hab call 0x8000;
+}
