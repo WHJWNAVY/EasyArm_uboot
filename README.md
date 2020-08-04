@@ -9,7 +9,7 @@
 
 ## u-boot
 
-* [README - v2020.07-rc4-port-easyarm280](u-boot-2020.07-rc4/README.md)
+* [README - v2020.07-rc4-port-easyarm280](u-boot/README.md)
 * [Source - v2020.07-rc4-port-easyarm280](https://github.com/WHJWNAVY/u-boot/tree/v2020.07-rc4-port-easyarm280)
 
 
@@ -17,6 +17,12 @@
 ## linux
 
 * [README - linux-5.5.5](linux-5.5.5/README.md)
+
+
+
+## rootfs
+
+* [README - buildroot](mk_rootfs/README.md)
 
 
 
