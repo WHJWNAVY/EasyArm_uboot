@@ -1,7 +1,7 @@
 # make defconfig
 
 ```bash
-$ freescale_imx28evk_defconfig
+$ make freescale_imx28evk_defconfig
 ```
 
 
