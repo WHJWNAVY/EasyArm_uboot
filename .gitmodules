@@ -1,0 +1,4 @@
+[submodule "mk_rootfs/buildroot"]
+	path = mk_rootfs/buildroot
+	url = git@github.com:WHJWNAVY/buildroot.git
+	branch = imx280_evk
