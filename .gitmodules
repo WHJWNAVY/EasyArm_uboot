@@ -2,7 +2,3 @@
 	path = mk_rootfs/buildroot
 	url = git@github.com:WHJWNAVY/buildroot.git
 	branch = imx280_evk
-[submodule "u-boot/u-boot-2020.07-rc4"]
-	path = u-boot/u-boot-2020.07-rc4
-	url = git@github.com:WHJWNAVY/u-boot.git
-	branch = v2020.07-rc4-port-easyarm280
